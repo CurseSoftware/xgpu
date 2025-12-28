@@ -1,6 +1,10 @@
 # C++ Template Project built using CMake
 This is a cross-platform template C++ project using the CMake build system.
 
+## Purpose
+This is in development as the RHI for the [blade](https://github.com/CurseSoftware/blade) game engine library.
+We are beginning with the Vulkan API with Dx12 as the likely successor as the next backend.
+
 ## Building
 There are included `go.sh` and `go.ps` scripts in the project root directory.
 
