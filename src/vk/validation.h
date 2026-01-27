@@ -1,0 +1,39 @@
+#ifndef RHI_VK_VALIDATION_H
+#define RHI_VK_VALIDATION_H
+
+#include "expected.h"
+#include <span>
+#include <vulkan/vulkan_core.h>
+
+#include <string_view>
+#include <vector>
+
+namespace rhi::vk::priv
+{
+    struct RequestedLayer
+    {
+        // Whether the layer is required or not
+        bool required { true };
+
+        // The name of the requested layer
+        std::string_view layer_name;
+    };
+
+    class ValidationLayerManager
+    {
+        public:
+            [[nodiscard]] explicit ValidationLayerManager() noexcept;
+
+            // Return `true` if the layer name is supported
+            [[nodiscard]] auto isSupported(std::string_view layer_name) const noexcept -> bool;
+
+            [[nodiscard]] auto getRequestedLayer(std::span<RequestedLayer> layers) noexcept -> expected<std::vector<std::string_view>, std::string_view>;
+
+            [[nodiscard]] auto layers() const noexcept -> const std::vector<VkLayerProperties> { return _layers; }
+        
+        private:
+            std::vector<VkLayerProperties> _layers {};
+    };
+} // namespace rhi::vk::priv
+
+#endif // RHI_VK_VALIDATION_H
