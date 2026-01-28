@@ -28,9 +28,9 @@ namespace rhi::vk::priv
         return false;
     }
 
-    auto ValidationLayerManager::getRequestedLayer(std::span<RequestedLayer> requested_layers) noexcept -> expected<std::vector<std::string_view>, std::string_view>
+    auto ValidationLayerManager::getRequestedLayers(std::span<RequestedLayer> requested_layers) noexcept -> expected<std::vector<const char*>, std::string_view>
     {
-        std::vector<std::string_view> layers_found {};
+        std::vector<const char*> layers_found {};
 
         for (const auto& requested_layer : requested_layers)
         {
@@ -43,7 +43,7 @@ namespace rhi::vk::priv
             }
             else
             {
-                layers_found.push_back(requested_layer.layer_name);
+                layers_found.push_back(requested_layer.layer_name.data());
             }
         }
 

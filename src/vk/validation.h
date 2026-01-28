@@ -27,7 +27,7 @@ namespace rhi::vk::priv
             // Return `true` if the layer name is supported
             [[nodiscard]] auto isSupported(std::string_view layer_name) const noexcept -> bool;
 
-            [[nodiscard]] auto getRequestedLayer(std::span<RequestedLayer> layers) noexcept -> expected<std::vector<std::string_view>, std::string_view>;
+            [[nodiscard]] auto getRequestedLayers(std::span<RequestedLayer> layers) noexcept -> expected<std::vector<const char*>, std::string_view>;
 
             [[nodiscard]] auto layers() const noexcept -> const std::vector<VkLayerProperties> { return _layers; }
         

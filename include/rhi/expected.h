@@ -2,6 +2,7 @@
 #define RHI_EXPECTED_H
 #include <concepts>
 #include <exception>
+#include <stdexcept>
 #include <type_traits>
 #include <utility>
 #include <variant>
@@ -11,6 +12,18 @@ namespace rhi
 {
     template <typename T, typename E>
     class expected;
+
+    class bad_expected_access : public std::exception
+    {
+        public:
+            auto what() const noexcept -> const char* override { return "bad rhi::expected access"; }
+    };
+
+    class bad_expected_error_access : public std::exception
+    {
+        public:
+            auto what() const noexcept -> const char* override { return "bad rhi::expected error access"; }
+    };
 
     template <typename E>
     class unexpected
@@ -260,9 +273,7 @@ namespace rhi
     public:
         [[nodiscard]] constexpr bool has_value() const noexcept { return _is_ok; }
 
-
-        constexpr auto
-        unwrap() const & noexcept -> T const&
+        constexpr auto unwrap() const & -> T const&
         requires std::is_copy_constructible_v<T>
         {
             // static_assert(std::is_copy_constructible_v<T>, "T must be copyable");
@@ -271,11 +282,10 @@ namespace rhi
                 return std::get<T>(_value);
             }
 
-            std::terminate();
+            throw new bad_expected_error_access();
         }
 
-        constexpr auto
-        unwrap() & noexcept -> T&
+        constexpr auto unwrap() & -> T&
         requires std::is_copy_constructible_v<T>
         {
             // static_assert(std::is_copy_constructible_v<T>, "T must be copyable");
@@ -284,11 +294,10 @@ namespace rhi
                 return std::get<T>(_value);
             }
 
-            std::terminate();
+            throw new bad_expected_error_access();
         }
 
-        constexpr auto
-        unwrap() const & noexcept -> T const&&
+        constexpr auto unwrap() const & -> T const&&
         requires (std::is_move_constructible_v<T> && std::is_move_assignable_v<T> && !std::is_copy_constructible_v<T>)
         {
             // static_assert(std::is_copy_constructible_v<T>, "T must be copyable");
@@ -297,11 +306,11 @@ namespace rhi
                 return std::move(std::get<T>(_value));
             }
 
-            std::terminate();
+            throw new bad_expected_error_access();
         }
 
         constexpr auto
-        unwrap() & noexcept -> T &&
+        unwrap() & -> T &&
         requires (std::is_move_constructible_v<T> && std::is_move_assignable_v<T> && !std::is_copy_constructible_v<T>)
         {
             // static_assert(std::is_copy_constructible_v<T>, "T must be copyable");
@@ -310,29 +319,29 @@ namespace rhi
                 return std::move(std::get<T>(_value));
             }
 
-            std::terminate();
+            throw new bad_expected_error_access();
         }
 
         constexpr auto
-        unwrap() const && noexcept -> T const&&
+        unwrap() const && -> T const&&
         {
             if (_is_ok)
             {
                 return std::move(std::get<T>(_value));
             }
 
-            std::terminate();
+            throw new bad_expected_error_access();
         }
 
         constexpr auto
-        unwrap() && noexcept -> T &&
+        unwrap() && -> T &&
         {
             if (_is_ok)
             {
                 return std::move(std::get<T>(_value));
             }
 
-            std::terminate();
+            throw new bad_expected_error_access();
         }
 
         [[nodiscard]] constexpr const T& unwrap_or(const T& other) const noexcept
@@ -345,17 +354,37 @@ namespace rhi
             return other;
         }
 
-        [[nodiscard]] constexpr E unwrap_error() const noexcept
+        [[nodiscard]] constexpr E unwrap_error() const
         {
             if (_is_ok)
             {
-                std::terminate();
+                throw new bad_expected_error_access();
             }
 
             return std::get<E>(_value);
         }
+    
+    // Operator Overloads
+    public:
+            auto operator->() -> T*
+            {
+                if (!_is_ok)
+                {
+                    throw new bad_expected_access();
+                }
 
-        // TODO: support move-only types
+                return &std::get<T>(_value);
+            }
+            
+            auto operator->() const -> const T*
+            {
+                if (!_is_ok)
+                {
+                    throw new bad_expected_access();
+                }
+
+                return &std::get<T>(_value);
+            }
 
     private:
         std::variant<T, E> _value;

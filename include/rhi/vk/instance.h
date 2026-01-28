@@ -2,11 +2,16 @@
 #define RHI_VK_INSTANCE_H
 
 #ifdef RHI_COMPILE_VULKAN_BACKEND
+
 #include "rhi/instance.h"
+#include "rhi/vk/debug.h"
+
+#include <optional>
+#include <vulkan/vulkan_core.h>
 
 namespace rhi::vk
 {
-    class [[nodiscard]] Instance : public rhi::Instance
+    class [[nodiscard]] Instance : public rhi::IInstance
     {
         // Factory
         public:
@@ -14,9 +19,11 @@ namespace rhi::vk
 
         // API
         public:
+            auto destroy() noexcept -> void override;
         
         private:
-            using rhi::Instance::Instance;
+            std::optional<DebugMessenger> _debug_messenger { std::nullopt };
+            VkInstance                         _handle          { VK_NULL_HANDLE };
     };
 } // namespace rhi::vk
 

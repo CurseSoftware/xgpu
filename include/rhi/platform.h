@@ -64,10 +64,13 @@ namespace rhi
     }
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+#define RHI_PLATFORM_WINDOWS
     constexpr Platform SystemPlatform { Platform::Windows };
 #elif defined(__linux) || defined(__gnu_linux__)
+#define RHI_PLATFORM_LINUX
     constexpr Platform SystemPlatform { Platform::Linux };
 #elif defined(__APPLE__)
+#define RHI_PLATFORM_APPLE
     constexpr Platform SystemPlatform { Platform::MacOS };
 #endif
 

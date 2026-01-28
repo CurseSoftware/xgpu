@@ -24,7 +24,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 # Source files
 set(RHI_SOURCES
     "${PROJECT_SOURCE_DIR}/src/instance.cc"
+    "${PROJECT_SOURCE_DIR}/src/instance.cc"
+    "${PROJECT_SOURCE_DIR}/src/core/log.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/instance.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/validation.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/debug.cc"
 )
 message("Sources: ${RHI_SOURCES}")
 
@@ -34,7 +38,7 @@ add_library("${PROJECT_NAME}" STATIC "${RHI_SOURCES}")
 target_include_directories("${PROJECT_NAME}" PRIVATE
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 )
 
 # Public include path
