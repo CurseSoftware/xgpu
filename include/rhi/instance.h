@@ -15,7 +15,7 @@ namespace rhi
             virtual auto destroy() noexcept -> void = 0;
     };
     
-    class [[nodiscard]] Instance : IInstance
+    class [[nodiscard]] Instance : public IInstance
     {
         public:
             [[nodiscard("This returns a status code depending on if failed")]] 

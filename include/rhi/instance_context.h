@@ -1,5 +1,6 @@
 #ifndef RHI_INSTANCE_CONTEXT_H
 #define RHI_INSTANCE_CONTEXT_H
+
 #include "vk/instance_context.h"
 #include "dx12/instance_context.h"
 
@@ -8,7 +9,9 @@
 namespace rhi
 {
     // The non-api-specific options for configuring an instance
-    struct DefaultInstanceContext {};
+    struct DefaultInstanceContext 
+    {
+    };
     
     using InstanceContext = 
         std::variant<
