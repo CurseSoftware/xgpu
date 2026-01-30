@@ -8,6 +8,7 @@
 #include <optional>
 #include <ostream>
 #include <memory>
+#include <utility>
 
 namespace rhi::log
 {
@@ -39,39 +40,39 @@ namespace rhi::log
     };
 
     template <typename ... Args>
-    auto info(const std::format_string<Args...>& fmt, Args&& ... args) -> void
+    auto info(const std::format_string<Args...> fmt, Args&& ... args) -> void
     {
-        Logger::get().lock()->log(core::format("[INFO]    {}\n", core::format(fmt, args...)));
+        Logger::get().lock()->log(core::format("[INFO]    {}\n", core::format(fmt, std::forward<Args>(args)...)));
     }
 
     template <typename ... Args>
-    auto debug(const std::format_string<Args...>& fmt, Args&& ... args) -> void
+    auto debug(const std::format_string<Args...> fmt, Args&& ... args) -> void
     {
-        Logger::get().lock()->log(core::format("[DEBUG]   {}\n", core::format(fmt, args...)));
+        Logger::get().lock()->log(core::format("[DEBUG]   {}\n", core::format(fmt, std::forward<Args>(args)...)));
     }
 
     template <typename ... Args>
-    auto trace(const std::format_string<Args...>& fmt, Args&& ... args) -> void
+    auto trace(const std::format_string<Args...> fmt, Args&& ... args) -> void
     {
-        Logger::get().lock()->log(core::format("[TRACE]   {}\n", core::format(fmt, args...)));
+        Logger::get().lock()->log(core::format("[TRACE]   {}\n", core::format(fmt, std::forward<Args>(args)...)));
     }
 
     template <typename ... Args>
-    auto warning(const std::format_string<Args...>& fmt, Args&& ... args) -> void
+    auto warning(const std::format_string<Args...> fmt, Args&& ... args) -> void
     {
-        Logger::get().lock()->log(core::format("[WARNING] {}\n", core::format(fmt, args...)));
+        Logger::get().lock()->log(core::format("[WARNING] {}\n", core::format(fmt, std::forward<Args>(args)...)));
     }
 
     template <typename ... Args>
-    auto error(const std::format_string<Args...>& fmt, Args&& ... args) -> void
+    auto error(const std::format_string<Args...> fmt, Args&& ... args) -> void
     {
-        Logger::get().lock()->log(core::format("[ERROR]   {}\n", core::format(fmt, args...)));
+        Logger::get().lock()->log(core::format("[ERROR]   {}\n", core::format(fmt, std::forward<Args>(args)...)));
     }
 
     template <typename ... Args>
-    auto fatal(const std::format_string<Args...>& fmt, Args&& ... args) -> void
+    auto fatal(const std::format_string<Args...> fmt, Args&& ... args) -> void
     {
-        Logger::get().lock()->log(core::format("[FATAL]   {}\n", core::format(fmt, args...)));
+        Logger::get().lock()->log(core::format("[FATAL]   {}\n", core::format(fmt, std::forward<Args>(args)...)));
     }
 } // namespace rhi::log
 

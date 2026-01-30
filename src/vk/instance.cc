@@ -81,7 +81,10 @@ namespace rhi::vk
         };
 
         const VkResult create_result = vkCreateInstance(&instance_info, nullptr, &inst._handle);
-        // TODO: CHECK
+        if (create_result != VK_SUCCESS)
+        {
+            return unexpected( Error("Failed to create instance. vkCreateInstance call != VK_SUCCESS") );
+        }
 
         if (use_debug)
         {

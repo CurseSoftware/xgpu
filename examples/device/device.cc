@@ -25,6 +25,16 @@ auto main() -> int
         .compute_preference = rhi::Preference::None
     };
 
+    auto device_exp = rhi::Device::create(device_ctx);
+    if (!device_exp.has_value())
+    {
+        std::cerr << "Failed to create rhi device: " << device_exp.unwrap_error().message << '\n';
+        return 1;
+    }
+
+    auto device = device_exp.unwrap();
+
+    device.destroy();
     inst.destroy();
     
     return 0;

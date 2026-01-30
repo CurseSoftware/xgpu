@@ -1,6 +1,8 @@
 #include "rhi/device.h"
 #include "expected.h"
 #include "platform.h"
+#include "vk/device.h"
+#include <iostream>
 #include <variant>
 
 namespace rhi
@@ -15,7 +17,16 @@ namespace rhi
             switch (default_ctx.instance.backend())
             {
                 case Backend::Vulkan:
-
+                {
+                    auto expected_device = vk::Device::create_default(default_ctx);
+                    if (!expected_device.has_value())
+                    {
+                        return unexpected(expected_device.unwrap_error());
+                    }
+                    
+                    device._handle = std::make_unique<vk::Device>(expected_device.unwrap());
+                    return ok(device);
+                } break;
                 case Backend::Dx12:
                     return unexpected( Error("Dx12 backend device creation not supported.") );
                 case Backend::Metal:

@@ -24,7 +24,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 # Source files
 set(RHI_SOURCES
     "${PROJECT_SOURCE_DIR}/src/instance.cc"
-    "${PROJECT_SOURCE_DIR}/src/instance.cc"
+    "${PROJECT_SOURCE_DIR}/src/device.cc"
     "${PROJECT_SOURCE_DIR}/src/core/log.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/instance.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/validation.cc"

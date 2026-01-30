@@ -44,7 +44,7 @@ namespace rhi::vk
 
         // API
         public:
-            auto destroy() noexcept -> void override {}
+            auto destroy() noexcept -> void override;
 
             auto handle() const noexcept -> VkDevice { return _handle; }
         

@@ -35,7 +35,8 @@ namespace rhi
 
     class IDevice
     {
-        virtual auto destroy() noexcept -> void = 0;
+        public:
+            virtual auto destroy() noexcept -> void = 0;
     };
 
     class [[nodiscard]] Device : public IDevice
@@ -44,10 +45,10 @@ namespace rhi
             [[nodiscard]]
             static auto create(const DeviceContext& ctx) noexcept -> expected<Device, Error>;
         
-            auto destroy() noexcept -> void override {}
+            auto destroy() noexcept -> void override { _handle->destroy(); }
         
         private:
-            explicit Device() noexcept;
+            explicit Device() noexcept = default;
 
 
         private:
