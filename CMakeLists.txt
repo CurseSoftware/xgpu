@@ -29,6 +29,7 @@ set(RHI_SOURCES
     "${PROJECT_SOURCE_DIR}/src/vk/instance.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/validation.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/debug.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/device.cc"
 )
 message("Sources: ${RHI_SOURCES}")
 
@@ -65,4 +66,5 @@ rhi_option(RHI_BUILD_EXAMPLES ON BOOL "ON to build examples. OFF to ignore them"
 if (RHI_BUILD_EXAMPLES)
     message("Building examples")
     add_subdirectory(examples/instance)
+    add_subdirectory(examples/device)
 endif()

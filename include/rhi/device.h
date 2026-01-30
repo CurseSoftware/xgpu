@@ -1,6 +1,7 @@
 #ifndef RHI_DEVICE_H
 #define RHI_DEVICE_H
 
+#include "rhi/core.h"
 #include "rhi/error.h"
 #include "rhi/expected.h"
 #include "rhi/instance.h"
@@ -11,7 +12,10 @@ namespace rhi
 {
     struct DefaultDeviceContext 
     {
-        Instance instance;
+        rhi::Instance& instance;
+        Preference graphics_preference { true };
+        Preference transfer_preference { false };
+        Preference compute_preference { true };
     };
 
     using DeviceContext = std::variant<
@@ -40,8 +44,11 @@ namespace rhi
             [[nodiscard]]
             static auto create(const DeviceContext& ctx) noexcept -> expected<Device, Error>;
         
+            auto destroy() noexcept -> void override {}
+        
         private:
             explicit Device() noexcept;
+
 
         private:
             std::unique_ptr<IDevice> _handle { nullptr };

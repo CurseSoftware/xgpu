@@ -1,31 +1,73 @@
 #ifndef RHI_VK_DEVICE_H
 #define RHI_VK_DEVICE_H
+#ifdef RHI_COMPILE_VULKAN_BACKEND
+
 #include <cstdint>
 #include <optional>
 #include <vulkan/vulkan_core.h>
-#ifdef RHI_COMPILE_VULKAN_BACKEND
 
 #include "rhi/expected.h"
-#include "vk/device_context.h"
+#include "rhi/vk/device_context.h"
 
 #include "rhi/device.h"
 
 namespace rhi::vk
 {
+    // Information portaining to the capabilities and attributes of a vulkan physical device
+    struct PhysicalDeviceInfo
+    {
+        VkPhysicalDevice handle;
+        VkPhysicalDeviceFeatures features;
+        VkPhysicalDeviceProperties properties;
+        std::optional<std::uint32_t> graphics_family_index;
+        std::optional<std::uint32_t> transfer_family_index;
+        std::optional<std::uint32_t> compute_family_index;
+    };
+
     class Device : public IDevice
     {
+        // Info
         public:
-            static auto create(rhi::vk::DeviceContext ctx) noexcept -> expected<Device, Error>;
+            struct Queue
+            {
+                VkQueue queue;
+                std::uint32_t family_index;
+                // TODO: think about adding the queue_index for the queue withing the family
+                // this API may require rethinking to support this, but it can probably work
+            };
+        
+        // Factory
+        public:
+            static auto create(const rhi::vk::DeviceContext& ctx) noexcept -> expected<Device, Error>;
 
+            static auto create_default(const rhi::DefaultDeviceContext& ctx) noexcept -> expected<Device, Error>;
+
+        // API
+        public:
             auto destroy() noexcept -> void override {}
+
+            auto handle() const noexcept -> VkDevice { return _handle; }
         
         private:
             explicit Device() = default;
+
+        // Private members
+        private:
+            VkDevice _handle { VK_NULL_HANDLE };
+            std::optional<Queue> _graphics_queue { std::nullopt };
+            std::optional<Queue> _transfer_queue { std::nullopt };
+            std::optional<Queue> _compute_queue { std::nullopt };
     };
 
-    auto getComputeFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
-    auto getGraphicsFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
-    auto getTransferFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
+    // Get a list of all available supported physical devices
+    [[nodiscard]] auto getPhysicalDevices(VkInstance instance) noexcept -> std::vector<VkPhysicalDevice>;
+
+    // Get the attributes and information for a particular physical device
+    [[nodiscard]] auto getPhysicalDeviceInfo(VkPhysicalDevice physical_device) noexcept -> PhysicalDeviceInfo;
+
+    [[nodiscard]] auto getComputeFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
+    [[nodiscard]] auto getGraphicsFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
+    [[nodiscard]] auto getTransferFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
 } // namespace rhi::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND

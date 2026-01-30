@@ -1,6 +1,12 @@
 #include "rhi/vk/device.h"
+#include "core.h"
+#include "device.h"
+#include "vk/core.h"
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <map>
+#include <memory>
 #include <optional>
 #include <vulkan/vulkan_core.h>
 
@@ -61,5 +67,219 @@ namespace rhi::vk
         }
 
         return std::nullopt;
+    }
+
+    auto getPhysicalDevices(VkInstance instance) noexcept -> std::vector<VkPhysicalDevice>
+    {
+        std::vector<VkPhysicalDevice> physical_devices {};
+        std::uint32_t device_count { 0 };
+        
+        vkEnumeratePhysicalDevices(instance, &device_count, nullptr);
+        physical_devices.resize(device_count);
+        vkEnumeratePhysicalDevices(instance, &device_count, physical_devices.data());
+
+        return physical_devices;
+    }
+
+    auto getPhysicalDeviceInfo(VkPhysicalDevice physical_device) noexcept -> PhysicalDeviceInfo
+    {
+        PhysicalDeviceInfo device_info {};
+        std::array<int, 5> a = { 0, 0, 0, 0, 0 };
+
+        vkGetPhysicalDeviceFeatures(physical_device, &device_info.features);
+        vkGetPhysicalDeviceProperties(physical_device, &device_info.properties);
+
+        device_info.graphics_family_index = getGraphicsFamilyIndex(physical_device);
+        device_info.transfer_family_index = getTransferFamilyIndex(physical_device);
+        device_info.compute_family_index = getComputeFamilyIndex(physical_device);
+
+        return device_info;
+    }
+
+    auto Device::create(const rhi::vk::DeviceContext& ctx) noexcept -> expected<Device, Error>
+    {
+        Device device {};
+        std::vector<VkDeviceQueueCreateInfo> queue_create_infos {};
+
+        if (!ctx.graphics_queue && !ctx.transfer_queue && !ctx.compute_queue)
+        {
+            return unexpected( Error("Cannot create vulkan device without any queues.") );
+        }
+
+        auto addQueue = [&](DeviceContext::QueueDesc queue) {
+            queue_create_infos.emplace_back(VkDeviceQueueCreateInfo {
+                .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+                .pNext = nullptr,
+                .queueFamilyIndex = queue.index,
+                .queueCount = queue.count,
+                .pQueuePriorities = std::addressof(queue.priority)
+            });
+        };
+        auto getQueue = [&](std::uint32_t family_index, std::uint32_t queue_index = 0) {
+            Device::Queue device_queue { .family_index = family_index };
+            
+            vkGetDeviceQueue(device._handle, family_index, queue_index, &device_queue.queue);
+            return device_queue;
+        };
+
+        // Create the device queues
+        {
+            if (ctx.graphics_queue)
+            {
+                addQueue(*ctx.graphics_queue);
+            }
+
+            if (ctx.transfer_queue)
+            {
+                addQueue(*ctx.graphics_queue);
+            }
+
+            if (ctx.compute_queue)
+            {
+                addQueue(*ctx.graphics_queue);
+            }
+        }
+
+        // Creat the device itself
+        {
+            VkDeviceCreateInfo create_info {
+                .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+                    .queueCreateInfoCount = static_cast<std::uint32_t>(queue_create_infos.size()),
+                    .pQueueCreateInfos = queue_create_infos.data(),
+                    .enabledExtensionCount = static_cast<std::uint32_t>(ctx.extensions.size()),
+                    .ppEnabledExtensionNames = ctx.extensions.data(),
+                    .pEnabledFeatures = &ctx.physical_device_features,
+            };
+
+            const VkResult create_result = vkCreateDevice(ctx.physical_device, &create_info, nullptr, &device._handle);
+            if (create_result != VK_SUCCESS)
+            {
+                return unexpected( Error("Failed to create vulkan device: vkCreateDevice failed") );
+            }
+        }
+
+        // Get the device queues
+        {
+            if (ctx.graphics_queue)
+            {
+                device._graphics_queue = getQueue(ctx.graphics_queue->index);
+            }
+
+            if (ctx.transfer_queue)
+            {
+                device._transfer_queue = getQueue(ctx.transfer_queue->index);
+            }
+
+            if (ctx.compute_queue)
+            {
+                device._compute_queue = getQueue(ctx.compute_queue->index);
+            }
+        }
+
+        return ok(device);
+    }
+    auto Device::create_default(const rhi::DefaultDeviceContext& ctx) noexcept -> expected<Device, Error>
+    {
+        auto& vk_handle = *dynamic_cast<rhi::vk::Instance*>(ctx.instance.handle());
+        auto available_devices = getPhysicalDevices(vk_handle.native_handle());
+
+        // This is largely based on https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Physical_devices_and_queue_families
+        // Thanks :)
+        auto scoreDevice = [&](const PhysicalDeviceInfo& info) -> int {
+            int score { 0 };
+            
+            // Return 0 if none of the required queues are present
+            if (ctx.graphics_preference == Preference::Required && !info.graphics_family_index
+                || ctx.transfer_preference == Preference::Required && !info.transfer_family_index
+                || ctx.compute_preference == Preference::Required && !info.compute_family_index
+            ) {
+                return 0;
+            }
+
+            if (static_cast<std::uint8_t>(ctx.graphics_preference) >= static_cast<std::uint8_t>(Preference::Preferred)
+                && info.graphics_family_index
+            ) {
+                score += 500;
+            }
+
+            if (static_cast<std::uint8_t>(ctx.transfer_preference) >= static_cast<std::uint8_t>(Preference::Preferred)
+                && info.transfer_family_index
+            ) {
+                score += 500;
+            }
+
+            if (static_cast<std::uint8_t>(ctx.compute_preference) >= static_cast<std::uint8_t>(Preference::Preferred)
+                && info.compute_family_index
+            ) {
+                score += 500;
+            }
+
+
+            // TODO: add config option for requiring geometry shaders?
+            // For now assume that any application preferring graphics requires this
+            if (ctx.graphics_preference != Preference::None && !info.features.geometryShader)
+            {
+                return 0;
+            }
+
+            // Prefer discrete GPU
+            if (info.properties.deviceType & VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+            {
+                score += 1000;
+            }
+
+            score += info.properties.limits.maxImageDimension2D;
+
+            return score;
+        };
+
+        // Get the capabilities for each physical device
+        std::vector<PhysicalDeviceInfo> device_infos {};
+        for (const auto& device : available_devices)
+        {
+            device_infos.push_back(getPhysicalDeviceInfo(device));
+        }
+
+        // Sort the devices based on our default scoring system
+        std::sort(
+            device_infos.begin(), 
+            device_infos.end(), 
+            [&](const PhysicalDeviceInfo& a, const PhysicalDeviceInfo& b) { return scoreDevice(a) > scoreDevice(b); } 
+        );
+
+        auto& best_info = device_infos[0];
+        if (scoreDevice(best_info) == 0)
+        {
+            return unexpected( Error("No suitable vulkan devices found with specified requirements") );
+        }
+
+        rhi::vk::DeviceContext device_info {
+            .physical_device = best_info.handle,
+            .extensions = {},
+            .physical_device_features = best_info.features
+        };
+
+        if (best_info.graphics_family_index)
+        {
+            device_info.graphics_queue = {
+                .index = best_info.graphics_family_index.value(),
+            };
+        }
+
+        if (best_info.transfer_family_index)
+        {
+            device_info.transfer_queue = {
+                .index = best_info.transfer_family_index.value(),
+            };
+        }
+
+        if (best_info.compute_family_index)
+        {
+            device_info.compute_queue = {
+                .index = best_info.compute_family_index.value(),
+            };
+        }
+
+        return Device::create(device_info);
     }
 } // namespace rhi::vk

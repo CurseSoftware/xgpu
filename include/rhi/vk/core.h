@@ -1,6 +1,7 @@
 #ifndef RHI_VK_CORE_H
 #define RHI_VK_CORE_H
 
+#include "instance.h"
 #include "rhi/platform.h"
 
 #include <vulkan/vulkan_core.h>
@@ -16,6 +17,16 @@ namespace rhi::vk
 #endif
 
     };
+    
+    template <typename T, typename U>
+    auto getNativeHandle(T& t) -> U;
+
+    template <>
+    inline auto getNativeHandle(rhi::vk::Instance& inst) -> VkInstance
+    {
+        return inst.native_handle();
+    }
+
 } // namespace rhi::vk
 
 #endif // RHI_VK_CORE_H
