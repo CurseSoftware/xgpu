@@ -1,7 +1,8 @@
 #ifndef RHI_VK_DEVICE_CONTEXT_H
 #define RHI_VK_DEVICE_CONTEXT_H
-#include <cstdint>
 #ifdef RHI_COMPILE_VULKAN_BACKEND
+#include "rhi/data/surface_info.h"
+#include <cstdint>
 
 #include <vulkan/vulkan_core.h>
 #include <vector>
@@ -24,6 +25,8 @@ namespace rhi::vk
         std::optional<QueueDesc> graphics_queue;
         std::optional<QueueDesc> transfer_queue;
         std::optional<QueueDesc> compute_queue;
+
+        std::optional<data::SurfaceInfo> surface_info { std::nullopt };
 
         VkPhysicalDeviceFeatures physical_device_features {};
     };

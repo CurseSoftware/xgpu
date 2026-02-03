@@ -5,6 +5,7 @@
 #include "rhi/error.h"
 #include "rhi/expected.h"
 #include "rhi/instance.h"
+#include "rhi/platform.h"
 #include "rhi/vk/device_context.h"
 #include <memory>
 #include <variant>
@@ -37,6 +38,9 @@ namespace rhi
     {
         public:
             virtual auto destroy() noexcept -> void = 0;
+
+            virtual auto backend() noexcept -> Backend = 0;
+
     };
 
     class [[nodiscard]] Device : public IDevice
@@ -46,6 +50,10 @@ namespace rhi
             static auto create(const DeviceContext& ctx) noexcept -> expected<Device, Error>;
         
             auto destroy() noexcept -> void override { _handle->destroy(); }
+
+            auto backend() noexcept -> Backend override { return _handle->backend(); }
+
+            [[nodiscard]] auto handle() noexcept -> IDevice* { return _handle.get(); }
         
         private:
             explicit Device() noexcept = default;

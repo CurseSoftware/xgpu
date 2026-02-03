@@ -1,5 +1,6 @@
 #include "rhi/device.h"
 #include "rhi/core.h"
+#include "rhi/renderpass.h"
 #include <iostream>
 #include <rhi/instance.h>
 #include <rhi/vulkan.h>
@@ -33,6 +34,37 @@ auto main() -> int
     }
 
     auto device = device_exp.unwrap();
+
+    rhi::OpenAttachmentDescription color_attachment {
+        .format = rhi::Format::RG8_UINT,
+        .load_operation = rhi::LoadOperation::Clear,
+        .store_operation = rhi::StoreOperation::Store,
+
+        // Stencil defaults operations to `DontCare`
+        // this is just here for example
+        .stencil = {
+            .load_operation = rhi::LoadOperation::DontCare,
+            .store_operation = rhi::StoreOperation::DontCare
+        },
+
+        .final_layout = rhi::ImageLayout::Present
+    };
+
+    auto renderpass_exp = rhi::Renderpass::create(
+        device, 
+        {
+            color_attachment
+        },
+        {
+            rhi::OpenSubpassDescription {
+                .bind_point = rhi::SubpassBindPoint::Graphics,
+                // The 0 is the index reference to the color_attachment
+                .attachments = { 
+                    { .index = 0, .type = rhi::AttachmentType::Color }
+                }
+            }
+        }
+    );
 
     device.destroy();
     inst.destroy();

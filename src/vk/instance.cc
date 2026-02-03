@@ -1,6 +1,7 @@
 #include "data/window.h"
 #include "core/log.h"
 #include "expected.h"
+#include "platform.h"
 #include "vk/core.h"
 #include "vk/debug.h"
 #include "vk/instance_context.h"
@@ -11,7 +12,6 @@
 #include <memory>
 #include <variant>
 #include <vector>
-#include <vulkan/vulkan_core.h>
 
 namespace rhi::vk
 {
@@ -38,11 +38,8 @@ namespace rhi::vk
             requested_layers.emplace_back(true, rhi::vk::DEBUG_LAYER_NAME);
         }
 
-        if (std::holds_alternative<data::WindowData>(ctx.surface_data))
-        {
-            auto surface_data = std::get<data::WindowData>(ctx.surface_data);
-            requested_extensions.emplace_back(VK_KHR_SURFACE_EXTENSION_NAME);
-        }
+        requested_extensions.emplace_back(true, VK_KHR_SURFACE_EXTENSION_NAME);
+        requested_extensions.emplace_back(true, PLATFORM_SURFACE_NAME);
 
         const auto expected_validation_layers = validation_handler.getRequestedLayers(requested_layers);
         const auto expected_extensions = instance_extension_handler.getRequested(requested_extensions);
@@ -54,6 +51,7 @@ namespace rhi::vk
         
         if (!expected_extensions.has_value())
         {
+            log::error("Extension not found");
             return unexpected( Error(expected_extensions.unwrap_error()) );
         }
 

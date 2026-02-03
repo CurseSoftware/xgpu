@@ -1,10 +1,20 @@
 #ifndef RHI_VK_CORE_H
 #define RHI_VK_CORE_H
 
-#include "instance.h"
+#ifdef RHI_COMPILE_VULKAN_BACKEND
+
+#include "rhi/vk/instance.h"
 #include "rhi/platform.h"
 
-#include <vulkan/vulkan_core.h>
+#ifdef RHI_PLATFORM_LINUX
+#define VK_USE_PLATFORM_XLIB_KHR
+
+#include <X11/Xlib.h>
+#include <vulkan/vulkan_xlib.h>
+
+#endif // Platform detection
+
+#include <vulkan/vulkan.h>
 
 namespace rhi::vk
 {
@@ -13,9 +23,10 @@ namespace rhi::vk
     
     constexpr const char* PLATFORM_SURFACE_NAME { 
 #ifdef RHI_PLATFORM_WINDOWS
+        "VK_KHR_xlib_surface"
 #elif defined(RHI_PLATFORM_LINUX)
+        "VK_KHR_xlib_surface"
 #endif
-
     };
     
     template <typename T, typename U>
@@ -29,4 +40,5 @@ namespace rhi::vk
 
 } // namespace rhi::vk
 
+#endif // RHI_COMPILE_VULKAN_BACKEND
 #endif // RHI_VK_CORE_H

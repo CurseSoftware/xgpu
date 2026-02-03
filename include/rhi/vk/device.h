@@ -46,7 +46,14 @@ namespace rhi::vk
         public:
             auto destroy() noexcept -> void override;
 
-            auto handle() const noexcept -> VkDevice { return _handle; }
+            [[nodiscard]] auto backend() noexcept -> Backend override { return Backend::Vulkan; }
+
+            [[nodiscard]] auto graphicsFamilyIndex() const noexcept -> std::optional<std::uint32_t>;
+            [[nodiscard]] auto computeFamilyIndex() const noexcept -> std::optional<std::uint32_t>;
+            [[nodiscard]] auto transferFamilyIndex() const noexcept -> std::optional<std::uint32_t>;
+            [[nodiscard]] auto presentFamilyIndex() const noexcept -> std::optional<std::uint32_t>;
+
+            [[nodiscard]] auto handle() const noexcept -> VkDevice { return _handle; }
         
         private:
             explicit Device() = default;
@@ -54,9 +61,12 @@ namespace rhi::vk
         // Private members
         private:
             VkDevice _handle { VK_NULL_HANDLE };
+            VkPhysicalDevice _physical_device;
+            VkSurfaceKHR _surface { VK_NULL_HANDLE };
             std::optional<Queue> _graphics_queue { std::nullopt };
             std::optional<Queue> _transfer_queue { std::nullopt };
             std::optional<Queue> _compute_queue { std::nullopt };
+            std::optional<Queue> _present_queue { std::nullopt };
     };
 
     // Get a list of all available supported physical devices
@@ -68,6 +78,7 @@ namespace rhi::vk
     [[nodiscard]] auto getComputeFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
     [[nodiscard]] auto getGraphicsFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
     [[nodiscard]] auto getTransferFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
+    [[nodiscard]] auto getPresentFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
 } // namespace rhi::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND

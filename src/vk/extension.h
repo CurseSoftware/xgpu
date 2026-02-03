@@ -1,7 +1,8 @@
 #ifndef RHI_VK_PRIV_EXTENSION_H
 #define RHI_VK_PRIV_EXTENSION_H
 
-#include "expected.h"
+#include "rhi/expected.h"
+#include "rhi/core/log.h"
 #include <cstdint>
 #include <span>
 #include <string_view>
@@ -86,7 +87,6 @@ namespace rhi::vk::priv
         _extensions.resize(extension_count);
         vkEnumerateInstanceExtensionProperties(dummy_name, &extension_count, _extensions.data());
     }
-
     
     // NOLINTNEXTLINE
     template <>

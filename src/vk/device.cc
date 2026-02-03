@@ -1,8 +1,8 @@
 #include "rhi/vk/device.h"
-#include "core.h"
+#include "rhi/core.h"
 #include "core/log.h"
 #include "device.h"
-#include "vk/core.h"
+#include "rhi/vk/core.h"
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -69,6 +69,23 @@ namespace rhi::vk
 
         return std::nullopt;
     }
+    
+    auto getPresentFamilyIndex(VkPhysicalDevice physical_device, VkSurfaceKHR surface) -> std::optional<std::uint32_t>
+    {
+        auto queue_families = getQueueFamilies(physical_device);
+        
+        for (std::size_t i = 0; i < queue_families.size(); i++)
+        {
+            VkBool32 present_support { VK_FALSE };
+            vkGetPhysicalDeviceSurfaceSupportKHR(physical_device, i, surface, &present_support);
+            if (present_support != VK_FALSE)
+            {
+                return i;
+            }
+        }
+
+        return std::nullopt;
+    }
 
     auto getPhysicalDevices(VkInstance instance) noexcept -> std::vector<VkPhysicalDevice>
     {
@@ -101,6 +118,7 @@ namespace rhi::vk
     {
         Device device {};
         std::vector<VkDeviceQueueCreateInfo> queue_create_infos {};
+        device._physical_device = ctx.physical_device;
 
         if (!ctx.graphics_queue && !ctx.transfer_queue && !ctx.compute_queue)
         {
@@ -123,21 +141,41 @@ namespace rhi::vk
             return device_queue;
         };
 
+
         // Create the device queues
         {
+            std::vector<std::uint32_t> unique_indices {};
             if (ctx.graphics_queue)
             {
-                addQueue(*ctx.graphics_queue);
+                unique_indices.push_back(ctx.graphics_queue->index);
+                // addQueue(*ctx.graphics_queue);
             }
 
             if (ctx.transfer_queue)
             {
-                addQueue(*ctx.transfer_queue);
+                unique_indices.push_back(ctx.transfer_queue->index);
+                // addQueue(*ctx.transfer_queue);
             }
 
             if (ctx.compute_queue)
             {
-                addQueue(*ctx.compute_queue);
+                unique_indices.push_back(ctx.compute_queue->index);
+                // addQueue(*ctx.compute_queue);
+            }
+
+            std::sort(unique_indices.begin(), unique_indices.end());
+            unique_indices.erase(std::unique(unique_indices.begin(), unique_indices.end()), unique_indices.end());
+
+            for (std::uint32_t index : unique_indices)
+            {
+                float priority = 1.0f;
+                queue_create_infos.emplace_back( VkDeviceQueueCreateInfo {
+                    .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+                    .pNext = nullptr,
+                    .queueFamilyIndex = index,
+                    .queueCount = 1,
+                    .pQueuePriorities = std::addressof(priority)
+                });
             }
         }
 
@@ -178,6 +216,8 @@ namespace rhi::vk
                 device._compute_queue = getQueue(ctx.compute_queue->index);
             }
         }
+
+
 
         return ok(device);
     }
@@ -224,7 +264,7 @@ namespace rhi::vk
 
             // TODO: add config option for requiring geometry shaders?
             // For now assume that any application preferring graphics requires this
-            if (ctx.graphics_preference != Preference::None && !info.features.geometryShader)
+            if (ctx.graphics_preference == Preference::NoPreference && !info.features.geometryShader)
             {
                 return 0;
             }
@@ -291,6 +331,36 @@ namespace rhi::vk
         }
 
         return Device::create(device_info);
+    }
+
+    auto Device::graphicsFamilyIndex() const noexcept -> std::optional<std::uint32_t>
+    {
+        if (!_graphics_queue)
+        {
+            return std::nullopt;
+        }
+
+        return _graphics_queue->family_index;
+    }
+
+    auto Device::transferFamilyIndex() const noexcept -> std::optional<std::uint32_t>
+    {
+        if (!_transfer_queue)
+        {
+            return std::nullopt;
+        }
+
+        return _transfer_queue->family_index;
+    }
+
+    auto Device::computeFamilyIndex() const noexcept -> std::optional<std::uint32_t>
+    {
+        if (!_compute_queue)
+        {
+            return std::nullopt;
+        }
+
+        return _compute_queue->family_index;
     }
 
     auto Device::destroy() noexcept -> void

@@ -6,7 +6,7 @@ namespace rhi
 {
     enum class Preference : std::uint8_t
     {
-        None = 0,
+        NoPreference = 0,
         Preferred = 1,
         Required = 2
     };
