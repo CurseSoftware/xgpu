@@ -1,6 +1,9 @@
 #include "rhi/device.h"
 #include "rhi/core.h"
+#include "rhi/pipeline.h"
 #include "rhi/renderpass.h"
+#include "rhi/shader.h"
+#include <array>
 #include <cstddef>
 #include <fstream>
 #include <ios>
@@ -83,6 +86,30 @@ auto main() -> int
     auto vert_data = readShader("triangle.vert.spv");
     auto frag_data = readShader("triangle.frag.spv");
 
+    auto vert_shader_module = rhi::ShaderModuleDescription { vert_data };
+    auto frag_shader_module = rhi::ShaderModuleDescription { frag_data };
+
+    rhi::OpenGraphicsPipelineDescription pipeline_description {
+        .renderpass = renderpass,
+        .enable_depth_test = true,
+        
+        .color_blend = {
+            .attachments = std::array<rhi::ColorBlendAttachmentStateDescription, 1>()
+        },
+        .stages = {
+            { rhi::ShaderStageFlags::Vert, vert_shader_module },
+            { rhi::ShaderStageFlags::Frag, frag_shader_module },
+        }
+    };
+
+    auto expected_pipeline = rhi::Pipeline::create(device, pipeline_description);
+    if (!expected_pipeline.has_value())
+    {
+        std::cerr << "Failed to create pipeline: " << expected_pipeline.unwrap_error().message << '\n';
+        return 1;
+    }
+
+    std::cout << "Pipeline created successfully.\n";
     std::cout << "Vert: " << vert_data.size() << " bytes read\n";
     std::cout << "Frag: " << frag_data.size() << " bytes read\n";
 
