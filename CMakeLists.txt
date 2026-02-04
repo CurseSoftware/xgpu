@@ -25,11 +25,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 set(RHI_SOURCES
     "${PROJECT_SOURCE_DIR}/src/instance.cc"
     "${PROJECT_SOURCE_DIR}/src/device.cc"
+    "${PROJECT_SOURCE_DIR}/src/renderpass.cc"
     "${PROJECT_SOURCE_DIR}/src/core/log.cc"
+
     "${PROJECT_SOURCE_DIR}/src/vk/instance.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/validation.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/debug.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/device.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/renderpass.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/format.cc"
 )
 message("Sources: ${RHI_SOURCES}")
 

@@ -43,7 +43,7 @@ namespace rhi
         Compute,
     };
 
-    enum class AttachmentType
+    enum class AttachmentType : std::uint32_t
     {
         Color,
         DepthStencil,
@@ -84,7 +84,13 @@ namespace rhi
 
     using AttachmentDescription = std::variant<OpenAttachmentDescription>;
 
-    class Renderpass
+    class IRenderpass 
+    {
+        public:
+            virtual auto destroy() noexcept -> void = 0;
+    };
+
+    class Renderpass : public IRenderpass
     {
         public:
             // Create a renderpass from the 
@@ -93,9 +99,16 @@ namespace rhi
                 std::initializer_list<OpenAttachmentDescription> attachments,
                 std::initializer_list<OpenSubpassDescription> subpasses
             ) noexcept -> expected<Renderpass, Error>;
+
+        // API
+        public:
+            auto destroy() noexcept -> void override { _handle->destroy(); }
+
         private:
             [[nodiscard]] explicit Renderpass() noexcept {}
 
+        private:
+            std::unique_ptr<IRenderpass> _handle { nullptr };
             
     };
 } // namespace rhi

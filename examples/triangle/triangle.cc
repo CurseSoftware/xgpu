@@ -65,7 +65,14 @@ auto main() -> int
             }
         }
     );
+    if (!renderpass_exp.has_value())
+    {
+        std::cerr << "Failed to create renderpass: " << renderpass_exp.unwrap_error().message << '\n';
+        return 1;
+    }
+    auto renderpass = renderpass_exp.unwrap();
 
+    renderpass.destroy();
     device.destroy();
     inst.destroy();
     

@@ -14,7 +14,7 @@
 
 namespace rhi::vk
 {
-    class Renderpass
+    class Renderpass : public IRenderpass
     {
         public:
             // Create a renderpass from the Open specifiers
@@ -23,13 +23,19 @@ namespace rhi::vk
                 std::span<OpenAttachmentDescription> attachments,
                 std::span<OpenSubpassDescription> subpasses
             ) -> expected<rhi::vk::Renderpass, Error>;
+
+        // API
+        public:
+            auto destroy() noexcept -> void override;
+        
         private:
-            [[nodiscard]] explicit Renderpass(VkDevice device)
-                : _device{ device }
+            [[nodiscard]] explicit Renderpass(VkDevice device) 
+                : _device{ device } 
             {}
 
         private:
-            VkDevice _device { VK_NULL_HANDLE };
+            VkDevice _device         { VK_NULL_HANDLE };
+            VkRenderPass _renderpass { VK_NULL_HANDLE };
     };
     
     auto getVulkanAttachmentLoadOp(LoadOperation op) -> VkAttachmentLoadOp;
