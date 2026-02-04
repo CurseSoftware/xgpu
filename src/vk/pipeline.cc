@@ -1,7 +1,7 @@
 #include "rhi/vk/device.h"
 #include "rhi/vk/pipeline.h"
 #include "rhi/vk/core.h"
-#include <vulkan/vulkan_core.h>
+#include "rhi/shader.h"
 
 namespace rhi::vk
 {
@@ -29,7 +29,7 @@ namespace rhi::vk
         return ok(pipeline);
     }
 
-    auto createVulkanShaderModule(VkDevice device, const ShaderModule& module) -> expected<VkShaderModule, Error>
+    auto createVulkanShaderModule(VkDevice device, const ShaderModuleDescription& module) -> expected<VkShaderModule, Error>
     {
         VkShaderModule shader { VK_NULL_HANDLE };
         VkShaderModuleCreateInfo create_info {
@@ -60,7 +60,7 @@ namespace rhi::vk
         return VK_SHADER_STAGE_ALL;
     }
 
-    auto getVulkanShaderStage(VkDevice device, ShaderStageFlags stage, const ShaderModule& module) -> expected<VkPipelineShaderStageCreateInfo, Error>
+    auto getVulkanShaderStage(VkDevice device, ShaderStageFlags stage, const ShaderModuleDescription& module) -> expected<VkPipelineShaderStageCreateInfo, Error>
     {
         auto expected_shader = createVulkanShaderModule(device, module);
         if (!expected_shader.has_value())
@@ -78,7 +78,7 @@ namespace rhi::vk
         });
     }
 
-    auto getVulkanShaderStages(VkDevice device, const std::unordered_map<ShaderStageFlags, ShaderModule>& stages) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>
+    auto getVulkanShaderStages(VkDevice device, const std::unordered_map<ShaderStageFlags, ShaderModuleDescription>& stages) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>
     {
         std::vector<VkPipelineShaderStageCreateInfo> create_infos {};
 

@@ -38,11 +38,11 @@ namespace rhi
 
     enum class FrontFace
     {
-        CounterClockWise,
-        ClockWise,
+        CounterClockwise,
+        Clockwise,
     };
 
-    enum class BlendOperation
+    enum class BlendOperator
     {
         Add,
         Subtract,

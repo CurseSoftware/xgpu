@@ -25,16 +25,16 @@ namespace rhi::vk
     };
 
     // Create a vulkan shader module from the rhi description
-    auto createVulkanShaderModule(VkDevice device, const ShaderModule& module) -> expected<VkShaderModule, Error>;
+    auto createVulkanShaderModule(VkDevice device, const ShaderModuleDescription& module) -> expected<VkShaderModule, Error>;
 
     // Get the vulkan shader stage flags from the rhi shader stage flags
     auto getVulkanShaderStageFlags(ShaderStageFlags stage) -> VkShaderStageFlagBits;
 
     // Get a vulkan shader stage info from the rhi interface
-    auto getVulkanShaderStage(VkDevice device, ShaderStageFlags stage, const ShaderModule& module) -> expected<VkPipelineShaderStageCreateInfo, Error>;
+    auto getVulkanShaderStage(VkDevice device, ShaderStageFlags stage, const ShaderModuleDescription& module) -> expected<VkPipelineShaderStageCreateInfo, Error>;
 
     // Get a list of vulkan shader stages from the input rhi interface
-    auto getVulkanShaderStages(VkDevice device, const std::unordered_map<ShaderStageFlags, ShaderModule>& stages) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>;
+    auto getVulkanShaderStages(VkDevice device, const std::unordered_map<ShaderStageFlags, ShaderModuleDescription>& stages) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>;
 
     // Get the vulkan input assembly state info from the rhi interface description
     auto getVulkanInputAssemblyState(const InputAssemblyStateDescription& desc) -> VkPipelineInputAssemblyStateCreateInfo;

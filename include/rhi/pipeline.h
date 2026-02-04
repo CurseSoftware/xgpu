@@ -94,9 +94,9 @@ namespace rhi
     {
         bool depth_clamp                 { false };
         bool rasterizer_discard          { false };
-        PolygonMode polygon_mode         {};
-        CullMode cull_mode               {};
-        FrontFace front_face             {};
+        PolygonMode polygon_mode         { PolygonMode::Fill };
+        CullMode cull_mode               { CullMode::Back };
+        FrontFace front_face             { FrontFace::CounterClockwise };
         bool depth_bias                  { false };
         float depth_bias_constant_factor { 0.0f };
         float depth_bias_clamp           { 0.0f };
@@ -107,21 +107,21 @@ namespace rhi
     struct ColorBlendAttachmentStateDescription
     {
         bool blend_enable                    { false };
-        BlendFactor src_color_blend_factor   {};
-        BlendFactor dst_color_blend_factor   {};
-        BlendOperation color_blend_op        {};
-        BlendFactor src_alpha_blend_factor   {};
-        BlendFactor dst_alpha_blend_factor   {};
-        BlendOperation alpha_blend_op        {};
-        ColorComponentFlags color_write_mask {};
+        BlendFactor src_color_blend_factor   { BlendFactor::SrcAlpha };
+        BlendFactor dst_color_blend_factor   { BlendFactor::OneMinusSrcAlpha };
+        BlendOperator color_blend_op         { BlendOperator::Add };
+        BlendFactor src_alpha_blend_factor   { BlendFactor::OneMinusSrcAlpha };
+        BlendFactor dst_alpha_blend_factor   { BlendFactor::Zero };
+        BlendOperator alpha_blend_op         { BlendOperator::Add };
+        ColorComponentFlags color_write_mask { ColorComponentFlags::All };
     };
 
     struct ColorBlendStateDescription
     {
-        bool logic_op_enable                                        { false };
-        LogicOperator logic_op                                      { LogicOperator::Copy };
-        std::span<ColorBlendAttachmentStateDescription> attachments {};
-        std::array<float, 4> blend_constants                        { 0.0f, 0.0f, 0.0f, 0.0f };
+        bool logic_op_enable                                              { false };
+        LogicOperator logic_op                                            { LogicOperator::Copy };
+        std::span<const ColorBlendAttachmentStateDescription> attachments {};
+        std::array<float, 4> blend_constants                              { 0.0f, 0.0f, 0.0f, 0.0f };
     };
 
     struct DynamicStateDescription
@@ -157,19 +157,19 @@ namespace rhi
     struct OpenGraphicsPipelineDescription
     {
         Renderpass& renderpass;
-        bool enable_depth_test                                    { true };
+        bool enable_depth_test                                               { true };
 
-        VertexInputDescription vertex_input                       {};
-        InputAssemblyStateDescription input_assembly              {};
-        TesselationStateDescription tesselation                   {};
-        std::span<ViewportDescription> viewports                  {};
-        std::span<ScissorDescription> scissors                    {};
-        RasterizationStateDescription rasterization               {};
-        MultisampleStateDescription multisample                   {};
-        DepthStencilStateDescription depth_stencil                {};
-        ColorBlendStateDescription color_blend                    {};
-        DynamicStateDescription dynamic_state                     {};
-        std::unordered_map<ShaderStageFlags, ShaderModule> stages {};
+        VertexInputDescription vertex_input                                  {};
+        InputAssemblyStateDescription input_assembly                         {};
+        TesselationStateDescription tesselation                              {};
+        std::span<ViewportDescription> viewports                             {};
+        std::span<ScissorDescription> scissors                               {};
+        RasterizationStateDescription rasterization                          {};
+        MultisampleStateDescription multisample                              {};
+        DepthStencilStateDescription depth_stencil                           {};
+        ColorBlendStateDescription color_blend                               {};
+        DynamicStateDescription dynamic_state                                {};
+        std::unordered_map<ShaderStageFlags, ShaderModuleDescription> stages {};
     };
 
     using GraphicsPipelineDescription = std::variant<OpenGraphicsPipelineDescription>;
