@@ -1,7 +1,12 @@
+#include "rhi/vk/core.h"
+#include "core/log.h"
 #include "rhi/vk/device.h"
 #include "rhi/vk/pipeline.h"
-#include "rhi/vk/core.h"
 #include "rhi/shader.h"
+#include "rhi/vk/shader.h"
+
+#include <functional>
+#include <vulkan/vulkan_core.h>
 
 namespace rhi::vk
 {
@@ -19,34 +24,57 @@ namespace rhi::vk
 
         auto viewports = getVulkanViewports(description.viewports);
         auto scissors = getVulkanScissors(description.scissors);
+        log::info("Pipeline viewports:          {}", viewports.size());
+        log::info("Pipeline scissors:           {}", scissors.size());
 
-        auto expected_shader_stages = getVulkanShaderStages(vk_device->handle(), description.stages);
-        if (!expected_shader_stages.has_value())
+        auto expected_shader_stage_infos = getVulkanShaderStageInfos(description.stages);
+        if (!expected_shader_stage_infos.has_value())
         {
-            return unexpected( expected_shader_stages.unwrap_error() );
+            return unexpected( expected_shader_stage_infos.unwrap_error() );
         }
+        auto shader_stage_infos = expected_shader_stage_infos.unwrap();
+
+        log::info("Pipeline shader stage infos: {}", shader_stage_infos.size());
 
         return ok(pipeline);
     }
 
-    auto createVulkanShaderModule(VkDevice device, const ShaderModuleDescription& module) -> expected<VkShaderModule, Error>
+    auto Pipeline::destroy() noexcept -> void
     {
-        VkShaderModule shader { VK_NULL_HANDLE };
-        VkShaderModuleCreateInfo create_info {
-            .sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
-            .codeSize = module.size(),
-            .pCode = reinterpret_cast<const std::uint32_t*>(module.data()),
-        };
-
-        const VkResult create_result = vkCreateShaderModule(device, &create_info, nullptr, &shader);
-        if (create_result != VK_SUCCESS)
-        {
-            return unexpected( Error("Failed to create vulkan shader module") );
-        }
-
-        return ok(shader);
     }
     
+    auto getVulkanShaderStageInfos(const std::unordered_map<ShaderStageFlags, std::reference_wrapper<rhi::ShaderModule>>& shader_modules) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>
+    {
+        std::vector<VkPipelineShaderStageCreateInfo> infos {};
+        for (const auto& [stage, module] : shader_modules)
+        {
+            auto vk_module = dynamic_cast<vk::ShaderModule*>(module.get().handle());
+            if (!vk_module)
+            {
+                return unexpected( Error("Failed to get vulkan shader module from rhi::ShaderModule") );
+            }
+
+            infos.emplace_back( VkPipelineShaderStageCreateInfo {
+                .sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
+                .stage = getVulkanShaderStageFlags(stage),
+                .module = vk_module->handle(),
+                .pName = "main",
+            });
+        }
+
+        return ok(infos);
+    }
+    
+    auto getVulkanShaderStageInfo(ShaderStageFlags stage, VkShaderModule module) -> VkPipelineShaderStageCreateInfo
+    {
+        return VkPipelineShaderStageCreateInfo {
+            .sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
+            .stage = getVulkanShaderStageFlags(stage),
+            .module = module,
+            .pName = "main"
+        };
+    }
+
     auto getVulkanShaderStageFlags(ShaderStageFlags stage) -> VkShaderStageFlagBits
     {
         switch (stage)
@@ -58,41 +86,6 @@ namespace rhi::vk
         }
 
         return VK_SHADER_STAGE_ALL;
-    }
-
-    auto getVulkanShaderStage(VkDevice device, ShaderStageFlags stage, const ShaderModuleDescription& module) -> expected<VkPipelineShaderStageCreateInfo, Error>
-    {
-        auto expected_shader = createVulkanShaderModule(device, module);
-        if (!expected_shader.has_value())
-        {
-            return unexpected( expected_shader.unwrap_error() );
-        }
-
-        auto shader = expected_shader.unwrap();
-        
-        return ok(VkPipelineShaderStageCreateInfo {
-            .sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
-            .stage = getVulkanShaderStageFlags(stage),
-            .module = shader,
-            .pName = "main"
-        });
-    }
-
-    auto getVulkanShaderStages(VkDevice device, const std::unordered_map<ShaderStageFlags, ShaderModuleDescription>& stages) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>
-    {
-        std::vector<VkPipelineShaderStageCreateInfo> create_infos {};
-
-        for (const auto& [stage, module] : stages)
-        {
-            auto expected_info = getVulkanShaderStage(device, stage, module);
-            if (!expected_info.has_value())
-            {
-                return unexpected( expected_info.unwrap_error() );
-            }
-            create_infos.push_back(expected_info.unwrap());
-        }
-
-        return ok(create_infos);
     }
     
     auto getVulkanScissor(const ScissorDescription& scissor) -> VkRect2D

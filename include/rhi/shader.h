@@ -1,8 +1,11 @@
 #ifndef RHI_SHADER_H
 #define RHI_SHADER_H
 
+#include "expected.h"
 #include "rhi/device.h"
 
+#include <memory>
+#include <span>
 #include <vector>
 
 namespace rhi
@@ -13,13 +16,31 @@ namespace rhi
         Frag
     };
 
-    struct ShaderModuleDescription
+    class IShaderModule
     {
-        [[nodiscard]] auto size() const noexcept -> std::size_t { return buffer.size(); }
+        public:
+            virtual auto destroy() noexcept -> void = 0;
 
-        [[nodiscard]] auto data() const noexcept -> const char8_t* { return buffer.data(); }
+            virtual ~IShaderModule() = default;
+    };
 
-        std::vector<char8_t> buffer {};
+    class ShaderModule : public IShaderModule
+    {
+        // Factory
+        public:
+            static auto create(rhi::Device& device, std::span<char8_t> data) noexcept -> expected<ShaderModule, Error>;
+
+        // API
+        public:
+            auto destroy() noexcept -> void override { _handle->destroy(); }
+
+            [[nodiscard]] auto handle() const noexcept -> IShaderModule* { return _handle.get(); }
+
+        private:
+            [[nodiscard]] explicit ShaderModule() = default;
+
+        private:
+            std::unique_ptr<IShaderModule> _handle { nullptr };
     };
 } // namespace rhi
 

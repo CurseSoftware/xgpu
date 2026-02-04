@@ -4,7 +4,6 @@
 
 #include <cstdint>
 #include <optional>
-#include <vulkan/vulkan_core.h>
 
 #include "rhi/expected.h"
 #include "rhi/vk/device_context.h"

@@ -86,8 +86,20 @@ auto main() -> int
     auto vert_data = readShader("triangle.vert.spv");
     auto frag_data = readShader("triangle.frag.spv");
 
-    auto vert_shader_module = rhi::ShaderModuleDescription { vert_data };
-    auto frag_shader_module = rhi::ShaderModuleDescription { frag_data };
+    auto expected_vert_module = rhi::ShaderModule::create(device, vert_data);
+    auto expected_frag_module = rhi::ShaderModule::create(device, frag_data);
+
+    if (!expected_vert_module.has_value())
+    {
+        std::cerr << "Failed to create vertex shader module: " << expected_vert_module.unwrap_error().message << '\n';
+    }
+    if (!expected_frag_module.has_value())
+    {
+        std::cerr << "Failed to create fragment shader module: " << expected_vert_module.unwrap_error().message << '\n';
+    }
+
+    auto vert_module = expected_vert_module.unwrap();
+    auto frag_module = expected_frag_module.unwrap();
 
     rhi::OpenGraphicsPipelineDescription pipeline_description {
         .renderpass = renderpass,
@@ -97,8 +109,8 @@ auto main() -> int
             .attachments = std::array<rhi::ColorBlendAttachmentStateDescription, 1>()
         },
         .stages = {
-            { rhi::ShaderStageFlags::Vert, vert_shader_module },
-            { rhi::ShaderStageFlags::Frag, frag_shader_module },
+            { rhi::ShaderStageFlags::Vert, vert_module },
+            { rhi::ShaderStageFlags::Frag, frag_module },
         }
     };
 
@@ -113,6 +125,8 @@ auto main() -> int
     std::cout << "Vert: " << vert_data.size() << " bytes read\n";
     std::cout << "Frag: " << frag_data.size() << " bytes read\n";
 
+    frag_module.destroy();
+    vert_module.destroy();
     renderpass.destroy();
     device.destroy();
     inst.destroy();

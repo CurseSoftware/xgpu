@@ -18,23 +18,20 @@ namespace rhi::vk
         public:
             [[nodiscard]] static auto from_open(rhi::Device& p_device, const GraphicsPipelineDescription& p_description) noexcept -> expected<vk::Pipeline, Error>;
 
-            auto destroy() noexcept -> void override {}
+            auto destroy() noexcept -> void override;
 
         private:
             VkPipeline _pipeline { VK_NULL_HANDLE };
     };
 
-    // Create a vulkan shader module from the rhi description
-    auto createVulkanShaderModule(VkDevice device, const ShaderModuleDescription& module) -> expected<VkShaderModule, Error>;
+    // Get a list of vulkan shader stage create infos from the rhi::ShaderStage's
+    auto getVulkanShaderStageInfos(const std::unordered_map<ShaderStageFlags, std::reference_wrapper<rhi::ShaderModule>>& shader_modules) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>;
+
+    // Get a vulkan shader stage info from the rhi interface and native module
+    auto getVulkanShaderStageInfo(ShaderStageFlags stage, VkShaderModule module) -> VkPipelineShaderStageCreateInfo;
 
     // Get the vulkan shader stage flags from the rhi shader stage flags
     auto getVulkanShaderStageFlags(ShaderStageFlags stage) -> VkShaderStageFlagBits;
-
-    // Get a vulkan shader stage info from the rhi interface
-    auto getVulkanShaderStage(VkDevice device, ShaderStageFlags stage, const ShaderModuleDescription& module) -> expected<VkPipelineShaderStageCreateInfo, Error>;
-
-    // Get a list of vulkan shader stages from the input rhi interface
-    auto getVulkanShaderStages(VkDevice device, const std::unordered_map<ShaderStageFlags, ShaderModuleDescription>& stages) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>;
 
     // Get the vulkan input assembly state info from the rhi interface description
     auto getVulkanInputAssemblyState(const InputAssemblyStateDescription& desc) -> VkPipelineInputAssemblyStateCreateInfo;

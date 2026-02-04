@@ -10,6 +10,7 @@
 #include "rhi/types.h"
 
 #include <cstdint>
+#include <functional>
 #include <initializer_list>
 #include <memory>
 #include <span>
@@ -169,7 +170,7 @@ namespace rhi
         DepthStencilStateDescription depth_stencil                           {};
         ColorBlendStateDescription color_blend                               {};
         DynamicStateDescription dynamic_state                                {};
-        std::unordered_map<ShaderStageFlags, ShaderModuleDescription> stages {};
+        std::unordered_map<ShaderStageFlags, std::reference_wrapper<ShaderModule>> stages     {};
     };
 
     using GraphicsPipelineDescription = std::variant<OpenGraphicsPipelineDescription>;

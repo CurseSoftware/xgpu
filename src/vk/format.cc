@@ -1,6 +1,7 @@
 #include "rhi/format.h"
 #include "rhi/vk/format.h"
 #include "rhi/vk/core.h"
+#include <vulkan/vulkan_core.h>
 
 
 namespace rhi::vk
@@ -83,5 +84,7 @@ namespace rhi::vk
             case Format::BC7_UNORM_SRGB:    return VK_FORMAT_BC7_SRGB_BLOCK;
             case Format::Count:             return VK_FORMAT_UNDEFINED;
         }
+
+        return VK_FORMAT_UNDEFINED;
     }
 } // namespace rhi::vk
