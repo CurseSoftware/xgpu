@@ -15,8 +15,15 @@ namespace rhi
 
     class ShaderModule
     {
+        // Factory
         public:
             [[nodiscard]] static auto create(rhi::Device& p_device, const std::vector<char8_t>& data) noexcept -> ShaderModule;
+
+        // API
+        public:
+            [[nodiscard]] auto size() const noexcept -> std::size_t { return _data.size(); }
+
+            [[nodiscard]] auto data() const noexcept -> const char8_t* { return _data.data(); }
 
         private:
             [[nodiscard]] explicit ShaderModule(rhi::Device& p_device, const std::vector<char8_t>& p_data)

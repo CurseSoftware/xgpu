@@ -1,5 +1,5 @@
-#ifndef RHI_TOPOLOGY_H
-#define RHI_TOPOLOGY_H
+#ifndef RHI_TYPES_H
+#define RHI_TYPES_H
 
 #include <cstdint>
 
@@ -30,7 +30,7 @@ namespace rhi
 
     enum class CullMode
     {
-        None,
+        CullNone,
         Front,
         Back,
         FrontAndBack
@@ -79,7 +79,7 @@ namespace rhi
 
     enum class ColorComponentFlags
     {
-        None,
+        FlagsNone,
         Red,
         Green,
         Blue,
@@ -137,7 +137,7 @@ namespace rhi
         OpAlways       = 7
     };
 
-    enum class DescriptorType
+    enum class DescriptorType : std::uint32_t
     {
         Sampler,
         CombinedImageSampler,
@@ -162,4 +162,4 @@ namespace rhi
     };
 } // namespace rhi
 
-#endif // RHI_TOPOLOGY_H
+#endif // RHI_TYPES_H
