@@ -83,12 +83,12 @@ namespace rhi
     // Description of the multisampling state for anti-aliasing for the graphics pipeline
     struct MultisampleStateDescription
     {
-        std::uint32_t rasterization_samples { 1 };
+        SampleCount rasterization_samples   { SampleCount::One };
         bool shading_enable                 { false };
         float min_sample_shading            { 1.0f };
         const std::uint32_t* sample_mask    { nullptr };
         bool alpha_to_coverage              { false };
-        bool alpa_to_one                    { false };
+        bool alpha_to_one                   { false };
     };
 
     struct RasterizationStateDescription
@@ -127,7 +127,7 @@ namespace rhi
 
     struct DynamicStateDescription
     {
-        std::span<PipelineDynamicState> states {};
+        std::span<const PipelineDynamicState> states {};
     };
 
     struct StencilOpState

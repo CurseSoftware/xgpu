@@ -7,7 +7,7 @@ namespace rhi
 {
     enum class Topology : std::uint32_t
     {
-        Pointlist                  = 0,
+        PointList                  = 0,
         LineList                   = 1,
         LineStrip                  = 2,
         TriangleList               = 3,
@@ -67,7 +67,7 @@ namespace rhi
         DstAlpha,
         OneMinusDstAlpha,
         ConstantColor,
-        OneMinuxConstantColor,
+        OneMinusConstantColor,
         ConstantAlpha,
         OneMinusConstantAlpha,
         SrcAlphaSaturate,
@@ -90,7 +90,13 @@ namespace rhi
     enum class PipelineDynamicState
     {
         Scissor,
-        Viewport
+        Viewport,
+        CullMode,
+        DepthBias,
+        LineWidth,
+        FrontFace,
+        DepthBounds,
+        StencilOperator
     };
 
     enum class LogicOperator
@@ -119,10 +125,10 @@ namespace rhi
         Zero               = 1,
         Replace            = 2,
         IncrementAndClamp  = 3,
-        DecrememntAndClamp = 4,
+        DecrementAndClamp = 4,
         Invert             = 5,
-        IncremementAndWrap = 6,
-        DecrememntAndWrap  = 7,
+        IncrementAndWrap = 6,
+        DecrementAndWrap  = 7,
     };
 
     enum class CompareOperator : std::uint32_t
@@ -153,12 +159,20 @@ namespace rhi
         InlineUniformBlock,
         AccelerationStructureKHR,
         AccelerationStructureNV,
-        SampleWeightImageQCom,
-        BlockMatchImageQCom,
         MutableExt,
-        PartitionedAccelerationStructureNV,
-        InlineUniformBlockExt = InlineUniformBlock,
-        MutableValve = MutableExt
+        InlineUniformBlockExt,
+        MutableValve,
+    };
+
+    enum class SampleCount
+    {
+        One,
+        Two,
+        Four,
+        Eight,
+        Sixteen,
+        ThirtyTwo,
+        SixtyFour
     };
 } // namespace rhi
 

@@ -27,6 +27,8 @@ set(RHI_SOURCES
     "${PROJECT_SOURCE_DIR}/src/device.cc"
     "${PROJECT_SOURCE_DIR}/src/renderpass.cc"
     "${PROJECT_SOURCE_DIR}/src/pipeline.cc"
+    "${PROJECT_SOURCE_DIR}/src/pipeline_layout.cc"
+    "${PROJECT_SOURCE_DIR}/src/descriptor_set.cc"
     "${PROJECT_SOURCE_DIR}/src/shader.cc"
     "${PROJECT_SOURCE_DIR}/src/core/log.cc"
 
@@ -38,6 +40,9 @@ set(RHI_SOURCES
     "${PROJECT_SOURCE_DIR}/src/vk/pipeline.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/format.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/shader.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/vk_utils.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/descriptor_set.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/pipeline_layout.cc"
 )
 message("Sources: ${RHI_SOURCES}")
 

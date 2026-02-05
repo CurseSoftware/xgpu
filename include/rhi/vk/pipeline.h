@@ -49,22 +49,32 @@ namespace rhi::vk
     auto getVulkanDepthStencil(const DepthStencilStateDescription& desc) -> VkPipelineDepthStencilStateCreateInfo;
 
     // Get list of vulkan color blend states from rhi interface
-    auto getVulkanColorBlendAttachment(std::span<ColorBlendAttachmentStateDescription> attachments) -> std::vector<VkPipelineColorBlendAttachmentState>;
+    auto getVulkanColorBlendAttachments(std::span<const ColorBlendAttachmentStateDescription> attachments) -> std::vector<VkPipelineColorBlendAttachmentState>;
 
     // Get the vulkan color blend state from rhi description
     auto getVulkanColorBlendState(const ColorBlendStateDescription& desc, std::span<VkPipelineColorBlendAttachmentState> attachments) -> VkPipelineColorBlendStateCreateInfo;
 
     // Get a vulkan dynamic state from the rhi description
-    auto getVulkanDynamicState(const DynamicStateDescription& desc) -> VkDynamicState;
+    auto getVulkanDynamicState(std::span<VkDynamicState>) -> VkPipelineDynamicStateCreateInfo;
 
     // Get a list of vulkan dynamic states from the rhi descriptions
-    auto getVulkanDynamicStates(std::span<DynamicStateDescription> states) -> std::vector<VkDynamicState>;
+    auto getVulkanDynamicStates(std::span<const PipelineDynamicState> states) -> std::vector<VkDynamicState>;
 
     // Get the vulkan vertex input info from the rhi description
-    auto getVulkanVertexInputState(const VertexInputDescription& desc) -> VkPipelineVertexInputStateCreateInfo;
+    auto getVulkanVertexInputState(
+        const VertexInputDescription& desc,
+        std::span<VkVertexInputAttributeDescription> attribute_descriptions,
+        std::span<VkVertexInputBindingDescription> binding_descriptions
+    ) -> VkPipelineVertexInputStateCreateInfo;
+
+    // Get the vulkan vertex attribute descriptions from the rhi interface
+    auto getVulkanVertexInputAttributeDescriptions(std::span<VertexInputDescription::AttributeDescription> attributes) -> std::vector<VkVertexInputAttributeDescription>;
+    
+    // Get the vulkan vertex binding descriptions from the rhi interface
+    auto getVulkanVertexInputBindingDescriptions(std::span<VertexInputDescription::Binding> bindings) -> std::vector<VkVertexInputBindingDescription>;
 
     // Get the vulkan vertex input info from the rhi description
-    auto getVulkanVertexInputState(const TesselationStateDescription& desc) -> VkPipelineVertexInputStateCreateInfo;
+    auto getVulkanTesselationState(const TesselationStateDescription& desc) -> VkPipelineTessellationStateCreateInfo;;
 
     // Get a list of vulkan viewports from rhi descriptions
     auto getVulkanViewports(std::span<ViewportDescription> viewports) -> std::vector<VkViewport>;
@@ -78,6 +88,10 @@ namespace rhi::vk
     // Get a list of vulkan scissors from rhi descriptions
     auto getVulkanScissors(std::span<ScissorDescription> scissors) -> std::vector<VkRect2D>;
 
+    auto getVulkanViewportState(
+        std::span<VkViewport> viewports,
+        std::span<VkRect2D> scissors
+    ) -> VkPipelineViewportStateCreateInfo;
     
 } // namespace rhi::vk
 

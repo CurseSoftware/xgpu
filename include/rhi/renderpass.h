@@ -104,6 +104,8 @@ namespace rhi
         public:
             auto destroy() noexcept -> void override { _handle->destroy(); }
 
+            [[nodiscard]] auto handle() -> IRenderpass* { return _handle.get(); }
+
         private:
             [[nodiscard]] explicit Renderpass() noexcept {}
 

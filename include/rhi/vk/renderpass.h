@@ -27,6 +27,8 @@ namespace rhi::vk
         // API
         public:
             auto destroy() noexcept -> void override;
+
+            [[nodiscard]] auto handle() const noexcept -> VkRenderPass { return _renderpass; }
         
         private:
             [[nodiscard]] explicit Renderpass(VkDevice device) 

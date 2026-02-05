@@ -1,8 +1,10 @@
 #include "rhi/device.h"
 #include "rhi/core.h"
 #include "rhi/pipeline.h"
+#include "rhi/pipeline_layout.h"
 #include "rhi/renderpass.h"
 #include "rhi/shader.h"
+#include "rhi/types.h"
 #include <array>
 #include <cstddef>
 #include <fstream>
@@ -83,6 +85,15 @@ auto main() -> int
     }
     auto renderpass = renderpass_exp.unwrap();
 
+    rhi::PipelineLayoutDescription layout_description {};
+    auto expected_layout = rhi::PipelineLayout::create(device, layout_description);
+    if (!expected_layout.has_value())
+    {
+        std::cerr << "Failed to create pipeline layout: " << expected_layout.unwrap_error().message << '\n';
+        return 1;
+    }
+    auto layout = expected_layout.unwrap();
+
     auto vert_data = readShader("triangle.vert.spv");
     auto frag_data = readShader("triangle.frag.spv");
 
@@ -108,6 +119,12 @@ auto main() -> int
         .color_blend = {
             .attachments = std::array<rhi::ColorBlendAttachmentStateDescription, 1>()
         },
+        .dynamic_state = {
+            .states = std::to_array<rhi::PipelineDynamicState>({
+                rhi::PipelineDynamicState::Viewport,
+                rhi::PipelineDynamicState::Scissor,
+            })
+        },
         .stages = {
             { rhi::ShaderStageFlags::Vert, vert_module },
             { rhi::ShaderStageFlags::Frag, frag_module },
@@ -127,6 +144,7 @@ auto main() -> int
 
     frag_module.destroy();
     vert_module.destroy();
+    layout.destroy();
     renderpass.destroy();
     device.destroy();
     inst.destroy();
