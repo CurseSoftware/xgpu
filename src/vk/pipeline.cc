@@ -7,6 +7,7 @@
 #include "rhi/vk/shader.h"
 #include "types.h"
 #include "vk/format.h"
+#include "vk/pipeline_layout.h"
 #include "vk/renderpass.h"
 #include "vk/vk_utils.h"
 
@@ -18,12 +19,12 @@ namespace rhi::vk
 {
     auto Pipeline::from_open(rhi::Device& p_device, const GraphicsPipelineDescription& p_description) noexcept -> expected<vk::Pipeline, Error>
     {
-        Pipeline pipeline {};
         auto* vk_device = dynamic_cast<vk::Device*>(p_device.handle());
         if (!vk_device)
         {
             return unexpected( Error("Failed to get vk::Device from input rhi::Device object") );
         }
+        Pipeline pipeline { vk_device->handle() };
 
         // There is only one description for now 
         auto description = std::get<OpenGraphicsPipelineDescription>(p_description);
@@ -61,6 +62,13 @@ namespace rhi::vk
 
         auto input_assembly_state = getVulkanInputAssemblyState(description.input_assembly);
 
+        auto expected_layout = getVulkanPipelineLayout(description.layout);
+        if (!expected_layout.has_value())
+        {
+            return unexpected( expected_layout.unwrap_error() );
+        }
+        auto layout = expected_layout.unwrap();
+
         log::info("Pipeline viewports:          {}", viewports.size());
         log::info("Pipeline scissors:           {}", scissors.size());
         log::info("Pipeline shader stage infos: {}", shader_stage_infos.size());
@@ -78,16 +86,44 @@ namespace rhi::vk
             .pDepthStencilState = &depth_stencil_state,
             .pColorBlendState = &color_blend_state,
             .pDynamicState = &dynamic_state,
-            
-            .layout = VK_NULL_HANDLE,
+            .layout = layout,
             .renderPass = vk_renderpass->handle(),
+            .subpass = description.subpass,
         };
+
+        VkPipelineCache cache { VK_NULL_HANDLE };
+        const VkResult create_result = vkCreateGraphicsPipelines(
+            vk_device->handle(), 
+            cache, 
+            1, 
+            &pipeline_info, 
+            nullptr, 
+            &pipeline._handle
+        );
+        if (create_result != VK_SUCCESS)
+        {
+            return unexpected( Error("vkCreateGraphicsPipeline != VK_SUCCESS") );
+        }
 
         return ok(pipeline);
     }
 
     auto Pipeline::destroy() noexcept -> void
     {
+        log::trace("Destroying vulkan pipeline...");
+        vkDestroyPipeline(_device, _handle, nullptr);
+        log::trace("Destroyed.");
+    }
+
+    auto getVulkanPipelineLayout(const rhi::PipelineLayout& layout) noexcept -> expected<VkPipelineLayout, Error>
+    {
+        auto* expected_layout = dynamic_cast<vk::PipelineLayout*>(layout.handle());
+        if (!expected_layout)
+        {
+            return unexpected( Error("Unable to get vk::PipelineLayout from rhi::PipelineLayout") );
+        }
+
+        return ok(expected_layout->handle());
     }
     
     auto getVulkanShaderStageInfos(const std::unordered_map<ShaderStageFlags, std::reference_wrapper<rhi::ShaderModule>>& shader_modules) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>
@@ -149,7 +185,7 @@ namespace rhi::vk
         };
     }
 
-    auto getVulkanScissors(std::span<ScissorDescription> scissors) -> std::vector<VkRect2D>
+    auto getVulkanScissors(std::span<const ScissorDescription> scissors) -> std::vector<VkRect2D>
     {
         std::vector<VkRect2D> vk_scissors {};
 
@@ -161,7 +197,7 @@ namespace rhi::vk
         return vk_scissors;
     }
 
-    auto getVulkanViewports(std::span<ViewportDescription> viewports) -> std::vector<VkViewport>
+    auto getVulkanViewports(std::span<const ViewportDescription> viewports) -> std::vector<VkViewport>
     {
         std::vector<VkViewport> vk_viewports {};
 

@@ -2,6 +2,7 @@
 #define RHI_PIPELINE_H
 
 #include "rhi/device.h"
+#include "rhi/pipeline_layout.h"
 #include "rhi/error.h"
 #include "rhi/expected.h"
 #include "rhi/format.h"
@@ -11,7 +12,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <initializer_list>
 #include <memory>
 #include <span>
 #include <unordered_map>
@@ -158,13 +158,15 @@ namespace rhi
     struct OpenGraphicsPipelineDescription
     {
         Renderpass& renderpass;
+        PipelineLayout& layout;
         bool enable_depth_test                                               { true };
+        std::uint32_t subpass                                                { 0 };
 
         VertexInputDescription vertex_input                                  {};
         InputAssemblyStateDescription input_assembly                         {};
         TesselationStateDescription tesselation                              {};
-        std::span<ViewportDescription> viewports                             {};
-        std::span<ScissorDescription> scissors                               {};
+        std::span<const ViewportDescription> viewports                             {};
+        std::span<const ScissorDescription> scissors                               {};
         RasterizationStateDescription rasterization                          {};
         MultisampleStateDescription multisample                              {};
         DepthStencilStateDescription depth_stencil                           {};
@@ -192,11 +194,15 @@ namespace rhi
 
         // API
         public:
-            auto destroy() noexcept -> void override
-            {
-                _handle->destroy();
-            }
+            auto destroy() noexcept -> void override { _handle->destroy(); }
+
+            [[nodiscard]] auto handle() const noexcept -> IPipeline* { return _handle.get(); }
+
+        // Private special members
+        private:
+            [[nodiscard]] explicit Pipeline() noexcept = default;
         
+        // Private fields
         private:
             std::unique_ptr<IPipeline> _handle { nullptr };
     };

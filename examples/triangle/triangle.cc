@@ -1,5 +1,6 @@
 #include "rhi/device.h"
 #include "rhi/core.h"
+#include "rhi/format.h"
 #include "rhi/pipeline.h"
 #include "rhi/pipeline_layout.h"
 #include "rhi/renderpass.h"
@@ -17,6 +18,37 @@
 #include <vector>
 
 auto readShader(const std::string& filepath) -> std::vector<char8_t>;
+
+struct Vertex
+{
+    std::array<float, 3> position;
+
+    static auto binding_description() -> rhi::VertexInputDescription::Binding
+    {
+        return rhi::VertexInputDescription::Binding {
+            .binding = 0,
+            .stride = sizeof(Vertex),
+        };
+    }
+
+    static auto attribute_descriptions() -> std::array<rhi::VertexInputDescription::AttributeDescription, 1>
+    {
+        return std::to_array<rhi::VertexInputDescription::AttributeDescription>({
+            {
+                .binding = 0,
+                .offset = offsetof(Vertex, position),
+                .location = 0,
+                .format = rhi::Format::RGB32_FLOAT,
+            },
+        });
+    }
+};
+
+static constexpr auto g_vertices = std::to_array<Vertex>({
+    { .position = { -0.5,  0.5, 0.0 } },
+    { .position = {  0.5,  0.5, 0.0 } },
+    { .position = {  0.0, -0.5, 0.0 } },
+});
 
 auto main() -> int
 {
@@ -49,7 +81,7 @@ auto main() -> int
     auto device = device_exp.unwrap();
 
     rhi::OpenAttachmentDescription color_attachment {
-        .format = rhi::Format::RG8_UINT,
+        .format = rhi::Format::RGB32_FLOAT,
         .load_operation = rhi::LoadOperation::Clear,
         .store_operation = rhi::StoreOperation::Store,
 
@@ -114,7 +146,31 @@ auto main() -> int
 
     rhi::OpenGraphicsPipelineDescription pipeline_description {
         .renderpass = renderpass,
+        .layout = layout,
         .enable_depth_test = true,
+        .subpass = 0,
+        .viewports = std::to_array<rhi::ViewportDescription>({
+            {
+                .width = 800.f,
+                .height = 600.f,
+                .x = 0.f,
+                .y = 0.f,
+                .min_depth = 0.0f,
+                .max_depth = 0.0f,
+            }
+        }),
+        .scissors = std::to_array<rhi::ScissorDescription>({
+            {
+                .offset = {
+                    .x = 0,
+                    .y = 0,
+                },
+                .extent = {
+                    .width = 800,
+                    .height = 600
+                }
+            }
+        }),
         
         .color_blend = {
             .attachments = std::array<rhi::ColorBlendAttachmentStateDescription, 1>()
@@ -137,11 +193,13 @@ auto main() -> int
         std::cerr << "Failed to create pipeline: " << expected_pipeline.unwrap_error().message << '\n';
         return 1;
     }
+    auto pipeline = expected_pipeline.unwrap();
 
     std::cout << "Pipeline created successfully.\n";
     std::cout << "Vert: " << vert_data.size() << " bytes read\n";
     std::cout << "Frag: " << frag_data.size() << " bytes read\n";
 
+    pipeline.destroy();
     frag_module.destroy();
     vert_module.destroy();
     layout.destroy();

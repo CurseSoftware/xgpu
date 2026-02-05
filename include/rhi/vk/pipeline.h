@@ -21,8 +21,16 @@ namespace rhi::vk
             auto destroy() noexcept -> void override;
 
         private:
-            VkPipeline _pipeline { VK_NULL_HANDLE };
+            [[nodiscard]] explicit Pipeline(VkDevice device) noexcept
+                : _device{ device }
+            {}
+
+        private:
+            VkDevice _device   { VK_NULL_HANDLE };
+            VkPipeline _handle { VK_NULL_HANDLE };
     };
+
+    auto getVulkanPipelineLayout(const rhi::PipelineLayout&) noexcept -> expected<VkPipelineLayout, Error>;
 
     // Get a list of vulkan shader stage create infos from the rhi::ShaderStage's
     auto getVulkanShaderStageInfos(const std::unordered_map<ShaderStageFlags, std::reference_wrapper<rhi::ShaderModule>>& shader_modules) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>;
@@ -77,7 +85,7 @@ namespace rhi::vk
     auto getVulkanTesselationState(const TesselationStateDescription& desc) -> VkPipelineTessellationStateCreateInfo;;
 
     // Get a list of vulkan viewports from rhi descriptions
-    auto getVulkanViewports(std::span<ViewportDescription> viewports) -> std::vector<VkViewport>;
+    auto getVulkanViewports(std::span<const ViewportDescription> viewports) -> std::vector<VkViewport>;
 
     // Get vulkan viewport from rhi description
     auto getVulkanViewport(const ViewportDescription& viewport) -> VkViewport;
@@ -86,7 +94,7 @@ namespace rhi::vk
     auto getVulkanScissor(const ScissorDescription& scissor) -> VkRect2D;
 
     // Get a list of vulkan scissors from rhi descriptions
-    auto getVulkanScissors(std::span<ScissorDescription> scissors) -> std::vector<VkRect2D>;
+    auto getVulkanScissors(std::span<const ScissorDescription> scissors) -> std::vector<VkRect2D>;
 
     auto getVulkanViewportState(
         std::span<VkViewport> viewports,
