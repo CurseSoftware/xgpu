@@ -40,11 +40,6 @@ namespace rhi::vk
             VkRenderPass _renderpass { VK_NULL_HANDLE };
     };
     
-    auto getVulkanAttachmentLoadOp(LoadOperation op) -> VkAttachmentLoadOp;
-    auto getVulkanAttachmentStoreOp(StoreOperation op) -> VkAttachmentStoreOp;
-    auto getVulkanAttachmentLayout(ImageLayout layout) -> VkImageLayout;
-    auto getVulkanAttachmentType(AttachmentType type) -> VkImageLayout;
-    auto getVulkanPipelineBindPoint(SubpassBindPoint bind_point) -> VkPipelineBindPoint;
 } // namespace rhi::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND

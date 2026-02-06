@@ -5,6 +5,7 @@
 #include "rhi/error.h"
 #include "rhi/expected.h"
 #include "rhi/format.h"
+#include "rhi/types.h"
 
 #include <cstdint>
 #include <functional>
@@ -15,41 +16,6 @@
 
 namespace rhi
 {
-    enum class LoadOperation
-    {
-        Load,
-        Clear,
-        DontCare,
-    };
-
-    enum class StoreOperation
-    {
-        Store,
-        DontCare
-    };
-
-    enum class ImageLayout
-    {
-        Undefined,
-        ColorOptimal,
-        Present,
-        TransferSrc,
-        TransferDst,
-    };
-
-    enum class SubpassBindPoint
-    {
-        Graphics,
-        Compute,
-    };
-
-    enum class AttachmentType : std::uint32_t
-    {
-        Color,
-        DepthStencil,
-        ReadOnly,
-        ShaderReadOnly
-    };
 
     struct OpenAttachmentDescription
     {

@@ -1,6 +1,7 @@
 #include "rhi/device.h"
 #include "rhi/core.h"
 #include "rhi/format.h"
+#include "rhi/image_view.h"
 #include "rhi/pipeline.h"
 #include "rhi/pipeline_layout.h"
 #include "rhi/renderpass.h"
@@ -52,6 +53,11 @@ static constexpr auto g_vertices = std::to_array<Vertex>({
 
 auto main() -> int
 {
+    rhi::Extent2D image_extent {
+        .width = 600,
+        .height = 800,
+    };
+
     rhi::InstanceContext instance_ctx = rhi::vk::InstanceContext {
         .enable_debug = true
     };
@@ -94,6 +100,29 @@ auto main() -> int
 
         .final_layout = rhi::ImageLayout::Present
     };
+
+    rhi::ImageViewDescription image_view_desc {
+        .extent = {
+            .width = image_extent.width,
+            .height = image_extent.height,
+            .depth = 1
+        },
+        .format = rhi::Format::RGB32_FLOAT,
+        .mip_levels = 1,
+        .array_layers = 1,
+        .image_type = rhi::ImageType::Type2D,
+        .usage = rhi::ImageUsage::ColorAttachment(),
+        .tiling = rhi::ImageTiling::Optimal,
+        .initial_layout = rhi::ImageLayout::Undefined,
+        .aspect = rhi::ImageAspectFlags::Color(),
+    };
+    auto expected_image_view = rhi::ImageView::create(device, image_view_desc);
+    if (!expected_image_view.has_value())
+    {
+        std::cerr << "Failed to create image view: " << expected_image_view.unwrap_error().message << '\n';
+        return 1;
+    }
+    auto image_view = expected_image_view.unwrap();
 
     auto renderpass_exp = rhi::Renderpass::create(
         device, 
@@ -151,8 +180,8 @@ auto main() -> int
         .subpass = 0,
         .viewports = std::to_array<rhi::ViewportDescription>({
             {
-                .width = 800.f,
-                .height = 600.f,
+                .width = static_cast<float>(image_extent.width),
+                .height = static_cast<float>(image_extent.height),
                 .x = 0.f,
                 .y = 0.f,
                 .min_depth = 0.0f,
@@ -166,8 +195,8 @@ auto main() -> int
                     .y = 0,
                 },
                 .extent = {
-                    .width = 800,
-                    .height = 600
+                    .width = image_extent.width,
+                    .height = image_extent.height
                 }
             }
         }),
@@ -204,6 +233,7 @@ auto main() -> int
     vert_module.destroy();
     layout.destroy();
     renderpass.destroy();
+    image_view.destroy();
     device.destroy();
     inst.destroy();
     

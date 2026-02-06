@@ -363,6 +363,22 @@ namespace rhi::vk
         return _compute_queue->family_index;
     }
 
+    auto Device::getMemoryTypeIndex(std::uint32_t type_bits, VkMemoryPropertyFlags flags) const noexcept -> std::optional<std::uint32_t>
+    {
+        VkPhysicalDeviceMemoryProperties memory_properties {};
+        vkGetPhysicalDeviceMemoryProperties(_physical_device, &memory_properties);
+
+        for (std::uint32_t i = 0; i < memory_properties.memoryTypeCount; i++)
+        {
+            if ( (type_bits & (1 << i)) && (memory_properties.memoryTypes[i].propertyFlags & flags) == flags)
+            {
+                return i;
+            }
+        }
+
+        return std::nullopt;
+    }
+
     auto Device::destroy() noexcept -> void
     {
         log::trace("Destroying vulkan device...");

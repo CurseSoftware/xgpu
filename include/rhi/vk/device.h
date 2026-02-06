@@ -53,6 +53,8 @@ namespace rhi::vk
             [[nodiscard]] auto presentFamilyIndex() const noexcept -> std::optional<std::uint32_t>;
 
             [[nodiscard]] auto handle() const noexcept -> VkDevice { return _handle; }
+
+            [[nodiscard]] auto getMemoryTypeIndex(std::uint32_t type_bits, VkMemoryPropertyFlags flags) const noexcept -> std::optional<std::uint32_t>;
         
         private:
             explicit Device() = default;

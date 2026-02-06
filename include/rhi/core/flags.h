@@ -1,0 +1,68 @@
+#ifndef RHI_CORE_FLAGS_H
+#define RHI_CORE_FLAGS_H
+
+#include <concepts>
+#include <type_traits>
+namespace rhi
+{
+    template <typename T>
+    concept ValidFlagType = std::is_integral_v<T>;
+
+    // This is a utility for creating an interface where rhi flags can be used
+    // agnostic of the underlying graphics API
+    template <ValidFlagType T>
+    class Flags
+    {
+        // Info
+        public:
+            using ValueType = T;
+
+        // Special members
+        public:
+            // Default constructor initializes the initial value to 0
+            constexpr Flags() noexcept = default;
+
+            constexpr Flags(ValueType value)
+                : _value{ value }
+            {}
+        
+        // Operator overloads
+        public:
+            constexpr auto operator|(Flags rhs) -> Flags
+            {
+                return Flags(_value | rhs._value);
+            }
+
+            constexpr auto operator&(Flags rhs) -> Flags
+            {
+                return Flags(_value & rhs._value);
+            }
+
+            constexpr auto operator|=(Flags rhs) -> Flags&
+            {
+                _value |= rhs._value;
+                return *this;
+            }
+
+            constexpr auto operator&=(Flags rhs) -> Flags&
+            {
+                _value &= rhs._value;
+                return *this;
+            }
+
+            constexpr auto operator=(Flags rhs) -> bool
+            {
+                return _value = rhs._value;
+            }
+
+        // Getter
+        public:
+            [[nodiscard]] constexpr auto get() -> ValueType { return _value; }
+
+        // Private fields
+        private:
+            T _value { 0 };
+    };
+} // namespace rhi
+
+#endif // RHI_CORE_FLAGS_H

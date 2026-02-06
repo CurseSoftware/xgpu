@@ -1,6 +1,7 @@
 #ifndef RHI_TYPES_H
 #define RHI_TYPES_H
 
+#include "core/flags.h"
 #include <cstdint>
 
 namespace rhi
@@ -173,6 +174,117 @@ namespace rhi
         Sixteen,
         ThirtyTwo,
         SixtyFour
+    };
+
+    enum class ImageUsageFlagBits : std::uint32_t
+    {
+        TransferSrc            = 0,
+        TransferDst            = 1 << 0,
+        Sampled                = 1 << 1,
+        Storage                = 1 << 2,
+        ColorAttachment        = 1 << 3,
+        DepthStencilAttachment = 1 << 4,
+        InputAttachment        = 1 << 5,
+    };
+
+    class ImageUsage : public Flags<std::uint32_t>
+    {
+        public:
+            using Flags::Flags;
+            static constexpr auto TransferSrc()            -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::TransferSrc)); }
+            static constexpr auto TransferDst()            -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::TransferDst)); }
+            static constexpr auto Sampled()                -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::Sampled)); }
+            static constexpr auto Storage()                -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::Storage)); }
+            static constexpr auto ColorAttachment()        -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::ColorAttachment)); }
+            static constexpr auto DepthStencilAttachment() -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::DepthStencilAttachment)); }
+            static constexpr auto InputAttachment()        -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::InputAttachment)); }
+    };
+
+    enum class ImageAspectFlagBits : std::uint32_t
+    {
+        AspectNone = 0,
+        Color      = 1 << 0,
+        Depth      = 1 << 1,
+        Stencil    = 1 << 2,
+    };
+
+    class ImageAspectFlags : public Flags<std::uint32_t>
+    {
+        public:
+            using Flags::Flags;
+            static constexpr auto Color()      -> ImageAspectFlags { return ImageAspectFlags(static_cast<std::uint32_t>(ImageAspectFlagBits::Color)); }
+            static constexpr auto Depth()      -> ImageAspectFlags { return ImageAspectFlags(static_cast<std::uint32_t>(ImageAspectFlagBits::Depth)); }
+            static constexpr auto Stencil()    -> ImageAspectFlags { return ImageAspectFlags(static_cast<std::uint32_t>(ImageAspectFlagBits::Stencil)); }
+            static constexpr auto AspectNone() -> ImageAspectFlags { return ImageAspectFlags(static_cast<std::uint32_t>(ImageAspectFlagBits::AspectNone)); }
+    };
+
+    enum class ImageType
+    {
+        Type1D,
+        Type2D,
+        Type3D,
+    };
+
+    enum class ImageTiling
+    {
+        Optimal,
+        Linear,
+        DrmFormatModifier
+    };
+
+    enum class SharingMode
+    {
+        Exclusive,
+        Concurrent
+    };
+    
+    enum class LoadOperation
+    {
+        Load,
+        Clear,
+        DontCare,
+    };
+
+    enum class StoreOperation
+    {
+        Store,
+        DontCare
+    };
+
+    enum class ImageLayout
+    {
+        Undefined,
+        ColorOptimal,
+        Present,
+        TransferSrc,
+        TransferDst,
+    };
+
+    enum class SubpassBindPoint
+    {
+        Graphics,
+        Compute,
+    };
+
+    enum class AttachmentType : std::uint32_t
+    {
+        Color,
+        DepthStencil,
+        ReadOnly,
+        ShaderReadOnly
+    };
+    
+    struct Extent2D
+    {
+        std::uint32_t width;
+        std::uint32_t height;
+    };
+
+    struct Extent3D
+    {
+        std::uint32_t width;
+        std::uint32_t height;
+        std::uint32_t depth { 1 };
     };
 } // namespace rhi
 

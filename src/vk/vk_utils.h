@@ -7,6 +7,16 @@
 
 namespace rhi::vk
 {
+    auto convertSharingMode(SharingMode) -> VkSharingMode;
+
+    auto convertImageTiling(ImageTiling) -> VkImageTiling;
+
+    auto getVulkanImageUsage(ImageUsage) -> VkImageUsageFlags;
+
+    auto convertImageUsage(ImageUsage) -> VkImageUsageFlags;
+
+    auto convertImageType(ImageType) -> VkImageType;
+    
     auto convertTopology(Topology) -> VkPrimitiveTopology;
     
     auto convertPolygonMode(PolygonMode) -> VkPolygonMode;
@@ -32,6 +42,20 @@ namespace rhi::vk
     auto convertDescriptorType(DescriptorType) -> VkDescriptorType;
 
     auto convertSampleCount(SampleCount) -> VkSampleCountFlagBits;
+
+    auto getVulkanAttachmentLoadOp(LoadOperation) -> VkAttachmentLoadOp;
+
+    auto getVulkanAttachmentStoreOp(StoreOperation) -> VkAttachmentStoreOp;
+
+    auto getVulkanAttachmentLayout(ImageLayout) -> VkImageLayout;
+
+    auto getVulkanAttachmentType(AttachmentType) -> VkImageLayout;
+
+    auto getVulkanPipelineBindPoint(SubpassBindPoint) -> VkPipelineBindPoint;
+
+    auto convertImageLayout(ImageLayout) -> VkImageLayout;
+
+    auto convertImageAspect(ImageAspectFlags) -> VkImageAspectFlags;
 } // namespace rhi::vk
 
 #endif // RHI_VK_PRIV_VK_UTILS_H

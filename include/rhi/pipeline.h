@@ -39,11 +39,7 @@ namespace rhi
             std::int32_t y;
         } offset {};
         
-        struct
-        {
-            std::uint32_t width;
-            std::uint32_t height;
-        } extent {};
+        Extent2D extent {};
     };
 
     // Description of the vertex input state for the graphics pipeline

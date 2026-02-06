@@ -1,9 +1,147 @@
 #include "vk/vk_utils.h"
 #include "types.h"
+#include <cstdint>
 #include <vulkan/vulkan_core.h>
 
 namespace rhi::vk
 {
+    auto convertSharingMode(SharingMode mode) -> VkSharingMode
+    {
+        switch (mode)
+        {
+            case SharingMode::Exclusive:
+                return VK_SHARING_MODE_EXCLUSIVE;
+            case SharingMode::Concurrent:
+                return VK_SHARING_MODE_CONCURRENT;
+        }
+
+        return VK_SHARING_MODE_MAX_ENUM;
+    }
+
+    auto convertImageTiling(ImageTiling tiling) -> VkImageTiling
+    {
+        switch (tiling)
+        {
+            case ImageTiling::Linear:
+                return VK_IMAGE_TILING_LINEAR;
+            case ImageTiling::Optimal:
+                return VK_IMAGE_TILING_OPTIMAL;
+            case ImageTiling::DrmFormatModifier:
+                return VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT;
+        }
+
+        return VK_IMAGE_TILING_MAX_ENUM;
+    }
+    
+    auto convertImageAspect(ImageAspectFlags aspect) -> VkImageAspectFlags
+    {
+        VkImageAspectFlags result { 0 };
+        std::uint32_t bits = aspect.get();
+
+        if (bits & ImageAspectFlags::AspectNone().get())
+        {
+            result |= VK_IMAGE_ASPECT_NONE_KHR;
+        }
+
+        if (bits & ImageAspectFlags::Color().get())
+        {
+            result |= VK_IMAGE_ASPECT_COLOR_BIT;
+        }
+
+        if (bits & ImageAspectFlags::Depth().get())
+        {
+            result |= VK_IMAGE_ASPECT_DEPTH_BIT;
+        }
+
+        if (bits & ImageAspectFlags::Stencil().get())
+        {
+            result |= VK_IMAGE_ASPECT_STENCIL_BIT;
+        }
+
+        return result;
+    }
+
+    auto getVulkanImageUsage(ImageUsage usage) -> VkImageUsageFlags
+    {
+        VkImageUsageFlags result { 0 };
+        std::uint32_t bits = usage.get();
+
+        if (bits & ImageUsage::Sampled().get())
+        {
+            result |= VK_IMAGE_USAGE_SAMPLED_BIT;
+        }
+
+        if (bits & ImageUsage::Storage().get())
+        {
+            result |= VK_IMAGE_USAGE_STORAGE_BIT;
+        }
+
+        if (bits & ImageUsage::TransferDst().get())
+        {
+            result |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+        }
+
+        if (bits & ImageUsage::TransferSrc().get())
+        {
+            result |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+        }
+
+        if (bits & ImageUsage::ColorAttachment().get())
+        {
+            result |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        }
+
+        if (bits & ImageUsage::InputAttachment().get())
+        {
+            result |= VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
+        }
+
+        if (bits & ImageUsage::DepthStencilAttachment().get())
+        {
+            result |= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+        }
+
+        return result;
+    }
+
+    auto convertImageType(ImageType image_type) -> VkImageType
+    {
+        switch (image_type)
+        {
+            case ImageType::Type1D:
+                return VK_IMAGE_TYPE_1D;
+            case ImageType::Type2D:
+                return VK_IMAGE_TYPE_2D;
+            case ImageType::Type3D:
+                return VK_IMAGE_TYPE_3D;
+        }
+
+        return VK_IMAGE_TYPE_2D;
+    }
+    
+    auto convertImageUsage(ImageUsageFlagBits usage) -> VkImageUsageFlags
+    {
+        switch (usage)
+        {
+            case ImageUsageFlagBits::Sampled:
+                return VK_IMAGE_USAGE_SAMPLED_BIT;
+            case ImageUsageFlagBits::TransferSrc:
+                return VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+            case ImageUsageFlagBits::TransferDst:
+                return VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+            case ImageUsageFlagBits::Storage:
+                return VK_IMAGE_USAGE_STORAGE_BIT;
+            case ImageUsageFlagBits::DepthStencilAttachment:
+                return VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+            case ImageUsageFlagBits::InputAttachment:
+                return VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
+            case ImageUsageFlagBits::ColorAttachment:
+                return VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        }
+        
+        return VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    }
+
     auto convertTopology(Topology topology) -> VkPrimitiveTopology
     {
         switch (topology)
@@ -353,5 +491,72 @@ namespace rhi::vk
         }
 
         return VK_SAMPLE_COUNT_FLAG_BITS_MAX_ENUM;
+    }
+    
+    auto getVulkanAttachmentLoadOp(LoadOperation op) -> VkAttachmentLoadOp
+    {
+        switch (op)
+        {
+            case rhi::LoadOperation::Load: return VK_ATTACHMENT_LOAD_OP_LOAD;
+            case rhi::LoadOperation::Clear: return VK_ATTACHMENT_LOAD_OP_CLEAR;
+            case rhi::LoadOperation::DontCare: return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        }
+
+        return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    }
+    
+    auto getVulkanAttachmentStoreOp(StoreOperation op) -> VkAttachmentStoreOp
+    {
+        switch (op)
+        {
+            case rhi::StoreOperation::Store: return VK_ATTACHMENT_STORE_OP_STORE;
+            case rhi::StoreOperation::DontCare: return VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        }
+        
+        return VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    }
+
+    auto convertImageLayout(ImageLayout layout) -> VkImageLayout
+    {
+        switch (layout)
+        {
+            case ImageLayout::Present: return VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+            case ImageLayout::Undefined: return VK_IMAGE_LAYOUT_UNDEFINED;
+            case ImageLayout::ColorOptimal: return VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+            case ImageLayout::TransferSrc: return VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+            case ImageLayout::TransferDst: return VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+        }
+        
+        return VK_IMAGE_LAYOUT_UNDEFINED;
+    }
+    
+    auto getVulkanAttachmentLayout(ImageLayout layout) -> VkImageLayout
+    {
+        return convertImageLayout(layout);
+    }
+    
+    auto getVulkanAttachmentType(AttachmentType type) -> VkImageLayout
+    {
+        switch (type)
+        {
+            case AttachmentType::Color: return VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+            case AttachmentType::DepthStencil: return VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+            case AttachmentType::ReadOnly: return VK_IMAGE_LAYOUT_READ_ONLY_OPTIMAL;
+            case AttachmentType::ShaderReadOnly: return VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        }
+
+        return VK_IMAGE_LAYOUT_UNDEFINED;
+    }
+    
+    auto getVulkanPipelineBindPoint(SubpassBindPoint bind_point) -> VkPipelineBindPoint
+    {
+        switch (bind_point)
+        {
+            case SubpassBindPoint::Graphics: return VK_PIPELINE_BIND_POINT_GRAPHICS;
+            case SubpassBindPoint::Compute: return VK_PIPELINE_BIND_POINT_COMPUTE;
+        }
+
+        // Default to graphics. We should never get here anyway
+        return VK_PIPELINE_BIND_POINT_GRAPHICS;
     }
 } // namespace rhi::vk
