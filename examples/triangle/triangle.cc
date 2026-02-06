@@ -1,3 +1,4 @@
+#include "rhi/command.h"
 #include "rhi/core/log.h"
 #include "rhi/device.h"
 #include "rhi/core.h"
@@ -248,6 +249,15 @@ auto main() -> int
     std::cout << "Vert: " << vert_data.size() << " bytes read\n";
     std::cout << "Frag: " << frag_data.size() << " bytes read\n";
 
+    auto expected_graphics_pool = rhi::CommandPool::create(device, { .family_index = device.graphics_queue().value() });
+    if (!expected_graphics_pool.has_value())
+    {
+        std::cerr << "Failed to create graphics pool: " << expected_graphics_pool.unwrap_error().message << '\n';
+        return 1;
+    }
+    auto graphics_pool = expected_graphics_pool.unwrap();
+
+    graphics_pool.destroy();
     pipeline.destroy();
     frag_module.destroy();
     vert_module.destroy();
