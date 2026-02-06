@@ -1,34 +1,30 @@
 #ifndef RHI_FRAMEBUFFER_H
 #define RHI_FRAMEBUFFER_H
 
-#include "rhi/format.h"
 #include "rhi/device.h"
 #include "rhi/expected.h"
 #include "rhi/error.h"
+#include "rhi/image_view.h"
 #include "rhi/renderpass.h"
-#include "rhi/types.h"
 
 #include <cstdint>
+#include <functional>
 #include <memory>
-#include <vector>
 
 namespace rhi
 {
     struct FramebufferDescription
     {
         Renderpass& renderpass;
-        std::vector<Format> color_formats {};
-        Format depth_format               { Format::Unknown };
-        SampleCount sample_count          { 1 };
-        std::uint32_t sampleQuality       { 0 };
-        std::uint32_t width               { 0 };
-        std::uint32_t height              { 0 };
+        std::span<const std::reference_wrapper<ImageView>> attachments {};
+        std::uint32_t width {};
+        std::uint32_t height {};
     };
 
     class IFramebuffer
     {
         public:
-            virtual auto destroy() noexcept -> void;
+            virtual auto destroy() noexcept -> void = 0;
     };
 
     class Framebuffer : public IFramebuffer

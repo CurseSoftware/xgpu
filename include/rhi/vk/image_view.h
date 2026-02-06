@@ -7,6 +7,7 @@
 #include "rhi/error.h"
 #include "rhi/image_view.h"
 #include "rhi/device.h"
+#include <cstdint>
 
 
 namespace rhi::vk
@@ -21,6 +22,10 @@ namespace rhi::vk
         public:
             auto destroy() noexcept -> void override;
 
+            [[nodiscard]] auto handle() const noexcept -> VkImageView { return _handle; }
+
+            [[nodiscard]] auto layer_count() const noexcept -> std::uint32_t { return _detail.layer_count; }
+
         // Private special members
         private:
             [[nodiscard]] explicit ImageView(VkDevice device) noexcept
@@ -32,6 +37,11 @@ namespace rhi::vk
             VkImage _image         { VK_NULL_HANDLE };
             VkDeviceMemory _memory { VK_NULL_HANDLE };
             VkImageView _handle    { VK_NULL_HANDLE };
+
+            struct
+            {
+                std::uint32_t layer_count;
+            } _detail;
     };
 } // namespace rhi::vk 
 

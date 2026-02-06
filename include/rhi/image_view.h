@@ -42,6 +42,8 @@ namespace rhi
         public:
             auto destroy() noexcept -> void override { _handle->destroy(); }
 
+            [[nodiscard]] auto handle() const noexcept -> IImageView* { return _handle.get(); }
+
         private:
             ImageView() = default;
 

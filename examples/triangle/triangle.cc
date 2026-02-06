@@ -1,6 +1,8 @@
+#include "rhi/core/log.h"
 #include "rhi/device.h"
 #include "rhi/core.h"
 #include "rhi/format.h"
+#include "rhi/framebuffer.h"
 #include "rhi/image_view.h"
 #include "rhi/pipeline.h"
 #include "rhi/pipeline_layout.h"
@@ -10,6 +12,7 @@
 #include <array>
 #include <cstddef>
 #include <fstream>
+#include <functional>
 #include <ios>
 #include <iostream>
 #include <rhi/instance.h>
@@ -146,6 +149,23 @@ auto main() -> int
     }
     auto renderpass = renderpass_exp.unwrap();
 
+    rhi::FramebufferDescription framebuffer_desc {
+        .renderpass = renderpass,
+        .attachments = std::to_array<const std::reference_wrapper<rhi::ImageView>>({
+            image_view
+        }),
+        .width = image_extent.width,
+        .height = image_extent.height,
+    };
+    auto expected_framebuffer = rhi::Framebuffer::create(device, framebuffer_desc);
+    if (!expected_framebuffer.has_value())
+    {
+        rhi::log::error("HERE3");
+        std::cerr << "Failed to create framebuffer: " << expected_framebuffer.unwrap_error().message << '\n';
+        return 1;
+    }
+    auto framebuffer = expected_framebuffer.unwrap();
+
     rhi::PipelineLayoutDescription layout_description {};
     auto expected_layout = rhi::PipelineLayout::create(device, layout_description);
     if (!expected_layout.has_value())
@@ -232,6 +252,7 @@ auto main() -> int
     frag_module.destroy();
     vert_module.destroy();
     layout.destroy();
+    framebuffer.destroy();
     renderpass.destroy();
     image_view.destroy();
     device.destroy();

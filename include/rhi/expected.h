@@ -282,7 +282,7 @@ namespace rhi
                 return std::get<T>(_value);
             }
 
-            throw new bad_expected_error_access();
+            throw new bad_expected_access();
         }
 
         constexpr auto unwrap() & -> T&
@@ -294,7 +294,7 @@ namespace rhi
                 return std::get<T>(_value);
             }
 
-            throw new bad_expected_error_access();
+            throw new bad_expected_access();
         }
 
         constexpr auto unwrap() const & -> T const&&
@@ -306,7 +306,7 @@ namespace rhi
                 return std::move(std::get<T>(_value));
             }
 
-            throw new bad_expected_error_access();
+            throw new bad_expected_access();
         }
 
         constexpr auto
@@ -319,7 +319,7 @@ namespace rhi
                 return std::move(std::get<T>(_value));
             }
 
-            throw new bad_expected_error_access();
+            throw new bad_expected_access();
         }
 
         constexpr auto
@@ -330,7 +330,7 @@ namespace rhi
                 return std::move(std::get<T>(_value));
             }
 
-            throw new bad_expected_error_access();
+            throw new bad_expected_access();
         }
 
         constexpr auto
@@ -341,7 +341,7 @@ namespace rhi
                 return std::move(std::get<T>(_value));
             }
 
-            throw new bad_expected_error_access();
+            throw new bad_expected_access();
         }
 
         [[nodiscard]] constexpr const T& unwrap_or(const T& other) const noexcept

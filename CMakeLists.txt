@@ -31,6 +31,7 @@ set(RHI_SOURCES
     "${PROJECT_SOURCE_DIR}/src/descriptor_set.cc"
     "${PROJECT_SOURCE_DIR}/src/shader.cc"
     "${PROJECT_SOURCE_DIR}/src/image_view.cc"
+    "${PROJECT_SOURCE_DIR}/src/framebuffer.cc"
     "${PROJECT_SOURCE_DIR}/src/core/log.cc"
 
     "${PROJECT_SOURCE_DIR}/src/vk/instance.cc"
@@ -44,6 +45,7 @@ set(RHI_SOURCES
     "${PROJECT_SOURCE_DIR}/src/vk/image_view.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/vk_utils.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/descriptor_set.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/framebuffer.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/pipeline_layout.cc"
 )
 message("Sources: ${RHI_SOURCES}")

@@ -17,6 +17,7 @@ namespace rhi::vk
         }
 
         ImageView image_view { vk_device->handle() };
+        image_view._detail.layer_count = description.array_layers;
 
         // Create the image
         {

@@ -31,8 +31,6 @@ namespace rhi::vk
             VkDevice _device      { VK_NULL_HANDLE };
             VkFramebuffer _handle { VK_NULL_HANDLE };
     };
-
-    [[nodiscard]] auto getVulkanImageView(const FramebufferDescription::ImageDescription& desc) -> VkImageView;
 } // namespace rhi::vk
 
 #endif // RHI_VK_FRAMEBUFFER_H
