@@ -265,6 +265,40 @@ auto main() -> int
     }
     std::cout << "Command buffers allocated.\n";
 
+    {
+        auto command_buffers = std::move(expected_buffers.unwrap());
+        auto& command_buffer = command_buffers[0];
+
+        command_buffer->begin();
+        command_buffer->beginRenderPass(rhi::RenderPassBeginInfo {
+            .renderpass = renderpass,
+            .framebuffer = framebuffer,
+            .render_area = {
+                .offset = { .x = 0, .y = 0 },
+                .extent = image_extent
+            },
+            .clear_color = rhi::ClearColorValue{ .r = 0.2, .g = 0.3, .b = 0.4, .a = 1.0 }
+        });
+
+        command_buffer->bindPipeline(rhi::PipelineBindPoint::Graphics, pipeline);
+        command_buffer->setViewport(rhi::ViewportDescription {
+            .width = static_cast<float>(image_extent.width),
+            .height = static_cast<float>(image_extent.height),
+            .x = 0.0f,
+            .y = 0.0f,
+            .min_depth = 0.0f,
+            .max_depth = 1.0f,
+        });
+        command_buffer->setScissor(rhi::Rect2D {
+            .x = 0,
+            .y = 0,
+            .extent = image_extent
+        });
+        command_buffer->draw(3);
+        command_buffer->endRenderPass();
+        command_buffer->end();
+    }
+
     graphics_pool.destroy();
     pipeline.destroy();
     frag_module.destroy();
