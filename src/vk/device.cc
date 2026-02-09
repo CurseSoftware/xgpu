@@ -333,7 +333,7 @@ namespace rhi::vk
         return Device::create(device_info);
     }
 
-    auto Device::graphicsFamilyIndex() const noexcept -> std::optional<std::uint32_t>
+    auto Device::graphics_queue() const noexcept -> std::optional<std::uint32_t>
     {
         if (!_graphics_queue)
         {
@@ -343,7 +343,7 @@ namespace rhi::vk
         return _graphics_queue->family_index;
     }
 
-    auto Device::transferFamilyIndex() const noexcept -> std::optional<std::uint32_t>
+    auto Device::transfer_queue() const noexcept -> std::optional<std::uint32_t>
     {
         if (!_transfer_queue)
         {
@@ -353,7 +353,7 @@ namespace rhi::vk
         return _transfer_queue->family_index;
     }
 
-    auto Device::computeFamilyIndex() const noexcept -> std::optional<std::uint32_t>
+    auto Device::compute_queue() const noexcept -> std::optional<std::uint32_t>
     {
         if (!_compute_queue)
         {
@@ -361,6 +361,11 @@ namespace rhi::vk
         }
 
         return _compute_queue->family_index;
+    }
+
+    auto Device::present_queue() const noexcept -> std::optional<std::uint32_t>
+    {
+        return std::nullopt;
     }
 
     auto Device::getMemoryTypeIndex(std::uint32_t type_bits, VkMemoryPropertyFlags flags) const noexcept -> std::optional<std::uint32_t>

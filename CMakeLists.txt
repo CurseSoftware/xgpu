@@ -32,9 +32,11 @@ set(RHI_SOURCES
     "${PROJECT_SOURCE_DIR}/src/shader.cc"
     "${PROJECT_SOURCE_DIR}/src/image_view.cc"
     "${PROJECT_SOURCE_DIR}/src/framebuffer.cc"
+    "${PROJECT_SOURCE_DIR}/src/command.cc"
     "${PROJECT_SOURCE_DIR}/src/core/log.cc"
 
     "${PROJECT_SOURCE_DIR}/src/vk/instance.cc"
+    "${PROJECT_SOURCE_DIR}/src/vk/command.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/validation.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/debug.cc"
     "${PROJECT_SOURCE_DIR}/src/vk/device.cc"

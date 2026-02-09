@@ -257,6 +257,14 @@ auto main() -> int
     }
     auto graphics_pool = expected_graphics_pool.unwrap();
 
+    auto expected_buffers = graphics_pool.allocateBuffers(2);
+    if (!expected_buffers.has_value())
+    {
+        std::cerr << "Failed to allocate command buffers: " << expected_buffers.unwrap_error().message << '\n';
+        return 1;
+    }
+    std::cout << "Command buffers allocated.\n";
+
     graphics_pool.destroy();
     pipeline.destroy();
     frag_module.destroy();

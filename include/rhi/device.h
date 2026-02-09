@@ -7,6 +7,7 @@
 #include "rhi/instance.h"
 #include "rhi/platform.h"
 #include "rhi/vk/device_context.h"
+#include "types.h"
 #include <memory>
 #include <variant>
 namespace rhi
@@ -39,8 +40,12 @@ namespace rhi
         public:
             virtual auto destroy() noexcept -> void = 0;
 
-            virtual auto backend() noexcept -> Backend = 0;
+            [[nodiscard]] virtual auto backend() noexcept -> Backend = 0;
 
+            [[nodiscard]] virtual auto graphics_queue() const noexcept -> std::optional<std::uint32_t> = 0;
+            [[nodiscard]] virtual auto compute_queue() const noexcept -> std::optional<std::uint32_t> = 0;
+            [[nodiscard]] virtual auto present_queue() const noexcept -> std::optional<std::uint32_t> = 0;
+            [[nodiscard]] virtual auto transfer_queue() const noexcept -> std::optional<std::uint32_t> = 0;
     };
 
     class [[nodiscard]] Device : public IDevice
@@ -54,6 +59,14 @@ namespace rhi
             auto backend() noexcept -> Backend override { return _handle->backend(); }
 
             [[nodiscard]] auto handle() noexcept -> IDevice* { return _handle.get(); }
+
+            [[nodiscard]] auto graphics_queue() const noexcept -> std::optional<std::uint32_t> override { return _handle->graphics_queue(); }
+
+            [[nodiscard]] auto compute_queue() const noexcept -> std::optional<std::uint32_t> override { return _handle->compute_queue(); }
+
+            [[nodiscard]] auto present_queue() const noexcept -> std::optional<std::uint32_t> override { return _handle->present_queue(); }
+
+            [[nodiscard]] auto transfer_queue() const noexcept -> std::optional<std::uint32_t> override { return _handle->transfer_queue(); }
         
         private:
             explicit Device() noexcept = default;

@@ -47,10 +47,10 @@ namespace rhi::vk
 
             [[nodiscard]] auto backend() noexcept -> Backend override { return Backend::Vulkan; }
 
-            [[nodiscard]] auto graphicsFamilyIndex() const noexcept -> std::optional<std::uint32_t>;
-            [[nodiscard]] auto computeFamilyIndex() const noexcept -> std::optional<std::uint32_t>;
-            [[nodiscard]] auto transferFamilyIndex() const noexcept -> std::optional<std::uint32_t>;
-            [[nodiscard]] auto presentFamilyIndex() const noexcept -> std::optional<std::uint32_t>;
+            [[nodiscard]] auto graphics_queue() const noexcept -> std::optional<std::uint32_t> override;
+            [[nodiscard]] auto compute_queue() const noexcept -> std::optional<std::uint32_t> override;
+            [[nodiscard]] auto transfer_queue() const noexcept -> std::optional<std::uint32_t> override;
+            [[nodiscard]] auto present_queue() const noexcept -> std::optional<std::uint32_t> override;
 
             [[nodiscard]] auto handle() const noexcept -> VkDevice { return _handle; }
 

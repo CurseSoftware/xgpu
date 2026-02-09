@@ -6,6 +6,13 @@
 
 namespace rhi
 {
+    enum class QueueFamilyIndex
+    {
+        Graphics,
+        Present,
+        Compute
+    };
+
     enum class Topology : std::uint32_t
     {
         PointList                  = 0,
