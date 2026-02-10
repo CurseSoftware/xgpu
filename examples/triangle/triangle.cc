@@ -13,6 +13,7 @@
 #include "rhi/types.h"
 #include <array>
 #include <cstddef>
+#include <cstdio>
 #include <fstream>
 #include <functional>
 #include <ios>
@@ -23,7 +24,10 @@
 #include <string_view>
 #include <vector>
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 
 auto readShader(const std::string& filepath) -> std::vector<char8_t>;
 
@@ -46,7 +50,7 @@ struct Vertex
                 .binding = 0,
                 .offset = offsetof(Vertex, position),
                 .location = 0,
-                .format = rhi::Format::RGB32_FLOAT,
+                .format = rhi::Format::RGBA8_UINT,
             },
         });
     }
@@ -61,8 +65,8 @@ static constexpr auto g_vertices = std::to_array<Vertex>({
 auto main() -> int
 {
     rhi::Extent2D image_extent {
-        .width = 600,
-        .height = 800,
+        .width = 800,
+        .height = 600,
     };
 
     rhi::InstanceContext instance_ctx = rhi::vk::InstanceContext {
@@ -94,7 +98,7 @@ auto main() -> int
     auto device = device_exp.unwrap();
 
     rhi::OpenAttachmentDescription color_attachment {
-        .format = rhi::Format::RGB32_FLOAT,
+        .format = rhi::Format::RGBA8_UINT,
         .load_operation = rhi::LoadOperation::Clear,
         .store_operation = rhi::StoreOperation::Store,
 
@@ -105,7 +109,8 @@ auto main() -> int
             .store_operation = rhi::StoreOperation::DontCare
         },
 
-        .final_layout = rhi::ImageLayout::Present
+        // .final_layout = rhi::ImageLayout::Present
+        .final_layout = rhi::ImageLayout::ColorOptimal
     };
 
     rhi::ImageViewDescription image_view_desc {
@@ -114,11 +119,11 @@ auto main() -> int
             .height = image_extent.height,
             .depth = 1
         },
-        .format = rhi::Format::RGB32_FLOAT,
+        .format = rhi::Format::RGBA8_UINT,
         .mip_levels = 1,
         .array_layers = 1,
         .image_type = rhi::ImageType::Type2D,
-        .usage = rhi::ImageUsage::ColorAttachment(),
+        .usage = rhi::ImageUsage::ColorAttachment() | rhi::ImageUsage::TransferDst() | rhi::ImageUsage::TransferSrc(),
         .tiling = rhi::ImageTiling::Optimal,
         .initial_layout = rhi::ImageLayout::Undefined,
         .aspect = rhi::ImageAspectFlags::Color(),
@@ -143,7 +148,8 @@ auto main() -> int
                 .attachments = { 
                     { .index = 0, .type = rhi::AttachmentType::Color }
                 }
-            }
+
+            },
         }
     );
     if (!renderpass_exp.has_value())
@@ -164,7 +170,6 @@ auto main() -> int
     auto expected_framebuffer = rhi::Framebuffer::create(device, framebuffer_desc);
     if (!expected_framebuffer.has_value())
     {
-        rhi::log::error("HERE3");
         std::cerr << "Failed to create framebuffer: " << expected_framebuffer.unwrap_error().message << '\n';
         return 1;
     }
@@ -226,7 +231,11 @@ auto main() -> int
         }),
         
         .color_blend = {
-            .attachments = std::array<rhi::ColorBlendAttachmentStateDescription, 1>()
+            .attachments = std::array<rhi::ColorBlendAttachmentStateDescription, 1>({
+                rhi::ColorBlendAttachmentStateDescription {
+                    .color_blend_op = rhi::BlendOperator::Add
+                }
+            })
         },
         .dynamic_state = {
             .states = std::to_array<rhi::PipelineDynamicState>({
@@ -280,7 +289,7 @@ auto main() -> int
                 .offset = { .x = 0, .y = 0 },
                 .extent = image_extent
             },
-            .clear_color = rhi::ClearColorValue{ .r = 0.2, .g = 0.3, .b = 0.4, .a = 1.0 }
+            .clear_color = rhi::ClearColorValue{ .r = 100, .g = 100, .b = 255, .a = 255 }
         });
 
         command_buffer->bindPipeline(rhi::PipelineBindPoint::Graphics, pipeline);
@@ -299,23 +308,62 @@ auto main() -> int
         });
         command_buffer->draw(/* num_vertices */ 3);
         command_buffer->endRenderPass();
-        command_buffer->end();
-    }
 
-    // Get the data from the framebuffer
-    {
         std::uint32_t bytes_per_pixel { 4 };
         std::size_t bytes_per_row = image_extent.width * bytes_per_pixel;
         std::size_t bytes_per_image = bytes_per_row * image_extent.height;
-        
+        std::cout << "Bytes per pixel: " << bytes_per_pixel << '\n';
+        std::cout << "Bytes per row: " << bytes_per_row << '\n';
+        std::cout << "Bytes per image: " << bytes_per_image << '\n';
+
         auto expected_buffer = rhi::Buffer::create(device, rhi::BufferDescription {
             .size = bytes_per_image,
-            .usage = rhi::BufferUsageFlags::CopyDst(),
+            .usage = rhi::BufferUsageFlags::CopyDst() | rhi::BufferUsageFlags::Storage(),
             .mapping = rhi::BufferMapping::MapRead
         });
 
         auto buffer = expected_buffer.unwrap();
 
+        // Get the data from the framebuffer
+        {
+            command_buffer->memoryBarrier(rhi::TextureBarrierDescription {
+                .texture = image_view,
+                .src_stage = rhi::PipelineStage::Transfer,
+                .dst_stage = rhi::PipelineStage::Transfer,
+                .mip_level = 0,
+                .base_array_layer = 0,
+                .extent = {
+                    .width = image_extent.width,
+                    .height = image_extent.height,
+                    .depth = 1
+                },
+            });
+
+            command_buffer->copyTextureToBuffer(
+                rhi::TextureCopyDescription {
+                    .image = image_view,
+                    .mip_level = 0,
+                    .base_array_layer = 0,
+                    .extent = {
+                        .width = image_extent.width,
+                        .height = image_extent.height,
+                        .depth = 1
+                    },
+                }, 
+                buffer
+            );
+
+            command_buffer->end();
+            device.submitSingle(rhi::QueueFamilyIndex::Graphics, command_buffer.get());
+            device.waitIdle();
+
+            void* image_data { nullptr };
+            buffer.map(&image_data, bytes_per_image);
+            // buffer.map(reinterpret_cast<void*>(image_data.data()), image_data.size());
+            stbi_write_png("triangle.png", image_extent.width, image_extent.height, 4, image_data, bytes_per_row);
+            buffer.unmap();
+        }
+        
         buffer.destroy();
     }
 

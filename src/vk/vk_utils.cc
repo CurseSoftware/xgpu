@@ -1,6 +1,9 @@
 #include "vk/vk_utils.h"
+#include "core/log.h"
 #include "types.h"
+#include <algorithm>
 #include <cstdint>
+#include <iostream>
 #include <vulkan/vulkan_core.h>
 
 namespace rhi::vk
@@ -68,8 +71,10 @@ namespace rhi::vk
             case BufferUsageFlagBits::CopySrc:
                 return VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
             case BufferUsageFlagBits::CopyDst:
+                log::debug("Buffer transfer dst");
                 return VK_BUFFER_USAGE_TRANSFER_DST_BIT;
             case BufferUsageFlagBits::Storage:
+                log::debug("Buffer STORAGE");
                 return VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
             case BufferUsageFlagBits::Uniform:
                 return VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
@@ -106,11 +111,6 @@ namespace rhi::vk
         if (bits & BufferUsageFlags::CopyDst().get())
         {
             result |= converBufferUsageFlagBits(BufferUsageFlagBits::CopyDst);
-        }
-
-        if (bits & BufferUsageFlags::Storage().get())
-        {
-            result |= converBufferUsageFlagBits(BufferUsageFlagBits::Storage);
         }
 
         if (bits & BufferUsageFlags::Storage().get())
@@ -171,16 +171,19 @@ namespace rhi::vk
 
         if (bits & ImageUsage::TransferDst().get())
         {
+            std::cout << "VK_IMAGE_USAGE_TRANSFER_DST_BIT\n";
             result |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
         }
 
         if (bits & ImageUsage::TransferSrc().get())
         {
+            std::cout << "VK_IMAGE_USAGE_TRANSFER_SRC_BIT\n";
             result |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
         }
 
         if (bits & ImageUsage::ColorAttachment().get())
         {
+            std::cout << "VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT\n";
             result |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
         }
 

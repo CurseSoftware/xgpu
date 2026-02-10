@@ -37,6 +37,7 @@ namespace rhi::vk
                 Buffer& dest
             ) noexcept -> std::optional<Error> override;
 
+            [[nodiscard]] auto handle() -> VkCommandBuffer { return _handle; }
         
         private:
             [[nodiscard]] explicit CommandBuffer(VkDevice device, VkCommandBuffer buffer)

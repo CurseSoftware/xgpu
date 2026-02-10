@@ -21,10 +21,12 @@ namespace rhi::vk
             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT
             | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
         };
+        /*
         if (description.mapping == BufferMapping::MapRead)
         {
             memory_properties |= VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
         }
+        */
 
         VkBufferCreateInfo create_info {
             .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
@@ -32,6 +34,7 @@ namespace rhi::vk
             .usage = convertBufferUsage(description.usage),
             .sharingMode = VK_SHARING_MODE_EXCLUSIVE,
         };
+        log::debug("Buffer size: {}", create_info.size);
 
         const VkResult create_result = vkCreateBuffer(
             vk_device->handle(), 
@@ -59,14 +62,29 @@ namespace rhi::vk
             return unexpected( Error("vkAllocateMemory != VK_SUCCESS") );
         }
 
-        vkBindBufferMemory(vk_device->handle(), buffer._handle, buffer._memory, /* offset */ 0);
+        const VkResult bind_result = vkBindBufferMemory(vk_device->handle(), buffer._handle, buffer._memory, /* offset */ 0);
+        if (bind_result != VK_SUCCESS)
+        {
+            return unexpected( Error("vkBindBufferMemory != VK_SUCCESS") );
+        }
 
         return ok(buffer);
     }
 
-    auto Buffer::map(void* data, std::size_t size) noexcept -> void
+    auto Buffer::map(void** data, std::size_t size) noexcept -> void
     {
-        vkMapMemory(_device, _memory, 0, size, 0, &data);
+        //const VkResult result = vkMapMemory(_device, _memory, 0, size, 0, &data);
+
+        log::debug("Mapping {} bytes from buffer data", size);
+        const VkResult result = vkMapMemory(_device, _memory, 0, (VkDeviceSize)size, 0, data);
+        if (result != VK_SUCCESS)
+        {
+            log::error("vkMapMemoryFailed with result {}", static_cast<std::uint32_t>(result));
+        }
+        if (data == nullptr)
+        {
+            log::error("Mapped is nullptr");
+        }
     }
 
     auto Buffer::unmap() noexcept -> void
@@ -76,11 +94,11 @@ namespace rhi::vk
 
     auto Buffer::destroy() noexcept -> void
     {
-        log::trace("Freeing buffer memory...");
-        vkFreeMemory(_device, _memory, nullptr);
-        log::trace("Freed.");
         log::trace("Destroying buffer...");
         vkDestroyBuffer(_device, _handle, nullptr);
         log::trace("Destroyed.");
+        log::trace("Freeing buffer memory...");
+        vkFreeMemory(_device, _memory, nullptr);
+        log::trace("Freed.");
     }
 } // namespace rhi::vk

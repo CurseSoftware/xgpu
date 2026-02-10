@@ -10,7 +10,7 @@ namespace rhi
 
     // This is a utility for creating an interface where rhi flags can be used
     // agnostic of the underlying graphics API
-    template <ValidFlagType T>
+    template <typename Derived, ValidFlagType T>
     class Flags
     {
         // Info
@@ -25,26 +25,28 @@ namespace rhi
             constexpr Flags(ValueType value)
                 : _value{ value }
             {}
+
+            constexpr operator ValueType() const { return _value; }
         
         // Operator overloads
         public:
-            constexpr auto operator|(Flags rhs) -> Flags
+            constexpr auto operator|(Flags rhs) const -> Derived
             {
-                return Flags(_value | rhs._value);
+                return Derived(_value | rhs._value);
             }
 
-            constexpr auto operator&(Flags rhs) -> Flags
+            constexpr auto operator&(Flags rhs) const -> Derived& 
             {
-                return Flags(_value & rhs._value);
+                return Derived(_value & rhs._value);
             }
 
-            constexpr auto operator|=(Flags rhs) -> Flags&
+            constexpr auto operator|=(Flags rhs) -> Derived&
             {
                 _value |= rhs._value;
                 return *this;
             }
 
-            constexpr auto operator&=(Flags rhs) -> Flags&
+            constexpr auto operator&=(Flags rhs) -> Derived&
             {
                 _value &= rhs._value;
                 return *this;

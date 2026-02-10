@@ -104,6 +104,9 @@ namespace rhi
                 return _handle->copyTextureToBuffer(texture_copy, dest);
             }
 
+            template <typename T>
+            auto get_as() const noexcept -> T* { return dynamic_cast<T*>(_handle.get()); }
+
         // Private special members
         private:
             [[nodiscard]] explicit CommandBuffer() noexcept = default;
@@ -138,6 +141,9 @@ namespace rhi
             auto destroy() noexcept -> void { _handle->destroy(); }
 
             auto allocateBuffers(std::uint32_t num_buffers) noexcept -> expected<std::vector<std::unique_ptr<ICommandBuffer>>, Error> { return std::move(_handle->allocateBuffers(num_buffers)); }
+
+            template <typename T>
+            auto get_as() const noexcept -> T* { return dynamic_cast<T*>(_handle.get()); }
 
         private:
             std::unique_ptr<ICommandPool> _handle { nullptr };

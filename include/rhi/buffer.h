@@ -24,7 +24,7 @@ namespace rhi
         public:
             virtual auto destroy() noexcept -> void = 0;
 
-            virtual auto map(void* dst, std::size_t size) noexcept -> void = 0;
+            virtual auto map(void** dst, std::size_t size) noexcept -> void = 0;
 
             virtual auto unmap() noexcept -> void = 0;
     };
@@ -35,7 +35,7 @@ namespace rhi
             // NOTE: we do not use `const&` here because description is cheap to copy
             static auto create(Device& device, BufferDescription description) noexcept -> expected<Buffer, Error>;
 
-            auto map(void* dst, std::size_t size) noexcept -> void override { _handle->map(dst, size); }
+            auto map(void** dst, std::size_t size) noexcept -> void override { _handle->map(dst, size); }
 
             auto unmap() noexcept -> void override { _handle->unmap(); }
 

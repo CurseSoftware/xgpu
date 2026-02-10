@@ -115,10 +115,10 @@ namespace rhi::vk
         if (info.clear_color)
         {
             num_clears++;
-            clear_values[0].color.float32[0] = info.clear_color->r;
-            clear_values[0].color.float32[1] = info.clear_color->g;
-            clear_values[0].color.float32[2] = info.clear_color->r;
-            clear_values[0].color.float32[3] = info.clear_color->a;
+            clear_values[0].color.uint32[0] = info.clear_color->r;
+            clear_values[0].color.uint32[1] = info.clear_color->g;
+            clear_values[0].color.uint32[2] = info.clear_color->r;
+            clear_values[0].color.uint32[3] = info.clear_color->a;
         }
         else
         {
@@ -242,7 +242,7 @@ namespace rhi::vk
             .srcAccessMask = VK_ACCESS_MEMORY_READ_BIT,
             .dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT,
             .oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-            .newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            .newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
             .srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
             .dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
             .image = vk_image_view->image(),
@@ -298,7 +298,7 @@ namespace rhi::vk
             .imageExtent = {
                 .width = texture_copy.extent.width,
                 .height = texture_copy.extent.height,
-                .depth = texture_copy.extent.depth
+                .depth = 1
             },
         };
 

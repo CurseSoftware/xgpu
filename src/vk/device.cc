@@ -1,8 +1,11 @@
 #include "rhi/vk/device.h"
+#include "pipeline_layout.h"
 #include "rhi/core.h"
 #include "core/log.h"
 #include "device.h"
 #include "rhi/vk/core.h"
+#include "types.h"
+#include "vk/command.h"
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -382,6 +385,52 @@ namespace rhi::vk
         }
 
         return std::nullopt;
+    }
+
+    auto Device::submitSingle(QueueFamilyIndex queue, ICommandBuffer* command_buffer) noexcept -> std::optional<Error>
+    {
+        auto vk_buffer = dynamic_cast<vk::CommandBuffer*>(command_buffer);
+        if (!vk_buffer)
+        {
+            return Error("failed to get vk::CommandBuffer from rhi::CommandBuffer");
+        }
+
+        auto maybe_queue = [&]() -> std::optional<Queue> {
+            if (queue == QueueFamilyIndex::Graphics)
+            {
+                return _graphics_queue;
+            }
+            else if (queue == QueueFamilyIndex::Compute)
+            {
+                return _compute_queue;
+            }
+
+            return _transfer_queue;
+        }();
+        if (!maybe_queue)
+        {
+            return Error("No vaLid queue for queue family index");
+        }
+
+        VkCommandBuffer buffer = vk_buffer->handle();
+
+        VkSubmitInfo submit_info {
+            .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+            .commandBufferCount = 1,
+            .pCommandBuffers = &buffer,
+
+            // TODO: add semaphore support
+        };
+
+        VkFence fence { VK_NULL_HANDLE };
+        vkQueueSubmit(maybe_queue.value().queue, 1, &submit_info, fence);
+
+        return std::nullopt;
+    }
+
+    auto Device::waitIdle() const noexcept -> void
+    {
+        vkDeviceWaitIdle(_handle);
     }
 
     auto Device::destroy() noexcept -> void

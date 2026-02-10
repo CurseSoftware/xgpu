@@ -185,19 +185,21 @@ namespace rhi
 
     enum class ImageUsageFlagBits : std::uint32_t
     {
-        TransferSrc            = 0,
-        TransferDst            = 1 << 0,
-        Sampled                = 1 << 1,
-        Storage                = 1 << 2,
-        ColorAttachment        = 1 << 3,
-        DepthStencilAttachment = 1 << 4,
-        InputAttachment        = 1 << 5,
+        TransferSrc            = 1 << 0,
+        TransferDst            = 1 << 1,
+        Sampled                = 1 << 2,
+        Storage                = 1 << 3,
+        ColorAttachment        = 1 << 4,
+        DepthStencilAttachment = 1 << 5,
+        InputAttachment        = 1 << 6,
     };
 
-    class ImageUsage : public Flags<std::uint32_t>
+    class ImageUsage : public Flags<ImageUsage, std::uint32_t>
     {
         public:
             using Flags::Flags;
+            constexpr ImageUsage(ImageUsageFlagBits bits) : Flags(static_cast<std::uint32_t>(bits)) {}
+
             static constexpr auto TransferSrc()            -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::TransferSrc)); }
             static constexpr auto TransferDst()            -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::TransferDst)); }
             static constexpr auto Sampled()                -> ImageUsage { return ImageUsage(static_cast<std::uint32_t>(ImageUsageFlagBits::Sampled)); }
@@ -209,13 +211,13 @@ namespace rhi
 
     enum class ImageAspectFlagBits : std::uint32_t
     {
-        AspectNone = 0,
-        Color      = 1 << 0,
-        Depth      = 1 << 1,
-        Stencil    = 1 << 2,
+        AspectNone = 1 << 0,
+        Color      = 1 << 1,
+        Depth      = 1 << 2,
+        Stencil    = 1 << 3,
     };
 
-    class ImageAspectFlags : public Flags<std::uint32_t>
+    class ImageAspectFlags : public Flags<ImageAspectFlags, std::uint32_t>
     {
         public:
             using Flags::Flags;
@@ -324,18 +326,18 @@ namespace rhi
     
     enum class BufferUsageFlagBits : std::uint32_t
     {
-        Vertex       = 0,
-        Index        = 1 << 0,
-        Uniform      = 1 << 1,
-        Storage      = 1 << 2,
-        CopySrc      = 1 << 3,
-        CopyDst      = 1 << 4,
-        MapRead      = 1 << 5,
-        MapWrite     = 1 << 6,
-        Indirect     = 1 << 7,
+        Vertex       = 1 << 0,
+        Index        = 1 << 1,
+        Uniform      = 1 << 2,
+        Storage      = 1 << 3,
+        CopySrc      = 1 << 4,
+        CopyDst      = 1 << 5,
+        MapRead      = 1 << 6,
+        MapWrite     = 1 << 7,
+        Indirect     = 1 << 8,
     };
 
-    class BufferUsageFlags : public Flags<std::uint32_t>
+    class BufferUsageFlags : public Flags<BufferUsageFlags, std::uint32_t>
     {
         public:
             using Flags::Flags;
@@ -350,8 +352,8 @@ namespace rhi
 
     enum class BufferMapping : std::uint32_t
     {
-        MapRead  = 0,
-        MapWrite = 1 << 0,
+        MapRead  = 1 << 0,
+        MapWrite = 1 << 1,
     };
 
     enum class PipelineStage

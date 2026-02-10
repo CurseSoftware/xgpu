@@ -15,7 +15,7 @@ namespace rhi::vk
             static auto create(Device& device, BufferDescription description) noexcept -> expected<vk::Buffer, Error>;
 
         public:
-            auto map(void* dst, std::size_t size) noexcept -> void override;
+            auto map(void** dst, std::size_t size) noexcept -> void override;
 
             auto unmap() noexcept -> void override;
 
