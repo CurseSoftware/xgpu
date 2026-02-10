@@ -37,6 +37,9 @@ namespace rhi
         public:
             auto destroy() noexcept -> void override { _handle->destroy(); }
 
+            template<typename T>
+            [[nodiscard]] auto get_as() noexcept -> T* { return dynamic_cast<T*>(_handle.get()); }
+
         // Private special members
         private:
             [[nodiscard]] explicit Framebuffer() noexcept = default;

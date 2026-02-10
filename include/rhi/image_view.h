@@ -44,6 +44,9 @@ namespace rhi
 
             [[nodiscard]] auto handle() const noexcept -> IImageView* { return _handle.get(); }
 
+            template <typename T>
+            [[nodiscard]] auto get_as() const noexcept -> T* { return dynamic_cast<T*>(_handle.get()); }
+
         private:
             ImageView() = default;
 

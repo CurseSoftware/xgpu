@@ -273,6 +273,12 @@ namespace rhi
         Compute,
     };
 
+    enum class PipelineBindPoint
+    {
+        Graphics,
+        Compute,
+    };
+
     enum class AttachmentType : std::uint32_t
     {
         Color,
@@ -292,6 +298,72 @@ namespace rhi
         std::uint32_t width;
         std::uint32_t height;
         std::uint32_t depth { 1 };
+    };
+
+    struct Rect2D
+    {
+        std::int32_t x { 0 };
+        std::int32_t y { 0 };
+        Extent2D extent {};
+    };
+
+    struct ColorRGBA
+    {
+        float r { 0.0f };
+        float g { 0.0f };
+        float b { 0.0f };
+        float a { 1.0f };
+    };
+
+    using ClearColorValue = ColorRGBA;
+    struct DepthStencilClearValue
+    {
+        float depth;
+        std::uint32_t stencil;
+    };
+    
+    enum class BufferUsageFlagBits : std::uint32_t
+    {
+        Vertex       = 0,
+        Index        = 1 << 0,
+        Uniform      = 1 << 1,
+        Storage      = 1 << 2,
+        CopySrc      = 1 << 3,
+        CopyDst      = 1 << 4,
+        MapRead      = 1 << 5,
+        MapWrite     = 1 << 6,
+        Indirect     = 1 << 7,
+    };
+
+    class BufferUsageFlags : public Flags<std::uint32_t>
+    {
+        public:
+            using Flags::Flags;
+            static constexpr auto Vertex()       -> BufferUsageFlags { return BufferUsageFlags(static_cast<std::uint32_t>(BufferUsageFlagBits::Vertex)); }
+            static constexpr auto Index()        -> BufferUsageFlags { return BufferUsageFlags(static_cast<std::uint32_t>(BufferUsageFlagBits::Index)); }
+            static constexpr auto Uniform()      -> BufferUsageFlags { return BufferUsageFlags(static_cast<std::uint32_t>(BufferUsageFlagBits::Uniform)); }
+            static constexpr auto Storage()      -> BufferUsageFlags { return BufferUsageFlags(static_cast<std::uint32_t>(BufferUsageFlagBits::Storage)); }
+            static constexpr auto CopySrc()      -> BufferUsageFlags { return BufferUsageFlags(static_cast<std::uint32_t>(BufferUsageFlagBits::CopySrc)); }
+            static constexpr auto CopyDst()      -> BufferUsageFlags { return BufferUsageFlags(static_cast<std::uint32_t>(BufferUsageFlagBits::CopyDst)); }
+            static constexpr auto Indirect()     -> BufferUsageFlags { return BufferUsageFlags(static_cast<std::uint32_t>(BufferUsageFlagBits::Indirect)); }
+    };
+
+    enum class BufferMapping : std::uint32_t
+    {
+        MapRead  = 0,
+        MapWrite = 1 << 0,
+    };
+
+    enum class PipelineStage
+    {
+        Top,
+        Bottom,
+        Vertex,
+        Fragment,
+        Compute,
+        Transfer,
+        AllGraphics,
+
     };
 } // namespace rhi
 

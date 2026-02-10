@@ -67,6 +67,9 @@ namespace rhi
             [[nodiscard]] auto present_queue() const noexcept -> std::optional<std::uint32_t> override { return _handle->present_queue(); }
 
             [[nodiscard]] auto transfer_queue() const noexcept -> std::optional<std::uint32_t> override { return _handle->transfer_queue(); }
+
+            template <typename T>
+            [[nodiscard]] auto get_as() const noexcept -> T* { return dynamic_cast<T*>(_handle.get()); }
         
         private:
             explicit Device() noexcept = default;

@@ -1,3 +1,4 @@
+#include "rhi/buffer.h"
 #include "rhi/command.h"
 #include "rhi/core/log.h"
 #include "rhi/device.h"
@@ -21,6 +22,8 @@
 #include <stdexcept>
 #include <string_view>
 #include <vector>
+
+#include "stb_image.h"
 
 auto readShader(const std::string& filepath) -> std::vector<char8_t>;
 
@@ -294,9 +297,26 @@ auto main() -> int
             .y = 0,
             .extent = image_extent
         });
-        command_buffer->draw(3);
+        command_buffer->draw(/* num_vertices */ 3);
         command_buffer->endRenderPass();
         command_buffer->end();
+    }
+
+    // Get the data from the framebuffer
+    {
+        std::uint32_t bytes_per_pixel { 4 };
+        std::size_t bytes_per_row = image_extent.width * bytes_per_pixel;
+        std::size_t bytes_per_image = bytes_per_row * image_extent.height;
+        
+        auto expected_buffer = rhi::Buffer::create(device, rhi::BufferDescription {
+            .size = bytes_per_image,
+            .usage = rhi::BufferUsageFlags::CopyDst(),
+            .mapping = rhi::BufferMapping::MapRead
+        });
+
+        auto buffer = expected_buffer.unwrap();
+
+        buffer.destroy();
     }
 
     graphics_pool.destroy();

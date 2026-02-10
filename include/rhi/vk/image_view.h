@@ -26,6 +26,8 @@ namespace rhi::vk
 
             [[nodiscard]] auto layer_count() const noexcept -> std::uint32_t { return _detail.layer_count; }
 
+            [[nodiscard]] auto image() const noexcept -> VkImage { return _image; }
+
         // Private special members
         private:
             [[nodiscard]] explicit ImageView(VkDevice device) noexcept

@@ -5,6 +5,30 @@
 
 namespace rhi::vk
 {
+
+    auto convertPipelineStage(PipelineStage stage) -> VkPipelineStageFlags
+    {
+        switch (stage)
+        {
+            case PipelineStage::Top:
+                return VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+            case PipelineStage::Bottom:
+                return VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+            case PipelineStage::Vertex:
+                return VK_PIPELINE_STAGE_VERTEX_SHADER_BIT;
+            case PipelineStage::Fragment:
+                return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+            case PipelineStage::Transfer:
+                return VK_PIPELINE_STAGE_TRANSFER_BIT;
+            case PipelineStage::Compute:
+                return VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
+            case PipelineStage::AllGraphics:
+                return VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT;
+        }
+
+        return VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT;
+    }
+
     auto convertSharingMode(SharingMode mode) -> VkSharingMode
     {
         switch (mode)
@@ -31,6 +55,75 @@ namespace rhi::vk
         }
 
         return VK_IMAGE_TILING_MAX_ENUM;
+    }
+
+    auto converBufferUsageFlagBits(BufferUsageFlagBits bits) -> VkBufferUsageFlagBits
+    {
+        switch (bits)
+        {
+            case BufferUsageFlagBits::Vertex:
+                return VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+            case BufferUsageFlagBits::Index:
+                return VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+            case BufferUsageFlagBits::CopySrc:
+                return VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+            case BufferUsageFlagBits::CopyDst:
+                return VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+            case BufferUsageFlagBits::Storage:
+                return VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
+            case BufferUsageFlagBits::Uniform:
+                return VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+            case BufferUsageFlagBits::Indirect:
+                return VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT;
+            
+            default:
+                return VK_BUFFER_USAGE_FLAG_BITS_MAX_ENUM;
+        }
+
+        return VK_BUFFER_USAGE_FLAG_BITS_MAX_ENUM;
+    }
+    
+    auto convertBufferUsage(BufferUsageFlags flags) -> VkBufferUsageFlags
+    {
+        VkBufferUsageFlags result { 0 };
+        std::uint32_t bits = flags.get();
+
+        if (bits & BufferUsageFlags::Vertex().get())
+        {
+            result |= converBufferUsageFlagBits(BufferUsageFlagBits::Vertex);
+        }
+
+        if (bits & BufferUsageFlags::Index().get())
+        {
+            result |= converBufferUsageFlagBits(BufferUsageFlagBits::Index);
+        }
+
+        if (bits & BufferUsageFlags::CopySrc().get())
+        {
+            result |= converBufferUsageFlagBits(BufferUsageFlagBits::CopySrc);
+        }
+
+        if (bits & BufferUsageFlags::CopyDst().get())
+        {
+            result |= converBufferUsageFlagBits(BufferUsageFlagBits::CopyDst);
+        }
+
+        if (bits & BufferUsageFlags::Storage().get())
+        {
+            result |= converBufferUsageFlagBits(BufferUsageFlagBits::Storage);
+        }
+
+        if (bits & BufferUsageFlags::Storage().get())
+        {
+            result |= converBufferUsageFlagBits(BufferUsageFlagBits::Storage);
+        }
+
+        if (bits & BufferUsageFlags::Indirect().get())
+        {
+            result |= converBufferUsageFlagBits(BufferUsageFlagBits::Indirect);
+        }
+
+        return result;
     }
     
     auto convertImageAspect(ImageAspectFlags aspect) -> VkImageAspectFlags
@@ -554,6 +647,18 @@ namespace rhi::vk
         {
             case SubpassBindPoint::Graphics: return VK_PIPELINE_BIND_POINT_GRAPHICS;
             case SubpassBindPoint::Compute: return VK_PIPELINE_BIND_POINT_COMPUTE;
+        }
+
+        // Default to graphics. We should never get here anyway
+        return VK_PIPELINE_BIND_POINT_GRAPHICS;
+    }
+
+    auto getVulkanPipelineBindPoint(PipelineBindPoint bind_point) -> VkPipelineBindPoint
+    {
+        switch (bind_point)
+        {
+            case PipelineBindPoint::Graphics: return VK_PIPELINE_BIND_POINT_GRAPHICS;
+            case PipelineBindPoint::Compute: return VK_PIPELINE_BIND_POINT_COMPUTE;
         }
 
         // Default to graphics. We should never get here anyway

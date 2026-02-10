@@ -6,6 +6,7 @@
 #include "rhi/error.h"
 #include "rhi/expected.h"
 #include "rhi/device.h"
+#include <vulkan/vulkan_core.h>
 
 namespace rhi::vk
 {
@@ -19,6 +20,8 @@ namespace rhi::vk
         // API
         public:
             auto destroy() noexcept -> void override;
+
+            [[nodiscard]] auto handle() noexcept -> VkFramebuffer { return _handle; }
 
         // Private special members
         private:

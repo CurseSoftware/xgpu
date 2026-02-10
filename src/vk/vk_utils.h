@@ -53,9 +53,17 @@ namespace rhi::vk
 
     auto getVulkanPipelineBindPoint(SubpassBindPoint) -> VkPipelineBindPoint;
 
+    auto getVulkanPipelineBindPoint(PipelineBindPoint) -> VkPipelineBindPoint;
+
     auto convertImageLayout(ImageLayout) -> VkImageLayout;
 
     auto convertImageAspect(ImageAspectFlags) -> VkImageAspectFlags;
+
+    auto convertBufferUsage(BufferUsageFlags) -> VkBufferUsageFlags;
+
+    auto converBufferUsageFlagBits(BufferUsageFlagBits) -> VkBufferUsageFlagBits;
+
+    auto convertPipelineStage(PipelineStage) -> VkPipelineStageFlags;
 } // namespace rhi::vk
 
 #endif // RHI_VK_PRIV_VK_UTILS_H

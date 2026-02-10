@@ -20,6 +20,8 @@ namespace rhi::vk
 
             auto destroy() noexcept -> void override;
 
+            [[nodiscard]] auto handle() const noexcept -> VkPipeline { return _handle; }
+
         private:
             [[nodiscard]] explicit Pipeline(VkDevice device) noexcept
                 : _device{ device }
