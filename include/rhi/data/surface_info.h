@@ -10,7 +10,7 @@
 #elif defined(RHI_PLATFORM_APPLE)
 #endif // Platform Detection
 
-namespace rhi::data
+namespace xgpu::data
 {
     struct SurfaceInfo
     {
@@ -21,6 +21,6 @@ namespace rhi::data
 #elif defined(RHI_PLATFORM_APPLE)
 #endif // Platform Detection
     };
-} // namespace rhi::data
+} // namespace xgpu::data
 
 #endif // RHI_DATA_SURFACE_INFO_H

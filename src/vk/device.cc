@@ -1,4 +1,5 @@
 #include "rhi/vk/device.h"
+#include "rhi/vk/instance.h"
 #include "pipeline_layout.h"
 #include "rhi/core.h"
 #include "core/log.h"
@@ -14,7 +15,7 @@
 #include <optional>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     auto getQueueFamilies(VkPhysicalDevice physical_device) -> std::vector<VkQueueFamilyProperties>
     {
@@ -117,7 +118,7 @@ namespace rhi::vk
         return device_info;
     }
 
-    auto Device::create(const rhi::vk::DeviceContext& ctx) noexcept -> expected<Device, Error>
+    auto Device::create(const vk::DeviceContext& ctx) noexcept -> expected<Device, Error>
     {
         Device device {};
         std::vector<VkDeviceQueueCreateInfo> queue_create_infos {};
@@ -224,9 +225,9 @@ namespace rhi::vk
 
         return ok(device);
     }
-    auto Device::create_default(const rhi::DefaultDeviceContext& ctx) noexcept -> expected<Device, Error>
+    auto Device::create_default(const DefaultDeviceContext& ctx) noexcept -> expected<Device, Error>
     {
-        auto& vk_handle = *dynamic_cast<rhi::vk::Instance*>(ctx.instance.handle());
+        auto& vk_handle = *dynamic_cast<vk::Instance*>(ctx.instance.handle());
         auto available_devices = getPhysicalDevices(vk_handle.native_handle());
 
         // This is largely based on https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Physical_devices_and_queue_families
@@ -304,7 +305,7 @@ namespace rhi::vk
         }
         log::trace("Best device: {} with score of {}", best_info.properties.deviceName, scoreDevice(best_info));
 
-        rhi::vk::DeviceContext device_info {
+        vk::DeviceContext device_info {
             .physical_device = best_info.handle,
             .physical_device_features = best_info.features
         };
@@ -439,4 +440,4 @@ namespace rhi::vk
         vkDestroyDevice(_handle, nullptr);
         log::trace("Destroyed.");
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

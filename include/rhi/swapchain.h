@@ -5,7 +5,7 @@
 #include "rhi/expected.h"
 #include "rhi/swapchain_context.h"
 #include <memory>
-namespace rhi
+namespace xgpu
 {
     class ISwapChain
     {
@@ -21,6 +21,6 @@ namespace rhi
         private:
             std::unique_ptr<ISwapChain> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_SWAPCHAIN_H

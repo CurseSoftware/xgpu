@@ -4,7 +4,7 @@
 #include "vk/renderpass.h"
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
     auto Renderpass::create(
         Device &p_device,
@@ -46,4 +46,4 @@ namespace rhi
     
         return unexpected( Error("Unabled to create renderpass") );
     }
-} // namespace rhi
+} // namespace xgpu

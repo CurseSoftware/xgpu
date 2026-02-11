@@ -3,7 +3,7 @@
 #include <memory>
 #include <stdexcept>
 
-namespace rhi::log
+namespace xgpu::log
 {
     static std::shared_ptr<Logger> g_logger { nullptr };
 
@@ -36,4 +36,4 @@ namespace rhi::log
     {
         _err << message;
     }
-} // namespace rhi::log
+} // namespace xgpu::log

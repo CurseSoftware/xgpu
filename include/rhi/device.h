@@ -10,11 +10,11 @@
 #include "rhi/types.h"
 #include <memory>
 #include <variant>
-namespace rhi
+namespace xgpu
 {
     struct DefaultDeviceContext 
     {
-        rhi::Instance& instance;
+        xgpu::Instance& instance;
         Preference graphics_preference { true };
         Preference transfer_preference { false };
         Preference compute_preference { true };
@@ -86,6 +86,6 @@ namespace rhi
         private:
             std::unique_ptr<IDevice> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_DEVICE_H

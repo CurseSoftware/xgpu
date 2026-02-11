@@ -4,9 +4,9 @@
 
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
-    auto CommandPool::create(rhi::Device& device, const CommandPoolDescription description) noexcept -> expected<CommandPool, Error>
+    auto CommandPool::create(xgpu::Device& device, const CommandPoolDescription description) noexcept -> expected<CommandPool, Error>
     {
         CommandPool pool {};
 
@@ -38,4 +38,4 @@ namespace rhi
 
         return ok(pool);
     }
-} // namespace rhi
+} // namespace xgpu

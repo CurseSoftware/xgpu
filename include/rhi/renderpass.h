@@ -14,7 +14,7 @@
 #include <variant>
 #include <vector>
 
-namespace rhi
+namespace xgpu
 {
 
     struct OpenAttachmentDescription
@@ -79,6 +79,6 @@ namespace rhi
             std::unique_ptr<IRenderpass> _handle { nullptr };
             
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_RENDER_PASS_H

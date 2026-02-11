@@ -7,7 +7,7 @@
 #include "rhi/platform.h"
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
     class IInstance
     {
@@ -35,6 +35,6 @@ namespace rhi
         private:
             std::unique_ptr<IInstance> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_INSTANCE_H

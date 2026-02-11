@@ -6,9 +6,9 @@
 #include "vk/vk_utils.h"
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    auto PipelineLayout::from_open(rhi::Device &device, const rhi::PipelineLayoutDescription &description) noexcept -> expected<vk::PipelineLayout, Error>
+    auto PipelineLayout::from_open(xgpu::Device &device, const xgpu::PipelineLayoutDescription &description) noexcept -> expected<vk::PipelineLayout, Error>
     {
         auto* vk_device = dynamic_cast<vk::Device*>(device.handle());
         if (!vk_device)
@@ -73,7 +73,7 @@ namespace rhi::vk
         log::trace("Destroyed.");
     }
     
-    auto getVulkanDescriptorSetLayout(const rhi::DescriptorSetLayout& layout) noexcept -> expected<VkDescriptorSetLayout, Error>
+    auto getVulkanDescriptorSetLayout(const xgpu::DescriptorSetLayout& layout) noexcept -> expected<VkDescriptorSetLayout, Error>
     {
         auto* vk_descriptor_set_layout = dynamic_cast<vk::DescriptorSetLayout*>(layout.handle());
         if (!vk_descriptor_set_layout)
@@ -84,7 +84,7 @@ namespace rhi::vk
         return ok(vk_descriptor_set_layout->handle());
     }
     
-    auto getVulkanPushConstantRange(const rhi::PushConstantRange& push_constant) noexcept -> VkPushConstantRange
+    auto getVulkanPushConstantRange(const xgpu::PushConstantRange& push_constant) noexcept -> VkPushConstantRange
     {
         return VkPushConstantRange {
             .stageFlags = getVulkanShaderStageFlags(push_constant.shader_stage),
@@ -92,4 +92,4 @@ namespace rhi::vk
             .size = push_constant.size,
         };
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

@@ -8,13 +8,13 @@
 
 #include <span>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class ShaderModule : public IShaderModule
     {
         // Factory
         public:
-            static auto from_open(rhi::Device& device, std::span<char8_t> data) -> expected<vk::ShaderModule, Error>;
+            static auto from_open(xgpu::Device& device, std::span<char8_t> data) -> expected<vk::ShaderModule, Error>;
 
         // API
         public:
@@ -43,6 +43,6 @@ namespace rhi::vk
             VkShaderModule _handle   { VK_NULL_HANDLE };
             std::span<char8_t> _code {};
     };
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_VK_SHADER_H

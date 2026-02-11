@@ -3,7 +3,7 @@
 #include "vk/framebuffer.h"
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
     auto Framebuffer::create(Device &device, const FramebufferDescription &description) noexcept -> expected<Framebuffer, Error>
     {
@@ -33,4 +33,4 @@ namespace rhi
 
         return ok(framebuffer);
     }
-} // namespace rhi
+} // namespace xgpu

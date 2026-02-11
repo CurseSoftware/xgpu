@@ -2,10 +2,9 @@
 #include "expected.h"
 #include "platform.h"
 #include "vk/device.h"
-#include <iostream>
 #include <variant>
 
-namespace rhi
+namespace xgpu
 {
     auto Device::create(const DeviceContext &ctx) noexcept -> expected<Device, Error>
     {
@@ -43,4 +42,4 @@ namespace rhi
 
         return ok(device);
     }
-} // namespace rhi
+} // namespace xgpu

@@ -9,13 +9,11 @@
 #include "vk/extension.h"
 #include "vk/instance.h"
 
-#include <memory>
-#include <variant>
 #include <vector>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    auto rhi::vk::Instance::create(const rhi::vk::InstanceContext& ctx) noexcept -> expected<rhi::vk::Instance, Error>
+    auto Instance::create(const vk::InstanceContext& ctx) noexcept -> expected<Instance, Error>
     {
         Instance inst = Instance();
         VkDebugUtilsMessengerCreateInfoEXT debug_create_info = DebugMessenger::create_info();
@@ -29,13 +27,13 @@ namespace rhi::vk
 
         const bool use_debug
             = ctx.enable_debug
-            && instance_extension_handler.isSupported(rhi::vk::DEBUG_EXTENSION_NAME);
+            && instance_extension_handler.isSupported(vk::DEBUG_EXTENSION_NAME);
 
         if (use_debug)
         {
             log::debug("Enabling Vulkan debug capabilities");
-            requested_extensions.emplace_back(true, rhi::vk::DEBUG_EXTENSION_NAME);
-            requested_layers.emplace_back(true, rhi::vk::DEBUG_LAYER_NAME);
+            requested_extensions.emplace_back(true, vk::DEBUG_EXTENSION_NAME);
+            requested_layers.emplace_back(true, vk::DEBUG_LAYER_NAME);
         }
 
         requested_extensions.emplace_back(true, VK_KHR_SURFACE_EXTENSION_NAME);
@@ -113,4 +111,4 @@ namespace rhi::vk
         log::trace("Destroyed.");
     }
 
-} // namespace rhi::vk
+} // namespace xgpu::vk

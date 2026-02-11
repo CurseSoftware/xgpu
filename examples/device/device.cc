@@ -6,10 +6,10 @@
 
 auto main() -> int
 {
-    rhi::InstanceContext instance_ctx = rhi::vk::InstanceContext {
+    xgpu::InstanceContext instance_ctx = xgpu::vk::InstanceContext {
         .enable_debug = true
     };
-    auto inst_exp = rhi::Instance::create(instance_ctx);
+    auto inst_exp = xgpu::Instance::create(instance_ctx);
     if (!inst_exp.has_value())
     {
         std::cerr << "Failed to create instance: " << inst_exp.unwrap_error().message << '\n';
@@ -18,17 +18,17 @@ auto main() -> int
 
     auto inst = inst_exp.unwrap();
 
-    rhi::DefaultDeviceContext device_ctx { 
+    xgpu::DefaultDeviceContext device_ctx { 
         .instance = inst,
-        .graphics_preference = rhi::Preference::Required,
-        .transfer_preference = rhi::Preference::Required,
-        .compute_preference = rhi::Preference::NoPreference
+        .graphics_preference = xgpu::Preference::Required,
+        .transfer_preference = xgpu::Preference::Required,
+        .compute_preference = xgpu::Preference::NoPreference
     };
 
-    auto device_exp = rhi::Device::create(device_ctx);
+    auto device_exp = xgpu::Device::create(device_ctx);
     if (!device_exp.has_value())
     {
-        std::cerr << "Failed to create rhi device: " << device_exp.unwrap_error().message << '\n';
+        std::cerr << "Failed to create xgpu device: " << device_exp.unwrap_error().message << '\n';
         return 1;
     }
 

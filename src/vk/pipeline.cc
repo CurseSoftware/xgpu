@@ -15,9 +15,9 @@
 #include <functional>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    auto Pipeline::from_open(rhi::Device& p_device, const GraphicsPipelineDescription& p_description) noexcept -> expected<vk::Pipeline, Error>
+    auto Pipeline::from_open(xgpu::Device& p_device, const GraphicsPipelineDescription& p_description) noexcept -> expected<vk::Pipeline, Error>
     {
         auto* vk_device = dynamic_cast<vk::Device*>(p_device.handle());
         if (!vk_device)
@@ -115,7 +115,7 @@ namespace rhi::vk
         log::trace("Destroyed.");
     }
 
-    auto getVulkanPipelineLayout(const rhi::PipelineLayout& layout) noexcept -> expected<VkPipelineLayout, Error>
+    auto getVulkanPipelineLayout(const xgpu::PipelineLayout& layout) noexcept -> expected<VkPipelineLayout, Error>
     {
         auto* expected_layout = dynamic_cast<vk::PipelineLayout*>(layout.handle());
         if (!expected_layout)
@@ -126,7 +126,7 @@ namespace rhi::vk
         return ok(expected_layout->handle());
     }
     
-    auto getVulkanShaderStageInfos(const std::unordered_map<ShaderStageFlags, std::reference_wrapper<rhi::ShaderModule>>& shader_modules) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>
+    auto getVulkanShaderStageInfos(const std::unordered_map<ShaderStageFlags, std::reference_wrapper<xgpu::ShaderModule>>& shader_modules) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>
     {
         std::vector<VkPipelineShaderStageCreateInfo> infos {};
         for (const auto& [stage, module] : shader_modules)
@@ -423,4 +423,4 @@ namespace rhi::vk
             .primitiveRestartEnable = desc.primitive_restart ? VK_TRUE : VK_FALSE,
         };
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

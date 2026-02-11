@@ -5,7 +5,7 @@
 #include "rhi/expected.h"
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class DebugMessenger
     {
@@ -20,7 +20,7 @@ namespace rhi::vk
             VkInstance               _instance  { VK_NULL_HANDLE };
             VkDebugUtilsMessengerEXT _messenger { VK_NULL_HANDLE };
     };
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND
 #endif // RHI_VK_PRIV_DEBUG_H

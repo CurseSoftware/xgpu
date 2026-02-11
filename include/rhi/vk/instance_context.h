@@ -7,14 +7,14 @@
 #include <functional>
 #include <vector>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     struct InstanceContext
     {
         bool enable_debug { false };
         data::SurfaceData surface_data { data::HeadlessSurfaceData{} };
     };
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND
 #endif // RHI_VK_INSTANCE_CONTEXT_H

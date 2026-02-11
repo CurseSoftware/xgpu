@@ -12,17 +12,17 @@
 
 #include <span>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class Renderpass : public IRenderpass
     {
         public:
             // Create a renderpass from the Open specifiers
             [[nodiscard]] static auto from_open(
-                rhi::Device& device,
+                xgpu::Device& device,
                 std::span<OpenAttachmentDescription> attachments,
                 std::span<OpenSubpassDescription> subpasses
-            ) -> expected<rhi::vk::Renderpass, Error>;
+            ) -> expected<xgpu::vk::Renderpass, Error>;
 
         // API
         public:
@@ -40,7 +40,7 @@ namespace rhi::vk
             VkRenderPass _renderpass { VK_NULL_HANDLE };
     };
     
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND
 #endif // RHI_VK_RENDERPASS_H

@@ -3,7 +3,7 @@
 #include "rhi/vk/image_view.h"
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
     auto ImageView::create(Device & device, const ImageViewDescription & description) noexcept -> expected<ImageView, Error>
     {
@@ -32,4 +32,4 @@ namespace rhi
 
         return ok(image_view);
     }
-} // namespace rhi
+} // namespace xgpu

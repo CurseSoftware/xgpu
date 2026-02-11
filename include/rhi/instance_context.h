@@ -6,7 +6,7 @@
 
 #include <variant>
 
-namespace rhi
+namespace xgpu
 {
     // The non-api-specific options for configuring an instance
     struct DefaultInstanceContext 
@@ -24,6 +24,6 @@ namespace rhi
             , dx12::InstanceContext
 #endif // RHI_COMPILE_DX12_BACKEND
         >;
-}
+} // namespace xgpu
 
 #endif // RHI_INSTANCE_CONTEXT_H

@@ -3,7 +3,7 @@
 #include <vulkan/vulkan_core.h>
 #include "rhi/vk/swapchain.h"
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     auto getPlatformSurface(VkInstance instance, const data::SurfaceInfo& surface_info, VkAllocationCallbacks* allocator) noexcept -> VkSurfaceKHR
     {
@@ -26,7 +26,7 @@ namespace rhi::vk
         return surface;
     }
 
-    auto SwapChain::create(const rhi::vk::SwapChainContext& ctx) noexcept -> expected<SwapChain, Error>
+    auto SwapChain::create(const vk::SwapChainContext& ctx) noexcept -> expected<SwapChain, Error>
     {
         SwapChain swapchain;
 
@@ -45,4 +45,4 @@ namespace rhi::vk
     {
         vkDestroySurfaceKHR(_instance, _surface, _allocator);
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

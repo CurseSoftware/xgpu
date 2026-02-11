@@ -13,7 +13,7 @@
 
 #include <variant>
 
-namespace rhi::data
+namespace xgpu::data
 {
     struct HeadlessSurfaceData {};
 
@@ -30,6 +30,6 @@ namespace rhi::data
             HeadlessSurfaceData
             , WindowData
         >;
-} // namespace rhi::data
+} // namespace xgpu::data
 
 #endif // RHI_DATA_WINDOW_H

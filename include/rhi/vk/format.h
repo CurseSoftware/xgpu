@@ -4,9 +4,9 @@
 #include "rhi/format.h"
 #include "rhi/vk/core.h"
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    [[nodiscard]] auto convertFormat(rhi::Format format) noexcept -> VkFormat;
-} // namespace rhi::vk
+    [[nodiscard]] auto convertFormat(xgpu::Format format) noexcept -> VkFormat;
+} // namespace xgpu::vk
 
 #endif // RHI_VK_FORMAT_H

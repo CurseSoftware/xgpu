@@ -9,7 +9,7 @@
 #include <optional>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class CommandBuffer : public ICommandBuffer
     {
@@ -18,7 +18,7 @@ namespace rhi::vk
 
             auto beginRenderPass(const RenderPassBeginInfo& info) noexcept -> std::optional<Error> override;
             
-            auto bindPipeline(PipelineBindPoint bind_point, const rhi::Pipeline& pipeline) noexcept -> std::optional<Error> override;
+            auto bindPipeline(PipelineBindPoint bind_point, const xgpu::Pipeline& pipeline) noexcept -> std::optional<Error> override;
 
             auto setViewport(const ViewportDescription& info) noexcept -> std::optional<Error> override;
             
@@ -56,7 +56,7 @@ namespace rhi::vk
     class CommandPool : public ICommandPool
     {
         public:
-            static auto from_open(rhi::Device& device, const CommandPoolDescription description) noexcept -> expected<rhi::vk::CommandPool, Error>;
+            static auto from_open(xgpu::Device& device, const CommandPoolDescription description) noexcept -> expected<xgpu::vk::CommandPool, Error>;
 
         public:
             auto destroy() noexcept -> void override;
@@ -71,6 +71,6 @@ namespace rhi::vk
             VkAllocationCallbacks* _allocator { nullptr };
             VkCommandPool _handle             { VK_NULL_HANDLE };
     };
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_VK_COMMAND_H

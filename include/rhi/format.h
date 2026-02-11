@@ -1,7 +1,7 @@
 #ifndef RHI_FORMAT_H
 #define RHI_FORMAT_H
 
-namespace rhi
+namespace xgpu
 {
     // Thanks NVRHI: https://github.com/NVIDIA-RTX/NVRHI/blob/main/include/nvrhi/nvrhi.h
     // :)
@@ -83,6 +83,6 @@ namespace rhi
 
         Count,
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_FORMAT_H

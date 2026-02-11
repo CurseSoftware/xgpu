@@ -10,7 +10,7 @@
 #include <cstdint>
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
     struct ImageViewDescription
     {
@@ -53,6 +53,6 @@ namespace rhi
         private:
             std::unique_ptr<IImageView> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_IMAGE_VIEW_H

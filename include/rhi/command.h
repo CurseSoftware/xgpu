@@ -13,7 +13,7 @@
 #include <memory>
 #include <optional>
 
-namespace rhi
+namespace xgpu
 {
     struct RenderPassBeginInfo 
     {
@@ -135,7 +135,7 @@ namespace rhi
         public:
             // Create a command pool from the device
             // NOTE: we prefer copy over reference here since Description is lightweight
-            [[nodiscard]] static auto create(rhi::Device& device, const CommandPoolDescription description) noexcept -> expected<CommandPool, Error>;
+            [[nodiscard]] static auto create(xgpu::Device& device, const CommandPoolDescription description) noexcept -> expected<CommandPool, Error>;
 
             // Destroy the command pool
             auto destroy() noexcept -> void { _handle->destroy(); }
@@ -148,6 +148,6 @@ namespace rhi
         private:
             std::unique_ptr<ICommandPool> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_COMMAND_H

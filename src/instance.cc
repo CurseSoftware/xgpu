@@ -6,7 +6,7 @@
 #include "vk/instance_context.h"
 #include <variant>
 
-namespace rhi
+namespace xgpu
 {
     auto Instance::create(const InstanceContext& ctx) noexcept -> expected<Instance, Error>
     {
@@ -48,4 +48,4 @@ namespace rhi
 
         return unexpected(Error("Provided context is not supported."));
     }
-} // namespace rhi
+} // namespace xgpu

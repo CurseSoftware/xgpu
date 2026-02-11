@@ -4,7 +4,7 @@
 #include "core/flags.h"
 #include <cstdint>
 
-namespace rhi
+namespace xgpu
 {
     enum class QueueFamilyIndex
     {
@@ -367,6 +367,6 @@ namespace rhi
         AllGraphics,
 
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_TYPES_H

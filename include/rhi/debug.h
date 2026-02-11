@@ -1,7 +1,7 @@
 #ifndef RHI_DEBUG_H
 #define RHI_DEBUG_H
 
-namespace rhi
+namespace xgpu
 {
     // Severities for debug messages
     enum class MessageSeverity
@@ -16,6 +16,6 @@ namespace rhi
     {
 
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_DEBUG_H

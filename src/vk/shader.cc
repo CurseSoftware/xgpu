@@ -4,9 +4,9 @@
 
 #include "rhi/vk/core.h"
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    auto ShaderModule::from_open(rhi::Device& device, std::span<char8_t> data) -> expected<vk::ShaderModule, Error>
+    auto ShaderModule::from_open(xgpu::Device& device, std::span<char8_t> data) -> expected<vk::ShaderModule, Error>
     {
         if (device.backend() != Backend::Vulkan)
         {
@@ -42,4 +42,4 @@ namespace rhi::vk
         vkDestroyShaderModule(_device, _handle, nullptr);
         log::trace("Destroyed.");
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

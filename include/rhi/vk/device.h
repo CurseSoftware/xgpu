@@ -10,7 +10,7 @@
 
 #include "rhi/device.h"
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     // Information portaining to the capabilities and attributes of a vulkan physical device
     struct PhysicalDeviceInfo
@@ -37,9 +37,9 @@ namespace rhi::vk
         
         // Factory
         public:
-            static auto create(const rhi::vk::DeviceContext& ctx) noexcept -> expected<Device, Error>;
+            static auto create(const xgpu::vk::DeviceContext& ctx) noexcept -> expected<Device, Error>;
 
-            static auto create_default(const rhi::DefaultDeviceContext& ctx) noexcept -> expected<Device, Error>;
+            static auto create_default(const xgpu::DefaultDeviceContext& ctx) noexcept -> expected<Device, Error>;
 
         // API
         public:
@@ -84,7 +84,7 @@ namespace rhi::vk
     [[nodiscard]] auto getGraphicsFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
     [[nodiscard]] auto getTransferFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
     [[nodiscard]] auto getPresentFamilyIndex(VkPhysicalDevice physical_device) -> std::optional<std::uint32_t>;
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND
 #endif // RHI_VK_DEVICE_H

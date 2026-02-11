@@ -10,7 +10,7 @@
 #include <vector>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk::priv
+namespace xgpu::vk::priv
 {
     enum class ExtensionSource
     {
@@ -94,6 +94,6 @@ namespace rhi::vk::priv
     {
         // TODO:
     }
-} // namespace rhi::vk::priv
+} // namespace xgpu::vk::priv
 
 #endif // RHI_VK_PRIV_EXTENSION_H

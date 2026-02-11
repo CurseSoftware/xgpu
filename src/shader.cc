@@ -3,9 +3,9 @@
 #include "vk/shader.h"
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
-    auto ShaderModule::create(rhi::Device& device, std::span<char8_t> data) noexcept -> expected<ShaderModule, Error>
+    auto ShaderModule::create(Device& device, std::span<char8_t> data) noexcept -> expected<ShaderModule, Error>
     {
         ShaderModule module {};
         switch (device.backend())
@@ -32,4 +32,4 @@ namespace rhi
         
         return unexpected( Error("Shader module creation on backend not supported") );
     }
-} // namespace rhi
+} // namespace xgpu

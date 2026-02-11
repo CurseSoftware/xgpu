@@ -2,7 +2,7 @@
 #include "rhi/pipeline_layout.h"
 #include "rhi/vk/pipeline_layout.h"
 
-namespace rhi
+namespace xgpu
 {
     auto PipelineLayout::create(Device& device, const PipelineLayoutDescription& description) noexcept -> expected<PipelineLayout, Error>
     {
@@ -30,4 +30,4 @@ namespace rhi
 
         return unexpected( Error("Failed to create pipeline layout.") );
     }
-} // namespace rhi
+} // namespace xgpu

@@ -2,7 +2,7 @@
 #define RHI_CORE_H
 
 #include <cstdint>
-namespace rhi
+namespace xgpu
 {
     enum class Preference : std::uint8_t
     {
@@ -10,6 +10,6 @@ namespace rhi
         Preferred = 1,
         Required = 2
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_CORE_H

@@ -6,9 +6,9 @@
 #include <cstring>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    auto Buffer::create(rhi::Device& device, BufferDescription description) noexcept -> expected<vk::Buffer, Error>
+    auto Buffer::create(xgpu::Device& device, BufferDescription description) noexcept -> expected<vk::Buffer, Error>
     {
         auto vk_device = device.get_as<vk::Device>();
         if (!vk_device)
@@ -101,4 +101,4 @@ namespace rhi::vk
         vkFreeMemory(_device, _memory, nullptr);
         log::trace("Freed.");
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

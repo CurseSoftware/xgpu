@@ -8,13 +8,13 @@
 #include <vector>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     auto Renderpass::from_open(
-        rhi::Device& p_device,
+        xgpu::Device& p_device,
         std::span<OpenAttachmentDescription> p_attachments,
         std::span<OpenSubpassDescription> p_subpasses
-    ) -> expected<rhi::vk::Renderpass, Error>
+    ) -> expected<vk::Renderpass, Error>
     {
         std::vector<VkAttachmentDescription> attachments {};
         if (p_device.backend() != Backend::Vulkan)
@@ -100,4 +100,4 @@ namespace rhi::vk
     {
         vkDestroyRenderPass(_device, _renderpass, nullptr);
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

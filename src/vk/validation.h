@@ -8,7 +8,7 @@
 #include <string_view>
 #include <vector>
 
-namespace rhi::vk::priv
+namespace xgpu::vk::priv
 {
     struct RequestedLayer
     {
@@ -34,6 +34,6 @@ namespace rhi::vk::priv
         private:
             std::vector<VkLayerProperties> _layers {};
     };
-} // namespace rhi::vk::priv
+} // namespace xgpu::vk::priv
 
 #endif // RHI_VK_VALIDATION_H

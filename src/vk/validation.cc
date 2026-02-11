@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk::priv
+namespace xgpu::vk::priv
 {
     ValidationLayerManager::ValidationLayerManager() noexcept
     {
@@ -49,4 +49,4 @@ namespace rhi::vk::priv
 
         return ok(layers_found);
     }
-} // namespace rhi::vk::priv
+} // namespace xgpu::vk::priv

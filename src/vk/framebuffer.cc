@@ -4,12 +4,11 @@
 #include "expected.h"
 #include "vk/image_view.h"
 #include "vk/renderpass.h"
-#include <array>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    auto Framebuffer::from_open(rhi::Device &device, const FramebufferDescription &description) noexcept -> expected<vk::Framebuffer, Error>
+    auto Framebuffer::from_open(xgpu::Device &device, const FramebufferDescription &description) noexcept -> expected<vk::Framebuffer, Error>
     {
         auto* vk_device = dynamic_cast<vk::Device*>(device.handle());
         if (!vk_device)
@@ -83,4 +82,4 @@ namespace rhi::vk
         vkDestroyFramebuffer(_device, _handle, nullptr);
         log::trace("Destroyed.");
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

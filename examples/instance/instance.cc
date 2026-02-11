@@ -4,10 +4,10 @@
 
 auto main() -> int
 {
-    rhi::InstanceContext instance_ctx = rhi::vk::InstanceContext {
+    xgpu::InstanceContext instance_ctx = xgpu::vk::InstanceContext {
         .enable_debug = true
     };
-    auto inst = rhi::Instance::create(instance_ctx);
+    auto inst = xgpu::Instance::create(instance_ctx);
     if (!inst.has_value())
     {
         std::cerr << "Failed to create instance: " << inst.unwrap_error().message << '\n';

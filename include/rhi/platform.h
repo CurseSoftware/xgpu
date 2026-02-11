@@ -1,8 +1,7 @@
 #ifndef RHI_PLATFORM_H
 #define RHI_PLATFORM_H
 
-
-namespace rhi
+namespace xgpu
 {
     enum class Backend
     {

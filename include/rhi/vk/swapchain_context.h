@@ -7,7 +7,7 @@
 #include "rhi/vk/core.h"
 
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     struct SwapChainContext
     {
@@ -16,7 +16,7 @@ namespace rhi::vk
         
         data::SurfaceInfo surface_info;
     };
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND
 #endif // RHI_VK_SWAPCHAIN_CONTEXT_H

@@ -6,17 +6,17 @@
 #include "rhi/platform.h"
 #include "rhi/instance.h"
 #include "rhi/vk/debug.h"
+#include "rhi/vk/core.h"
 
 #include <optional>
-#include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    class [[nodiscard]] Instance : public rhi::IInstance
+    class [[nodiscard]] Instance : public xgpu::IInstance
     {
         // Factory
         public:
-            static auto create(const rhi::vk::InstanceContext& ctx) noexcept -> expected<rhi::vk::Instance, Error>;
+            static auto create(const vk::InstanceContext& ctx) noexcept -> expected<vk::Instance, Error>;
 
         // API
         public:
@@ -30,7 +30,7 @@ namespace rhi::vk
             std::optional<DebugMessenger> _debug_messenger { std::nullopt };
             VkInstance                         _handle     { VK_NULL_HANDLE };
     };
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND
 #endif // RHI_VK_INSTANCE_H

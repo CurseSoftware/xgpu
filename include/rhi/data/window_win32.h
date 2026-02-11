@@ -4,12 +4,12 @@
 
 #ifdef RHI_PLATFORM_WINDOWS
 
-namespace rhi::data
+namespace xgpu::data
 {
     struct Win32WindowData
     {
     };
-} // namespace rhi::data
+} // namespace xgpu::data
 
 #endif // RHI_PLATFORM_WINDOWS
 #endif // RHI_DATA_SURFACE_H

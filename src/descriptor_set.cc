@@ -3,7 +3,7 @@
 #include "platform.h"
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
     auto DescriptorSetLayout::create(Device& device, const DescriptorSetLayoutDescription& description) noexcept -> expected<DescriptorSetLayout, Error>
     {
@@ -34,4 +34,4 @@ namespace rhi
 
         return ok(descriptor_set);
     }
-} // namespace rhi
+} // namespace xgpu

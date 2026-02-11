@@ -8,13 +8,13 @@
 #include "rhi/vk/swapchain_context.h"
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class SwapChain : ISwapChain
     {
         // Factory
         public:
-            auto create(const rhi::vk::SwapChainContext& ctx) noexcept -> expected<SwapChain, Error>;
+            auto create(const vk::SwapChainContext& ctx) noexcept -> expected<SwapChain, Error>;
 
         // API
         public:
@@ -29,6 +29,6 @@ namespace rhi::vk
     };
 
     auto getPlatformSurface(VkInstance instance, const data::SurfaceInfo& surface_info, VkAllocationCallbacks* allocator = nullptr) noexcept -> VkSurfaceKHR;
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_VK_SWAPCHAIN_H

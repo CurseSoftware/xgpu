@@ -3,7 +3,7 @@
 
 #include <concepts>
 #include <type_traits>
-namespace rhi
+namespace xgpu
 {
     template <typename T>
     concept ValidFlagType = std::is_integral_v<T>;
@@ -65,6 +65,6 @@ namespace rhi
         private:
             T _value { 0 };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_CORE_FLAGS_H

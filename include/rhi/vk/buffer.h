@@ -7,7 +7,7 @@
 #include <cstddef>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class Buffer : public IBuffer
     {
@@ -39,6 +39,6 @@ namespace rhi::vk
             VkDeviceMemory _memory { VK_NULL_HANDLE };
             std::size_t _size      { 0 };
     };
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_VK_BUFFER_H

@@ -4,11 +4,11 @@
 #include <vulkan/vulkan_core.h>
 
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     // Largely thanks to NVRHI thanks :)
     // https://github.com/NVIDIA-RTX/NVRHI/blob/main/src/vulkan/vulkan-constants.cpp
-    auto convertFormat(rhi::Format format) noexcept -> VkFormat
+    auto convertFormat(xgpu::Format format) noexcept -> VkFormat
     {
         switch (format)
         {
@@ -87,4 +87,4 @@ namespace rhi::vk
 
         return VK_FORMAT_UNDEFINED;
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

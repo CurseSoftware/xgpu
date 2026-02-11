@@ -17,7 +17,7 @@
 #include <unordered_map>
 #include <variant>
 
-namespace rhi
+namespace xgpu
 {
     // Description of a viewport
     struct ViewportDescription
@@ -184,7 +184,7 @@ namespace rhi
         // Factory
         public:
             [[nodiscard]] static auto create(
-                rhi::Device& p_device,
+                xgpu::Device& p_device,
                 const GraphicsPipelineDescription& p_description
             ) -> expected<Pipeline, Error>;
 
@@ -205,6 +205,6 @@ namespace rhi
         private:
             std::unique_ptr<IPipeline> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_PIPELINE_H

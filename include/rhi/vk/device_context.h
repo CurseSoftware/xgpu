@@ -8,7 +8,7 @@
 #include <vector>
 #include <optional>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     struct DeviceContext
     {
@@ -30,7 +30,7 @@ namespace rhi::vk
 
         VkPhysicalDeviceFeatures physical_device_features {};
     };
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND
 #endif // RHI_VK_DEVICE_CONTEXT_H

@@ -9,7 +9,7 @@
 #include <vulkan/vk_platform.h>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     static VKAPI_ATTR VkBool32 VKAPI_CALL g_debug_callback(
         VkDebugUtilsMessageSeverityFlagBitsEXT severity,
@@ -107,6 +107,6 @@ namespace rhi::vk
     {
         destroy_debug_messenger(_instance, _messenger);
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_COMPILE_VULKAN_BACKEND

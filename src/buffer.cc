@@ -1,7 +1,7 @@
 #include "rhi/buffer.h"
 #include "vk/buffer.h"
 
-namespace rhi
+namespace xgpu
 {
     auto Buffer::create(Device& device, BufferDescription description) noexcept -> expected<Buffer, Error>
     {
@@ -31,4 +31,4 @@ namespace rhi
 
         return ok(buffer);
     }
-} // namespace rhi
+} // namespace xgpu

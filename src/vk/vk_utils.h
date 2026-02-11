@@ -5,7 +5,7 @@
 #include "rhi/vk/core.h"
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     auto convertSharingMode(SharingMode) -> VkSharingMode;
 
@@ -64,6 +64,6 @@ namespace rhi::vk
     auto converBufferUsageFlagBits(BufferUsageFlagBits) -> VkBufferUsageFlagBits;
 
     auto convertPipelineStage(PipelineStage) -> VkPipelineStageFlags;
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_VK_PRIV_VK_UTILS_H

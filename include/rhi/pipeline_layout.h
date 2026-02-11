@@ -12,7 +12,7 @@
 #include <vector>
 #include <cstdint>
 
-namespace rhi
+namespace xgpu
 {
     struct PushConstantRange
     {
@@ -51,6 +51,6 @@ namespace rhi
 
             std::unique_ptr<IPipelineLayout> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_PIPELINE_LAYOUT_H

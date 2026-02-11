@@ -8,14 +8,14 @@
 #include "rhi/device.h"
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class Framebuffer : public IFramebuffer
     {
         // Factory
         public:
             // Create a vulkan framebuffer object from the rhi open interface
-            static auto from_open(rhi::Device& device, const FramebufferDescription& description) noexcept -> expected<vk::Framebuffer, Error>;
+            static auto from_open(xgpu::Device& device, const FramebufferDescription& description) noexcept -> expected<vk::Framebuffer, Error>;
 
         // API
         public:
@@ -34,6 +34,6 @@ namespace rhi::vk
             VkDevice _device      { VK_NULL_HANDLE };
             VkFramebuffer _handle { VK_NULL_HANDLE };
     };
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_VK_FRAMEBUFFER_H

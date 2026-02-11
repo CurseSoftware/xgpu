@@ -5,14 +5,14 @@
 #include "rhi/device.h"
 #include "rhi/descriptor_set.h"
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class DescriptorSetLayout : public IDescriptorSetLayout
     {
         // Factory
         public:
             // Create a vulkan descriptor set layout from the open rhi API
-            [[nodiscard]] static auto from_open(rhi::Device& device, const rhi::DescriptorSetLayoutDescription& description) noexcept -> expected<vk::DescriptorSetLayout, Error>;
+            [[nodiscard]] static auto from_open(xgpu::Device& device, const xgpu::DescriptorSetLayoutDescription& description) noexcept -> expected<vk::DescriptorSetLayout, Error>;
 
         // API
         public:
@@ -34,9 +34,9 @@ namespace rhi::vk
             VkDescriptorSetLayout _handle { VK_NULL_HANDLE };
     };
 
-    [[nodiscard]] auto getVulkanDescriptorSetLayout(const rhi::DescriptorSetLayout&) noexcept -> expected<VkDescriptorSetLayout, Error>;
+    [[nodiscard]] auto getVulkanDescriptorSetLayout(const xgpu::DescriptorSetLayout&) noexcept -> expected<VkDescriptorSetLayout, Error>;
 
-    [[nodiscard]] auto getVulkanDescriptorSetLayoutBinding(const rhi::DescriptorSetLayoutBinding&) noexcept -> VkDescriptorSetLayoutBinding;
-} // namespace rhi::vk
+    [[nodiscard]] auto getVulkanDescriptorSetLayoutBinding(const xgpu::DescriptorSetLayoutBinding&) noexcept -> VkDescriptorSetLayoutBinding;
+} // namespace xgpu::vk
 
 #endif // RHI_VK_DESCRIPTOR_SET_H

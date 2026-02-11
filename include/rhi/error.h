@@ -2,7 +2,7 @@
 #define RHI_ERROR_H
 
 #include <string>
-namespace rhi
+namespace xgpu
 {
     struct Error 
     {
@@ -10,6 +10,6 @@ namespace rhi
         
         std::string message;
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_ERROR_H

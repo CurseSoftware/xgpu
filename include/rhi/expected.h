@@ -8,7 +8,7 @@
 #include <variant>
 #include <string>
 
-namespace rhi
+namespace xgpu
 {
     template <typename T, typename E>
     class expected;

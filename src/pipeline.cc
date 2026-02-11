@@ -3,9 +3,9 @@
 #include <memory>
 #include <variant>
 
-namespace rhi
+namespace xgpu
 {
-    auto Pipeline::create(rhi::Device &p_device, const GraphicsPipelineDescription &p_description) -> expected<Pipeline, Error>
+    auto Pipeline::create(xgpu::Device &p_device, const GraphicsPipelineDescription &p_description) -> expected<Pipeline, Error>
     {
         Pipeline pipeline {};
         if (std::holds_alternative<OpenGraphicsPipelineDescription>(p_description))
@@ -30,4 +30,4 @@ namespace rhi
 
         return unexpected( Error("Failed to make pipeline") );
     }
-} // namespace rhi
+} // namespace xgpu

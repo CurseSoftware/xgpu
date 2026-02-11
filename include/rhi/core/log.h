@@ -10,7 +10,7 @@
 #include <memory>
 #include <utility>
 
-namespace rhi::log
+namespace xgpu::log
 {
     struct Config
     {
@@ -74,6 +74,6 @@ namespace rhi::log
     {
         Logger::get().lock()->log(core::format("[FATAL]   {}\n", core::format(fmt, std::forward<Args>(args)...)));
     }
-} // namespace rhi::log
+} // namespace xgpu::log
 
 #endif // RHI_CORE_LOG_H

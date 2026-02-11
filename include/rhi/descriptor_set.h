@@ -9,7 +9,7 @@
 #include <memory>
 #include <span>
 
-namespace rhi
+namespace xgpu
 {
     struct DescriptorSetLayoutBinding
     {
@@ -50,6 +50,6 @@ namespace rhi
         private:
             std::unique_ptr<IDescriptorSetLayout> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_DESCRIPTOR_SET_H

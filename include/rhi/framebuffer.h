@@ -11,7 +11,7 @@
 #include <functional>
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
     struct FramebufferDescription
     {
@@ -49,6 +49,6 @@ namespace rhi
             std::unique_ptr<IFramebuffer> _handle { nullptr };
     };
 
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_FRAMEBUFFER_H

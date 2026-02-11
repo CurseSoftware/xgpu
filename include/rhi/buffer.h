@@ -9,7 +9,7 @@
 #include <span>
 #include <memory>
 
-namespace rhi
+namespace xgpu
 {
     struct BufferDescription
     {
@@ -50,6 +50,6 @@ namespace rhi
         private:
             std::unique_ptr<IBuffer> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_BUFFER_H

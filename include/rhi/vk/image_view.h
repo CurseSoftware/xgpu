@@ -10,13 +10,13 @@
 #include <cstdint>
 
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class ImageView : public IImageView
     {
         // Factory
         public:
-            [[nodiscard]] static auto from_open(rhi::Device&, const ImageViewDescription&) noexcept -> expected<vk::ImageView, Error>;
+            [[nodiscard]] static auto from_open(xgpu::Device&, const ImageViewDescription&) noexcept -> expected<vk::ImageView, Error>;
 
         // API
         public:
@@ -45,6 +45,6 @@ namespace rhi::vk
                 std::uint32_t layer_count;
             } _detail;
     };
-} // namespace rhi::vk 
+} // namespace xgpu::vk 
 
 #endif // RHI_VK_IMAGE_VIEW_H

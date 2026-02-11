@@ -5,12 +5,12 @@
 #include "rhi/vk/core.h"
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class PipelineLayout : public IPipelineLayout
     {
         public:
-            [[nodiscard]] static auto from_open(rhi::Device& device, const rhi::PipelineLayoutDescription& description) noexcept -> expected<vk::PipelineLayout, Error>;
+            [[nodiscard]] static auto from_open(xgpu::Device& device, const xgpu::PipelineLayoutDescription& description) noexcept -> expected<vk::PipelineLayout, Error>;
 
         // API
         public:
@@ -29,7 +29,7 @@ namespace rhi::vk
             VkPipelineLayout _handle { VK_NULL_HANDLE };
     };
     
-    [[nodiscard]] auto getVulkanPushConstantRange(const rhi::PushConstantRange&) noexcept -> VkPushConstantRange;
-} // namespace rhi::vk
+    [[nodiscard]] auto getVulkanPushConstantRange(const xgpu::PushConstantRange&) noexcept -> VkPushConstantRange;
+} // namespace xgpu::vk
 
 #endif // RHI_VK_PIPELINE_LAYOUT_H

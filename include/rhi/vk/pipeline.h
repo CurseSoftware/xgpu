@@ -11,12 +11,12 @@
 #include <vector>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
     class Pipeline : public IPipeline
     {
         public:
-            [[nodiscard]] static auto from_open(rhi::Device& p_device, const GraphicsPipelineDescription& p_description) noexcept -> expected<vk::Pipeline, Error>;
+            [[nodiscard]] static auto from_open(xgpu::Device& p_device, const GraphicsPipelineDescription& p_description) noexcept -> expected<vk::Pipeline, Error>;
 
             auto destroy() noexcept -> void override;
 
@@ -32,10 +32,10 @@ namespace rhi::vk
             VkPipeline _handle { VK_NULL_HANDLE };
     };
 
-    auto getVulkanPipelineLayout(const rhi::PipelineLayout&) noexcept -> expected<VkPipelineLayout, Error>;
+    auto getVulkanPipelineLayout(const xgpu::PipelineLayout&) noexcept -> expected<VkPipelineLayout, Error>;
 
-    // Get a list of vulkan shader stage create infos from the rhi::ShaderStage's
-    auto getVulkanShaderStageInfos(const std::unordered_map<ShaderStageFlags, std::reference_wrapper<rhi::ShaderModule>>& shader_modules) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>;
+    // Get a list of vulkan shader stage create infos from the xgpu::ShaderStage's
+    auto getVulkanShaderStageInfos(const std::unordered_map<ShaderStageFlags, std::reference_wrapper<xgpu::ShaderModule>>& shader_modules) -> expected<std::vector<VkPipelineShaderStageCreateInfo>, Error>;
 
     // Get a vulkan shader stage info from the rhi interface and native module
     auto getVulkanShaderStageInfo(ShaderStageFlags stage, VkShaderModule module) -> VkPipelineShaderStageCreateInfo;
@@ -103,6 +103,6 @@ namespace rhi::vk
         std::span<VkRect2D> scissors
     ) -> VkPipelineViewportStateCreateInfo;
     
-} // namespace rhi::vk
+} // namespace xgpu::vk
 
 #endif // RHI_VK_PIPELINE_H

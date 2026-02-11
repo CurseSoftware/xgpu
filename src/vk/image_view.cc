@@ -6,9 +6,9 @@
 #include "vk/vk_utils.h"
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    auto ImageView::from_open(rhi::Device &device, const ImageViewDescription &description) noexcept -> expected<vk::ImageView, Error>
+    auto ImageView::from_open(xgpu::Device &device, const ImageViewDescription &description) noexcept -> expected<vk::ImageView, Error>
     {
         auto* vk_device = dynamic_cast<vk::Device*>(device.handle());
         if (!vk_device)
@@ -111,4 +111,4 @@ namespace rhi::vk
         vkFreeMemory(_device, _memory, nullptr);
         log::trace("Freed.");
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

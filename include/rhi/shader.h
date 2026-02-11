@@ -8,7 +8,7 @@
 #include <span>
 #include <vector>
 
-namespace rhi
+namespace xgpu
 {
     enum class ShaderStageFlags
     {
@@ -28,7 +28,7 @@ namespace rhi
     {
         // Factory
         public:
-            static auto create(rhi::Device& device, std::span<char8_t> data) noexcept -> expected<ShaderModule, Error>;
+            static auto create(xgpu::Device& device, std::span<char8_t> data) noexcept -> expected<ShaderModule, Error>;
 
         // API
         public:
@@ -42,6 +42,6 @@ namespace rhi
         private:
             std::unique_ptr<IShaderModule> _handle { nullptr };
     };
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_SHADER_H

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
 
     auto convertPipelineStage(PipelineStage stage) -> VkPipelineStageFlags
@@ -593,9 +593,9 @@ namespace rhi::vk
     {
         switch (op)
         {
-            case rhi::LoadOperation::Load: return VK_ATTACHMENT_LOAD_OP_LOAD;
-            case rhi::LoadOperation::Clear: return VK_ATTACHMENT_LOAD_OP_CLEAR;
-            case rhi::LoadOperation::DontCare: return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+            case xgpu::LoadOperation::Load: return VK_ATTACHMENT_LOAD_OP_LOAD;
+            case xgpu::LoadOperation::Clear: return VK_ATTACHMENT_LOAD_OP_CLEAR;
+            case xgpu::LoadOperation::DontCare: return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         }
 
         return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
@@ -605,8 +605,8 @@ namespace rhi::vk
     {
         switch (op)
         {
-            case rhi::StoreOperation::Store: return VK_ATTACHMENT_STORE_OP_STORE;
-            case rhi::StoreOperation::DontCare: return VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            case xgpu::StoreOperation::Store: return VK_ATTACHMENT_STORE_OP_STORE;
+            case xgpu::StoreOperation::DontCare: return VK_ATTACHMENT_STORE_OP_DONT_CARE;
         }
         
         return VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -667,4 +667,4 @@ namespace rhi::vk
         // Default to graphics. We should never get here anyway
         return VK_PIPELINE_BIND_POINT_GRAPHICS;
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

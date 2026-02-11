@@ -17,9 +17,9 @@
 #include <optional>
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    auto CommandPool::from_open(rhi::Device &device, const CommandPoolDescription description) noexcept -> expected<CommandPool, Error>
+    auto CommandPool::from_open(xgpu::Device &device, const CommandPoolDescription description) noexcept -> expected<CommandPool, Error>
     {
         auto* vk_device = dynamic_cast<vk::Device*>(device.handle());
         if (!vk_device)
@@ -164,7 +164,7 @@ namespace rhi::vk
         return std::nullopt;
     }
 
-    auto CommandBuffer::bindPipeline(PipelineBindPoint bind_point, const rhi::Pipeline& pipeline) noexcept -> std::optional<Error>
+    auto CommandBuffer::bindPipeline(PipelineBindPoint bind_point, const xgpu::Pipeline& pipeline) noexcept -> std::optional<Error>
     {
         auto vk_pipeline = pipeline.get_as<vk::Pipeline>();
         if (!vk_pipeline)
@@ -273,7 +273,7 @@ namespace rhi::vk
 
     auto CommandBuffer::copyTextureToBuffer(
         const TextureCopyDescription& texture_copy, 
-        rhi::Buffer& dest
+        xgpu::Buffer& dest
     ) noexcept -> std::optional<Error>
     {
         auto vk_image_view = texture_copy.image.get_as<vk::ImageView>();
@@ -313,4 +313,4 @@ namespace rhi::vk
 
         return std::nullopt;
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk

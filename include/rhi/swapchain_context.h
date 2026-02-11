@@ -3,7 +3,7 @@
 
 #include "rhi/vk/swapchain_context.h"
 #include <variant>
-namespace rhi
+namespace xgpu
 {
     struct OpenSwapChainContext
     {
@@ -16,6 +16,6 @@ namespace rhi
         , vk::SwapChainContext
 #endif // RHI_COMPILE_VULKAN_BACKEND
     >;
-} // namespace rhi
+} // namespace xgpu
 
 #endif // RHI_SWAPCHAIN_CONTEXT_H

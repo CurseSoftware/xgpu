@@ -5,14 +5,14 @@
 #include "vk/vk_utils.h"
 #include <vulkan/vulkan_core.h>
 
-namespace rhi::vk
+namespace xgpu::vk
 {
-    auto DescriptorSetLayout::from_open(rhi::Device& device, const rhi::DescriptorSetLayoutDescription& description) noexcept -> expected<vk::DescriptorSetLayout, Error>
+    auto DescriptorSetLayout::from_open(xgpu::Device& device, const xgpu::DescriptorSetLayoutDescription& description) noexcept -> expected<vk::DescriptorSetLayout, Error>
     {
         auto* vk_device = dynamic_cast<vk::Device*>(device.handle());
         if (!vk_device)
         {
-            return unexpected( Error("Failed to get vulkan device from rhi::Device") );
+            return unexpected( Error("Failed to get vulkan device from xgpu::Device") );
         }
 
         vk::DescriptorSetLayout descriptor_set { vk_device->handle() };
@@ -50,7 +50,7 @@ namespace rhi::vk
         log::trace("Destroyed.");
     }
     
-    auto getVulkanDescriptorSetLayoutBinding(const rhi::DescriptorSetLayoutBinding& desc) noexcept -> VkDescriptorSetLayoutBinding
+    auto getVulkanDescriptorSetLayoutBinding(const xgpu::DescriptorSetLayoutBinding& desc) noexcept -> VkDescriptorSetLayoutBinding
     {
         return VkDescriptorSetLayoutBinding {
             .binding = desc.binding,
@@ -59,4 +59,4 @@ namespace rhi::vk
             .stageFlags = getVulkanShaderStageFlags(desc.shader_stage),
         };
     }
-} // namespace rhi::vk
+} // namespace xgpu::vk
