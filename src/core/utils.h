@@ -1,7 +1,7 @@
 #ifndef RHI_CORE_UTILS_H
 #define RHI_CORE_UTILS_H
 
-namespace rhi::utils
+namespace xgpu::utils
 {
     // Overload struct for handling std::variant
     template <typename ...Ts>

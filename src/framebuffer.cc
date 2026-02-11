@@ -1,6 +1,6 @@
-#include "rhi/framebuffer.h"
-#include "expected.h"
-#include "vk/framebuffer.h"
+#include "xgpu/framebuffer.h"
+#include "xgpu/expected.h"
+#include "xgpu/vk/framebuffer.h"
 #include <memory>
 
 namespace xgpu

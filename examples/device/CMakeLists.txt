@@ -8,4 +8,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable("${PROJECT_NAME}" device.cc)
 
-target_link_libraries("${PROJECT_NAME}" PRIVATE rhi)
+target_link_libraries("${PROJECT_NAME}" PRIVATE xgpu)

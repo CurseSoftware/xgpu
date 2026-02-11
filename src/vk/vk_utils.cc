@@ -1,6 +1,6 @@
 #include "vk/vk_utils.h"
-#include "core/log.h"
-#include "types.h"
+#include "xgpu/core/log.h"
+#include "xgpu/types.h"
 #include <algorithm>
 #include <cstdint>
 #include <iostream>

@@ -1,6 +1,6 @@
-#include "rhi/expected.h"
-#include "rhi/pipeline_layout.h"
-#include "rhi/vk/pipeline_layout.h"
+#include "xgpu/expected.h"
+#include "xgpu/pipeline_layout.h"
+#include "xgpu/vk/pipeline_layout.h"
 
 namespace xgpu
 {

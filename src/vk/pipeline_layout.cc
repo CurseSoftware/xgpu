@@ -1,8 +1,8 @@
-#include "rhi/vk/pipeline_layout.h"
-#include "rhi/vk/device.h"
-#include "core/log.h"
-#include "vk/descriptor_set.h"
-#include "vk/pipeline.h"
+#include "xgpu/vk/pipeline_layout.h"
+#include "xgpu/vk/device.h"
+#include "xgpu/core/log.h"
+#include "xgpu/vk/descriptor_set.h"
+#include "xgpu/vk/pipeline.h"
 #include "vk/vk_utils.h"
 #include <vulkan/vulkan_core.h>
 
@@ -13,7 +13,7 @@ namespace xgpu::vk
         auto* vk_device = dynamic_cast<vk::Device*>(device.handle());
         if (!vk_device)
         {
-            return unexpected( Error("Failed to get vulkan device from rhi::Device") );
+            return unexpected( Error("Failed to get vulkan device from xgpu::Device") );
         }
         vk::PipelineLayout pipeline_layout { vk_device->handle() };
 
@@ -78,7 +78,7 @@ namespace xgpu::vk
         auto* vk_descriptor_set_layout = dynamic_cast<vk::DescriptorSetLayout*>(layout.handle());
         if (!vk_descriptor_set_layout)
         {
-            return unexpected( Error("Failed to get vk::DescriptorSetLayout from rhi::DescriptorSetLayout") );
+            return unexpected( Error("Failed to get vk::DescriptorSetLayout from xgpu::DescriptorSetLayout") );
         }
 
         return ok(vk_descriptor_set_layout->handle());

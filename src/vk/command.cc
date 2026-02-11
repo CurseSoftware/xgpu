@@ -1,16 +1,16 @@
-#include "command.h"
-#include "pipeline.h"
-#include "rhi/core/log.h"
-#include "rhi/expected.h"
-#include "rhi/device.h"
-#include "rhi/vk/core.h"
-#include "rhi/vk/command.h"
-#include "rhi/vk/framebuffer.h"
-#include "rhi/vk/core.h"
-#include "vk/buffer.h"
-#include "vk/image_view.h"
-#include "vk/pipeline.h"
-#include "vk/renderpass.h"
+#include "xgpu/command.h"
+#include "xgpu/pipeline.h"
+#include "xgpu/core/log.h"
+#include "xgpu/expected.h"
+#include "xgpu/device.h"
+#include "xgpu/vk/core.h"
+#include "xgpu/vk/command.h"
+#include "xgpu/vk/framebuffer.h"
+#include "xgpu/vk/core.h"
+#include "xgpu/vk/buffer.h"
+#include "xgpu/vk/image_view.h"
+#include "xgpu/vk/pipeline.h"
+#include "xgpu/vk/renderpass.h"
 #include "vk/vk_utils.h"
 #include <cstddef>
 #include <memory>
@@ -24,7 +24,7 @@ namespace xgpu::vk
         auto* vk_device = dynamic_cast<vk::Device*>(device.handle());
         if (!vk_device)
         {
-            return unexpected( Error("Failed to get vk::Device from rhi::Device") );
+            return unexpected( Error("Failed to get vk::Device from xgpu::Device") );
         }
 
         CommandPool pool { vk_device->handle() };
@@ -99,13 +99,13 @@ namespace xgpu::vk
         auto vk_renderpass = dynamic_cast<vk::Renderpass*>(info.renderpass.handle());
         if (!vk_renderpass)
         {
-            return Error("failed to get vk::RenderPass from rhi::RenderPass");
+            return Error("failed to get vk::RenderPass from xgpu::RenderPass");
         }
         
         auto vk_framebuffer = info.framebuffer.get_as<vk::Framebuffer>();
         if (!vk_framebuffer)
         {
-            return Error("failed to get vk::RenderPass from rhi::RenderPass");
+            return Error("failed to get vk::RenderPass from xgpu::RenderPass");
         }
 
         std::size_t clears_offset { 0 };
@@ -169,7 +169,7 @@ namespace xgpu::vk
         auto vk_pipeline = pipeline.get_as<vk::Pipeline>();
         if (!vk_pipeline)
         {
-            return Error("failed to get vk::Pipeline from rhi::Pipeline");
+            return Error("failed to get vk::Pipeline from xgpu::Pipeline");
         }
 
         vkCmdBindPipeline(_handle, getVulkanPipelineBindPoint(bind_point), vk_pipeline->handle());
@@ -234,7 +234,7 @@ namespace xgpu::vk
         auto vk_image_view = description.texture.get_as<vk::ImageView>();
         if (!vk_image_view)
         {
-            return Error("Failed to get vk::ImageView from rhi::ImageView");
+            return Error("Failed to get vk::ImageView from xgpu::ImageView");
         }
 
         VkImageMemoryBarrier barrier {
@@ -279,7 +279,7 @@ namespace xgpu::vk
         auto vk_image_view = texture_copy.image.get_as<vk::ImageView>();
         if (!vk_image_view)
         {
-            return Error("failed to get vk::ImageView from rhi::ImageView");
+            return Error("failed to get vk::ImageView from xgpu::ImageView");
         }
 
         auto vk_buffer = dest.get_as<vk::Buffer>();

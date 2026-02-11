@@ -1,7 +1,7 @@
-#include "rhi/vk/descriptor_set.h"
-#include "core/log.h"
-#include "rhi/vk/device.h"
-#include "vk/pipeline.h"
+#include "xgpu/vk/descriptor_set.h"
+#include "xgpu/core/log.h"
+#include "xgpu/vk/device.h"
+#include "xgpu/vk/pipeline.h"
 #include "vk/vk_utils.h"
 #include <vulkan/vulkan_core.h>
 

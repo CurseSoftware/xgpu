@@ -1,5 +1,5 @@
-#include "rhi/buffer.h"
-#include "vk/buffer.h"
+#include "xgpu/buffer.h"
+#include "xgpu/vk/buffer.h"
 
 namespace xgpu
 {

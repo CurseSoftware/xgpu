@@ -1,8 +1,8 @@
 #ifdef RHI_COMPILE_VULKAN_BACKEND
 
-#include "rhi/core/log.h"
-#include "rhi/vk/debug.h"
-#include "rhi/expected.h"
+#include "xgpu/core/log.h"
+#include "xgpu/vk/debug.h"
+#include "xgpu/expected.h"
 
 #include <iostream>
 #include <string_view>

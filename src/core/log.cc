@@ -1,4 +1,4 @@
-#include "rhi/core/log.h"
+#include "xgpu/core/log.h"
 
 #include <memory>
 #include <stdexcept>
@@ -21,7 +21,7 @@ namespace xgpu::log
     {
         if (g_logger != nullptr)
         {
-            throw std::runtime_error("Cannot reinitialize rhi::Logger");
+            throw std::runtime_error("Cannot reinitialize xgpu::Logger");
         }
 
         g_logger = std::shared_ptr<Logger>(new Logger(config.out, config.err));

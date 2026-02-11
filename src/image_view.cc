@@ -1,6 +1,6 @@
-#include "rhi/image_view.h"
-#include "rhi/expected.h"
-#include "rhi/vk/image_view.h"
+#include "xgpu/image_view.h"
+#include "xgpu/expected.h"
+#include "xgpu/vk/image_view.h"
 #include <memory>
 
 namespace xgpu

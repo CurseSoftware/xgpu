@@ -1,7 +1,7 @@
-#include "rhi/platform.h"
-#include "rhi/vk/core.h"
+#include "xgpu/platform.h"
+#include "xgpu/vk/core.h"
+#include "xgpu/vk/swapchain.h"
 #include <vulkan/vulkan_core.h>
-#include "rhi/vk/swapchain.h"
 
 namespace xgpu::vk
 {

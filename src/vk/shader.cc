@@ -1,8 +1,8 @@
-#include "rhi/vk/shader.h"
-#include "core/log.h"
-#include "rhi/vk/device.h"
+#include "xgpu/vk/shader.h"
+#include "xgpu/core/log.h"
+#include "xgpu/vk/device.h"
 
-#include "rhi/vk/core.h"
+#include "xgpu/vk/core.h"
 
 namespace xgpu::vk
 {
@@ -16,7 +16,7 @@ namespace xgpu::vk
         auto vk_device = reinterpret_cast<vk::Device*>(device.handle());
         if (!vk_device)
         {
-            return unexpected( Error("Failed to get vulkan device from rhi::Device") );
+            return unexpected( Error("Failed to get vulkan device from xgpu::Device") );
         }
 
         ShaderModule shader { vk_device->handle(), data };

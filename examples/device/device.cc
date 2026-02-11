@@ -1,8 +1,8 @@
-#include "rhi/device.h"
-#include "rhi/core.h"
+#include <xgpu/device.h>
+#include <xgpu/core.h>
 #include <iostream>
-#include <rhi/instance.h>
-#include <rhi/vulkan.h>
+#include <xgpu/instance.h>
+#include <xgpu/vulkan.h>
 
 auto main() -> int
 {

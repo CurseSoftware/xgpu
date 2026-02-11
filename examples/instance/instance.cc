@@ -1,6 +1,5 @@
 #include <iostream>
-#include <rhi/instance.h>
-#include <rhi/vulkan.h>
+#include <xgpu/instance.h>
 
 auto main() -> int
 {

@@ -1,12 +1,12 @@
-#include "rhi/vk/device.h"
-#include "rhi/vk/instance.h"
-#include "pipeline_layout.h"
-#include "rhi/core.h"
-#include "core/log.h"
-#include "device.h"
-#include "rhi/vk/core.h"
-#include "types.h"
-#include "vk/command.h"
+#include "xgpu/vk/device.h"
+#include "xgpu/vk/instance.h"
+#include "xgpu/pipeline_layout.h"
+#include "xgpu/core.h"
+#include "xgpu/core/log.h"
+#include "xgpu/device.h"
+#include "xgpu/vk/core.h"
+#include "xgpu/types.h"
+#include "xgpu/vk/command.h"
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -393,7 +393,7 @@ namespace xgpu::vk
         auto vk_buffer = dynamic_cast<vk::CommandBuffer*>(command_buffer);
         if (!vk_buffer)
         {
-            return Error("failed to get vk::CommandBuffer from rhi::CommandBuffer");
+            return Error("failed to get vk::CommandBuffer from xgpu::CommandBuffer");
         }
 
         auto maybe_queue = [&]() -> std::optional<Queue> {

@@ -1,7 +1,7 @@
-#include "rhi/renderpass.h"
-#include "expected.h"
-#include "platform.h"
-#include "vk/renderpass.h"
+#include "xgpu/renderpass.h"
+#include "xgpu/expected.h"
+#include "xgpu/platform.h"
+#include "xgpu/vk/renderpass.h"
 #include <memory>
 
 namespace xgpu

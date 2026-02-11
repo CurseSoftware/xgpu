@@ -1,9 +1,9 @@
-#include "rhi/vk/renderpass.h"
+#include "xgpu/vk/renderpass.h"
 #include "vk/vk_utils.h"
-#include "core/log.h"
-#include "platform.h"
-#include "renderpass.h"
-#include "vk/format.h"
+#include "xgpu/core/log.h"
+#include "xgpu/platform.h"
+#include "xgpu/renderpass.h"
+#include "xgpu/vk/format.h"
 #include <cstdint>
 #include <vector>
 #include <vulkan/vulkan_core.h>
@@ -25,7 +25,7 @@ namespace xgpu::vk
         auto* vulkan_device = dynamic_cast<vk::Device*>(p_device.handle());
         if (!vulkan_device)
         {
-            return unexpected( Error("Failed to get vulkan device handle from provided rhi::Device&") );
+            return unexpected( Error("Failed to get vulkan device handle from provided xgpu::Device&") );
         }
         
         Renderpass renderpass { vulkan_device->handle() };

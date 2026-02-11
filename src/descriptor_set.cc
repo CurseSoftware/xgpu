@@ -1,5 +1,5 @@
-#include "rhi/descriptor_set.h"
-#include "rhi/vk/descriptor_set.h"
+#include "xgpu/descriptor_set.h"
+#include "xgpu/vk/descriptor_set.h"
 #include "platform.h"
 #include <memory>
 

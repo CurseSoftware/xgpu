@@ -1,14 +1,14 @@
-#include "pipeline.h"
-#include "rhi/vk/core.h"
-#include "core/log.h"
-#include "rhi/vk/device.h"
-#include "rhi/vk/pipeline.h"
-#include "rhi/shader.h"
-#include "rhi/vk/shader.h"
-#include "types.h"
-#include "vk/format.h"
-#include "vk/pipeline_layout.h"
-#include "vk/renderpass.h"
+#include "xgpu/pipeline.h"
+#include "xgpu/vk/core.h"
+#include "xgpu/core/log.h"
+#include "xgpu/vk/device.h"
+#include "xgpu/vk/pipeline.h"
+#include "xgpu/shader.h"
+#include "xgpu/vk/shader.h"
+#include "xgpu/types.h"
+#include "xgpu/vk/format.h"
+#include "xgpu/vk/pipeline_layout.h"
+#include "xgpu/vk/renderpass.h"
 #include "vk/vk_utils.h"
 
 #include <cstdint>
@@ -22,7 +22,7 @@ namespace xgpu::vk
         auto* vk_device = dynamic_cast<vk::Device*>(p_device.handle());
         if (!vk_device)
         {
-            return unexpected( Error("Failed to get vk::Device from input rhi::Device object") );
+            return unexpected( Error("Failed to get vk::Device from input xgpu::Device object") );
         }
         Pipeline pipeline { vk_device->handle() };
 
@@ -120,7 +120,7 @@ namespace xgpu::vk
         auto* expected_layout = dynamic_cast<vk::PipelineLayout*>(layout.handle());
         if (!expected_layout)
         {
-            return unexpected( Error("Unable to get vk::PipelineLayout from rhi::PipelineLayout") );
+            return unexpected( Error("Unable to get vk::PipelineLayout from xgpu::PipelineLayout") );
         }
 
         return ok(expected_layout->handle());
@@ -134,7 +134,7 @@ namespace xgpu::vk
             auto vk_module = dynamic_cast<vk::ShaderModule*>(module.get().handle());
             if (!vk_module)
             {
-                return unexpected( Error("Failed to get vulkan shader module from rhi::ShaderModule") );
+                return unexpected( Error("Failed to get vulkan shader module from xgpu::ShaderModule") );
             }
 
             infos.emplace_back( VkPipelineShaderStageCreateInfo {
@@ -256,7 +256,7 @@ namespace xgpu::vk
         return descriptions;
     }
 
-    // Get the vulkan vertex input info from the rhi description
+    // Get the vulkan vertex input info from the xgpu description
     auto getVulkanVertexInputState(
         const VertexInputDescription& desc,
         std::span<VkVertexInputAttributeDescription> attribute_descriptions,

@@ -1,8 +1,8 @@
 #ifndef RHI_VK_PRIV_VK_UTILS_H
 #define RHI_VK_PRIV_VK_UTILS_H
 
-#include "rhi/types.h"
-#include "rhi/vk/core.h"
+#include "xgpu/types.h"
+#include "xgpu/vk/core.h"
 #include <vulkan/vulkan_core.h>
 
 namespace xgpu::vk

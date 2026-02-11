@@ -1,6 +1,6 @@
-#include "rhi/command.h"
-#include "rhi/device.h"
-#include "rhi/vk/command.h"
+#include "xgpu/command.h"
+#include "xgpu/device.h"
+#include "xgpu/vk/command.h"
 
 #include <memory>
 

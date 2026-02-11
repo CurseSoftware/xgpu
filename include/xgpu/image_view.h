@@ -1,0 +1,58 @@
+#ifndef RHI_IMAGE_VIEW_H
+#define RHI_IMAGE_VIEW_H
+
+#include "xgpu/types.h"
+#include "xgpu/format.h"
+#include "xgpu/device.h"
+#include "xgpu/error.h"
+#include "xgpu/expected.h"
+
+#include <cstdint>
+#include <memory>
+
+namespace xgpu
+{
+    struct ImageViewDescription
+    {
+        Extent3D extent            {};
+        Format format              { Format::Unknown };
+        std::uint32_t mip_levels   { 1 };
+        std::uint32_t array_layers { 1 };
+        SampleCount samples        { SampleCount::One };
+        ImageType image_type       { ImageType::Type2D };
+        ImageUsage usage           { 0 };
+        ImageTiling tiling         { ImageTiling::Optimal };
+        SharingMode sharing_mode   { SharingMode::Exclusive };
+        ImageLayout initial_layout { ImageLayout::Undefined };
+        ImageAspectFlags aspect    { static_cast<std::uint32_t>(ImageAspectFlagBits::AspectNone) };
+    };
+
+    class IImageView
+    {
+        public:
+            virtual auto destroy() noexcept -> void = 0;
+    };
+
+    class ImageView : public IImageView
+    {
+        public:
+            [[nodiscard]] static auto create(Device&, const ImageViewDescription&) noexcept -> expected<ImageView, Error>;
+
+        // API
+        public:
+            auto destroy() noexcept -> void override { _handle->destroy(); }
+
+            [[nodiscard]] auto handle() const noexcept -> IImageView* { return _handle.get(); }
+
+            template <typename T>
+            [[nodiscard]] auto get_as() const noexcept -> T* { return dynamic_cast<T*>(_handle.get()); }
+
+        private:
+            ImageView() = default;
+
+        private:
+            std::unique_ptr<IImageView> _handle { nullptr };
+    };
+} // namespace xgpu
+
+#endif // RHI_IMAGE_VIEW_H

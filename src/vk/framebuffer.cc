@@ -1,9 +1,9 @@
-#include "rhi/vk/framebuffer.h"
-#include "core/log.h"
-#include "rhi/vk/device.h"
-#include "expected.h"
-#include "vk/image_view.h"
-#include "vk/renderpass.h"
+#include "xgpu/vk/framebuffer.h"
+#include "xgpu/core/log.h"
+#include "xgpu/vk/device.h"
+#include "xgpu/expected.h"
+#include "xgpu/vk/image_view.h"
+#include "xgpu/vk/renderpass.h"
 #include <vulkan/vulkan_core.h>
 
 namespace xgpu::vk
@@ -13,13 +13,13 @@ namespace xgpu::vk
         auto* vk_device = dynamic_cast<vk::Device*>(device.handle());
         if (!vk_device)
         {
-            return unexpected( Error("Failed to get vk::Device from rhi::Device") );
+            return unexpected( Error("Failed to get vk::Device from xgpu::Device") );
         }
 
         auto* vk_renderpass = dynamic_cast<vk::Renderpass*>(description.renderpass.handle());
         if (!vk_renderpass)
         {
-            return unexpected( Error("Failed to get vk::Renderpass from rhi::Renderpass") );
+            return unexpected( Error("Failed to get vk::Renderpass from xgpu::Renderpass") );
         }
 
         std::uint32_t layer_count { 0 };
@@ -32,7 +32,7 @@ namespace xgpu::vk
                 if (!vk_image_view)
                 {
                     log::error("HERE");
-                    return unexpected( Error("Failed to get vk::ImageView from rhi::ImageView") );
+                    return unexpected( Error("Failed to get vk::ImageView from xgpu::ImageView") );
                 }
 
                 if (layer_count != 0 && vk_image_view->layer_count() != layer_count)

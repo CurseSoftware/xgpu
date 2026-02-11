@@ -1,9 +1,9 @@
-#include "rhi/instance.h"
-#include "expected.h"
-#include "instance_context.h"
-#include "platform.h"
-#include "vk/instance.h"
-#include "vk/instance_context.h"
+#include "xgpu/instance.h"
+#include "xgpu/expected.h"
+#include "xgpu/instance_context.h"
+#include "xgpu/platform.h"
+#include "xgpu/vk/instance.h"
+#include "xgpu/vk/instance_context.h"
 #include <variant>
 
 namespace xgpu

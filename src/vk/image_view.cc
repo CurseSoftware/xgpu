@@ -1,8 +1,8 @@
-#include "rhi/vk/image_view.h"
-#include "core/log.h"
-#include "rhi/vk/device.h"
-#include "types.h"
-#include "vk/format.h"
+#include "xgpu/vk/image_view.h"
+#include "xgpu/core/log.h"
+#include "xgpu/vk/device.h"
+#include "xgpu/types.h"
+#include "xgpu/vk/format.h"
 #include "vk/vk_utils.h"
 #include <vulkan/vulkan_core.h>
 
@@ -13,7 +13,7 @@ namespace xgpu::vk
         auto* vk_device = dynamic_cast<vk::Device*>(device.handle());
         if (!vk_device)
         {
-            return unexpected( Error("Failed to get vk::Device from rhi::Device") );
+            return unexpected( Error("Failed to get vk::Device from xgpu::Device") );
         }
 
         ImageView image_view { vk_device->handle() };

@@ -1,7 +1,7 @@
-#include "rhi/device.h"
-#include "expected.h"
-#include "platform.h"
-#include "vk/device.h"
+#include "xgpu/device.h"
+#include "xgpu/expected.h"
+#include "xgpu/platform.h"
+#include "xgpu/vk/device.h"
 #include <variant>
 
 namespace xgpu

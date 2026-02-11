@@ -1,0 +1,26 @@
+#ifndef RHI_SWAPCHAIN_H
+#define RHI_SWAPCHAIN_H
+
+#include "xgpu/error.h"
+#include "xgpu/expected.h"
+#include "xgpu/swapchain_context.h"
+#include <memory>
+namespace xgpu
+{
+    class ISwapChain
+    {
+        public:
+            virtual auto destroy() noexcept -> void = 0;
+    };
+
+    class SwapChain : public ISwapChain
+    {
+        public:
+            static auto create(const SwapChainContext& ctx) noexcept -> expected<SwapChain, Error>;
+        
+        private:
+            std::unique_ptr<ISwapChain> _handle { nullptr };
+    };
+} // namespace xgpu
+
+#endif // RHI_SWAPCHAIN_H

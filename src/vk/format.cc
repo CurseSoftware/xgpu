@@ -1,6 +1,6 @@
-#include "rhi/format.h"
-#include "rhi/vk/format.h"
-#include "rhi/vk/core.h"
+#include "xgpu/format.h"
+#include "xgpu/vk/format.h"
+#include "xgpu/vk/core.h"
 #include <vulkan/vulkan_core.h>
 
 

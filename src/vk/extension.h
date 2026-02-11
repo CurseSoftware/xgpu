@@ -1,8 +1,8 @@
 #ifndef RHI_VK_PRIV_EXTENSION_H
 #define RHI_VK_PRIV_EXTENSION_H
 
-#include "rhi/expected.h"
-#include "rhi/core/log.h"
+#include "xgpu/expected.h"
+#include "xgpu/core/log.h"
 #include <cstdint>
 #include <span>
 #include <string_view>

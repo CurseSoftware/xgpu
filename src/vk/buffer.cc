@@ -1,7 +1,7 @@
-#include "rhi/vk/buffer.h"
-#include "core/log.h"
-#include "rhi/vk/device.h"
-#include "types.h"
+#include "xgpu/vk/buffer.h"
+#include "xgpu/core/log.h"
+#include "xgpu/vk/device.h"
+#include "xgpu/types.h"
 #include "vk/vk_utils.h"
 #include <cstring>
 #include <vulkan/vulkan_core.h>
@@ -13,7 +13,7 @@ namespace xgpu::vk
         auto vk_device = device.get_as<vk::Device>();
         if (!vk_device)
         {
-            return unexpected( Error("failed to get vk::Device from rhi::Device") );
+            return unexpected( Error("failed to get vk::Device from xgpu::Device") );
         }
         vk::Buffer buffer { vk_device->handle() , description.size};
 

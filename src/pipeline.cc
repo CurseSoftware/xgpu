@@ -1,5 +1,5 @@
-#include "rhi/pipeline.h"
-#include "vk/pipeline.h"
+#include "xgpu/pipeline.h"
+#include "xgpu/vk/pipeline.h"
 #include <memory>
 #include <variant>
 

@@ -1,6 +1,6 @@
-#include "rhi/shader.h"
-#include "expected.h"
-#include "vk/shader.h"
+#include "xgpu/shader.h"
+#include "xgpu/expected.h"
+#include "xgpu/vk/shader.h"
 #include <memory>
 
 namespace xgpu
