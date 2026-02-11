@@ -4,15 +4,16 @@
 #ifdef RHI_COMPILE_VULKAN_BACKEND
 
 #include "xgpu/platform.h"
-#include "xgpu/instance.h"
 #include "xgpu/vk/debug.h"
+#include "xgpu/vk/instance_context.h"
+#include "xgpu/error.h"
 #include "xgpu/vk/core.h"
 
 #include <optional>
 
 namespace xgpu::vk
 {
-    class [[nodiscard]] Instance : public xgpu::IInstance
+    class Instance
     {
         // Factory
         public:
@@ -20,15 +21,16 @@ namespace xgpu::vk
 
         // API
         public:
-            auto destroy() noexcept -> void override;
+            auto destroy() noexcept -> void;
 
-            auto backend() const noexcept -> Backend override { return Backend::Vulkan; }
+            auto backend() const noexcept -> Backend { return Backend::Vulkan; }
 
             auto native_handle() const noexcept -> VkInstance { return _handle; }
         
+        // Private fields
         private:
             std::optional<DebugMessenger> _debug_messenger { std::nullopt };
-            VkInstance                         _handle     { VK_NULL_HANDLE };
+            VkInstance  _handle                            { VK_NULL_HANDLE };
     };
 } // namespace xgpu::vk
 

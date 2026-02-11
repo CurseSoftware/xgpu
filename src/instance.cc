@@ -26,9 +26,9 @@ namespace xgpu
                 {
                     return unexpected(expected_instance.unwrap_error());
                 }
+
                 instance = expected_instance.unwrap();
 
-                // instance._handle = std::make_unique<vk::Instance>(expected_instance.unwrap());
                 return ok(instance);
             }
         }
