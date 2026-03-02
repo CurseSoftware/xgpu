@@ -16,7 +16,12 @@ namespace xgpu
     class bad_expected_access : public std::exception
     {
         public:
-            auto what() const noexcept -> const char* override { return "bad rhi::expected access"; }
+            bad_expected_access() : _message{ "bad xgpu::expected access" } {}
+            bad_expected_access(const std::string& message) : _message{ std::string("bad xgpu::expected access") + std::move(message) } {}
+            
+            auto what() const noexcept -> const char* override { return _message.c_str(); }
+        private:
+            std::string _message;
     };
 
     class bad_expected_error_access : public std::exception
@@ -272,6 +277,80 @@ namespace xgpu
 
     public:
         [[nodiscard]] constexpr bool has_value() const noexcept { return _is_ok; }
+        
+        constexpr auto 
+        expect(const std::string& message) const & -> T const&
+        requires std::is_copy_constructible_v<T>
+        {
+            // static_assert(std::is_copy_constructible_v<T>, "T must be copyable");
+            if (_is_ok)
+            {
+                return std::get<T>(_value);
+            }
+
+            throw new bad_expected_access(message);
+        }
+        
+        constexpr auto 
+        expect(const std::string& message) & -> T&
+        requires std::is_copy_constructible_v<T>
+        {
+            // static_assert(std::is_copy_constructible_v<T>, "T must be copyable");
+            if (_is_ok)
+            {
+                return std::get<T>(_value);
+            }
+
+            throw new bad_expected_access(message);
+        }
+
+        constexpr auto 
+        expect(const std::string& message) const & -> T const&&
+        requires (std::is_move_constructible_v<T> && std::is_move_assignable_v<T> && !std::is_copy_constructible_v<T>)
+        {
+            // static_assert(std::is_copy_constructible_v<T>, "T must be copyable");
+            if (_is_ok)
+            {
+                return std::move(std::get<T>(_value));
+            }
+
+            throw new bad_expected_access(message);
+        }
+
+        constexpr auto
+        expect(const std::string& message) & -> T &&
+        requires (std::is_move_constructible_v<T> && std::is_move_assignable_v<T> && !std::is_copy_constructible_v<T>)
+        {
+            // static_assert(std::is_copy_constructible_v<T>, "T must be copyable");
+            if (_is_ok)
+            {
+                return std::move(std::get<T>(_value));
+            }
+
+            throw new bad_expected_access();
+        }
+
+        constexpr auto
+        expect(const std::string& message) const && -> T const&&
+        {
+            if (_is_ok)
+            {
+                return std::move(std::get<T>(_value));
+            }
+
+            throw new bad_expected_access();
+        }
+
+        constexpr auto
+        expect(const std::string& message) && -> T &&
+        {
+            if (_is_ok)
+            {
+                return std::move(std::get<T>(_value));
+            }
+
+            throw new bad_expected_access(message);
+        }
 
         constexpr auto unwrap() const & -> T const&
         requires std::is_copy_constructible_v<T>
