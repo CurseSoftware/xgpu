@@ -82,7 +82,6 @@ namespace xgpu
         private:
             explicit Device() noexcept = default;
 
-
         private:
             std::unique_ptr<IDevice> _handle { nullptr };
     };

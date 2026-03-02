@@ -11,14 +11,15 @@
 #include <xgpu/shader.h>
 #include <xgpu/types.h>
 #include <array>
+#include <xgpu/instance.h>
+#include <xgpu/vulkan.h>
+
 #include <cstddef>
 #include <cstdio>
 #include <fstream>
 #include <functional>
 #include <ios>
 #include <iostream>
-#include <xgpu/instance.h>
-#include <xgpu/vulkan.h>
 #include <stdexcept>
 #include <vector>
 

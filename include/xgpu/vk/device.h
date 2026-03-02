@@ -1,5 +1,7 @@
 #ifndef RHI_VK_DEVICE_H
 #define RHI_VK_DEVICE_H
+#include "xgpu/constants.h"
+#include "xgpu/platform.h"
 #ifdef RHI_COMPILE_VULKAN_BACKEND
 
 #include <cstdint>
