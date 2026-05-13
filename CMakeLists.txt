@@ -1,92 +1,30 @@
-
+include(FetchContent)
 cmake_minimum_required(VERSION 3.10)
 
-project(xgpu VERSION 1.0.0 LANGUAGES CXX)
+project(XGPU VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Macro for defining build options
-macro(rhi_option var default type docstring)
-    if (NOT DEFINED ${var})
-        set(${var} ${default})
-    endif()
-    set(${var} ${${var}} CACHE ${type} ${docstring} FORCE)
-endmacro()
+#macro(xgpu_option var default type docstring)
+#    if (NOT DEFINED ${var})
+#        set(${var} ${default})
+#    endif()
+#    set(${var} ${${var}} CACHE ${type} ${docstring} FORCE
+#endmacro()
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
-message("Binary output dir: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+# Add the subdirectory for the actual RHI
+add_subdirectory(xgpu)
 
-# CompDB
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
+# Determine if this is a subproject or not
+if (NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(XGPU_SUBPROJECT ON)
+endif ()
 
-# Source files
-set(RHI_SOURCES
-    "${PROJECT_SOURCE_DIR}/src/instance.cc"
-    "${PROJECT_SOURCE_DIR}/src/device.cc"
-    "${PROJECT_SOURCE_DIR}/src/renderpass.cc"
-    "${PROJECT_SOURCE_DIR}/src/pipeline.cc"
-    "${PROJECT_SOURCE_DIR}/src/pipeline_layout.cc"
-    "${PROJECT_SOURCE_DIR}/src/descriptor_set.cc"
-    "${PROJECT_SOURCE_DIR}/src/shader.cc"
-    "${PROJECT_SOURCE_DIR}/src/image_view.cc"
-    "${PROJECT_SOURCE_DIR}/src/framebuffer.cc"
-    "${PROJECT_SOURCE_DIR}/src/command.cc"
-    "${PROJECT_SOURCE_DIR}/src/buffer.cc"
-    "${PROJECT_SOURCE_DIR}/src/core/log.cc"
-
-    "${PROJECT_SOURCE_DIR}/src/vk/instance.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/command.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/validation.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/debug.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/device.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/renderpass.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/pipeline.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/format.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/shader.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/buffer.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/image_view.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/vk_utils.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/descriptor_set.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/framebuffer.cc"
-    "${PROJECT_SOURCE_DIR}/src/vk/pipeline_layout.cc"
-)
-message("Sources: ${RHI_SOURCES}")
-
-add_library("${PROJECT_NAME}" STATIC "${RHI_SOURCES}")
-
-# Private include path
-target_include_directories("${PROJECT_NAME}" PRIVATE
-    $<INSTALL_INTERFACE:include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-)
-
-# Public include path
-target_include_directories("${PROJECT_NAME}" PUBLIC
-    $<INSTALL_INTERFACE:include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-)
-
-if (WIN32)
-    target_compile_definitions("${PROJECT_NAME}" PRIVATE RHI_COMPILE_DX12=1)
-endif()
-
-# Look for vulkan and link if available
-find_package(Vulkan QUIET)
-if (Vulkan_FOUND)
-    message("Vulkan found.")
-    target_link_libraries("${PROJECT_NAME}" PRIVATE Vulkan::Vulkan)
-    target_compile_definitions("${PROJECT_NAME}" PUBLIC RHI_COMPILE_VULKAN_BACKEND=1)
-else()
-    message("Vulkan not found.")
-endif()
-
-rhi_option(RHI_BUILD_EXAMPLES ON BOOL "ON to build examples. OFF to ignore them")
-if (RHI_BUILD_EXAMPLES)
-    message("Building examples")
-    add_subdirectory(examples/instance)
-    add_subdirectory(examples/device)
-    add_subdirectory(examples/triangle)
+# TODO: use an option with xgpu_option to conditionally build examples and tests
+if (NOT XGPU_SUBPROJECT)
+    add_subdirectory(tests)
+    # add examples here
 endif()
