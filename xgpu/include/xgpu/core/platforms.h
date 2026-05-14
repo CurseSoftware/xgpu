@@ -12,7 +12,7 @@ namespace xgpu
     };
 
     template <>
-    inline std::string
+    inline constexpr std::string
     utils::EnumWrapper<Platform>::to_string() const noexcept
     {
         switch ( value() ) {

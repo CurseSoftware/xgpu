@@ -1,4 +1,5 @@
 #pragma once
+#include "adapter_context.h"
 #include "physical_device_manager.h"
 #include "xgpu/core/core.h"
 #include "xgpu/data/data.h"
@@ -7,7 +8,7 @@
 
 namespace xgpu
 {
-    template <core::GraphicsApi GAPI>
+    template <core::GraphicsApi GAPI, traits::detail::IAdapterContext<GAPI> Context>
     class Adapter;
 } // namespace xgpu
 
@@ -17,10 +18,13 @@ namespace xgpu::traits
     template <class T, core::GraphicsApi GAPI>
     concept IAdapterManager
         = requires(T adapter_manager, std::optional<data::PhysicalDevice> physical_device) {
-              { adapter_manager.create_adapter(physical_device) } -> std::same_as<class Adapter<GAPI>>;
+              {
+                  adapter_manager.create_adapter(physical_device)
+              } -> std::same_as<class Adapter<GAPI, detail::AdapterContext<GAPI>>>;
           } && concepts::ContainsMixin<T, PhysicalDeviceManager<GAPI>>;
 
-    /// @brief Named interface class that should never be instantiated
+    /// @brief Handles the creation of Adapters
+    /// @note Named interface class that should never be instantiated
     template <core::GraphicsApi GAPI>
     class AdapterManager;
 } // namespace xgpu::traits

@@ -19,7 +19,7 @@ namespace xgpu
     };
 
     template <>
-    inline std::string
+    inline constexpr std::string
     utils::EnumWrapper<ErrorLevel>::to_string() const noexcept
     {
         switch ( value() ) {
@@ -138,7 +138,7 @@ namespace xgpu
     };
 
     template <>
-    inline std::string
+    inline constexpr std::string
     utils::EnumWrapper<ErrorCode>::to_string() const noexcept
     {
         switch ( m_value ) {

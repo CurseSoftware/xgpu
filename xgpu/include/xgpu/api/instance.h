@@ -6,9 +6,9 @@
 
 namespace xgpu
 {
+    /// @brief The entry point into an xgpu application
     template <
-        core::GraphicsApi             GAPI = core::DefaultGraphicsApi,
-        // traits::IPhysicalDevice       PhysicalDeviceManager = traits::PhysicalDeviceManager<GAPI>,
+        core::GraphicsApi             GAPI           = core::DefaultGraphicsApi,
         traits::IAdapterManager<GAPI> AdapterManager = traits::AdapterManager<GAPI>>
     class Instance : public AdapterManager
     {

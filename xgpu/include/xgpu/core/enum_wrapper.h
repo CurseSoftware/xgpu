@@ -5,6 +5,7 @@
 
 namespace xgpu::utils
 {
+    /// @brief A convenience wrapper around an enum for commonly useful utilities
     template <concepts::Enum E>
     class EnumWrapper
     {
@@ -13,13 +14,21 @@ namespace xgpu::utils
 
         [[nodiscard]] constexpr explicit EnumWrapper(E e) noexcept : m_value{ e } {}
 
-        [[nodiscard]] Enum
+        /// @brief Get the raw enum value
+        [[nodiscard]] constexpr Enum
         value() const noexcept
         {
             return m_value;
         }
 
-        [[nodiscard]] std::string to_string() const noexcept;
+        /// @brief Get the raw enum value
+        [[nodiscard]] constexpr Enum
+        raw() const noexcept
+        {
+            return m_value;
+        }
+
+        [[nodiscard]] constexpr std::string to_string() const noexcept;
 
         constexpr explicit(false) operator std::string() const noexcept { return to_string(); }
 
