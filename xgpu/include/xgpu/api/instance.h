@@ -7,10 +7,10 @@
 namespace xgpu
 {
     template <
-        core::GraphicsApi             GAPI                  = core::DefaultGraphicsApi,
-        traits::IPhysicalDevice       PhysicalDeviceManager = traits::PhysicalDeviceManager<GAPI>,
-        traits::IAdapterManager<GAPI> AdapterManager        = traits::AdapterManager<GAPI>>
-    class Instance : public PhysicalDeviceManager, public AdapterManager
+        core::GraphicsApi             GAPI = core::DefaultGraphicsApi,
+        // traits::IPhysicalDevice       PhysicalDeviceManager = traits::PhysicalDeviceManager<GAPI>,
+        traits::IAdapterManager<GAPI> AdapterManager = traits::AdapterManager<GAPI>>
+    class Instance : public AdapterManager
     {
       public:
         [[nodiscard]] explicit Instance(const InstanceDesc desc) {}

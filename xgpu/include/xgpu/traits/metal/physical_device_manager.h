@@ -1,4 +1,7 @@
 #pragma once
+
+#ifdef XGPU_COMPILE_METAL
+
 #include "xgpu/core/core.h"
 #include "xgpu/traits/physical_device_manager.h"
 
@@ -17,5 +20,9 @@ class xgpu::traits::PhysicalDeviceManager<xgpu::core::GraphicsApi::Metal>
     data::PhysicalDevice            default_physical_device() noexcept;
 
   private:
+    std::vector<data::PhysicalDevice> retrieve_physical_devices() noexcept;
+
     std::vector<data::PhysicalDevice> m_physical_devices;
 };
+
+#endif // XGPU_COMPILE_METAL
