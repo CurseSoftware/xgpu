@@ -4,7 +4,7 @@ BasedOnStyle: GNU
 # Custom overrides
 NamespaceIndentation: All
 IndentWidth: 4
-ColumnLimit: 100
+ColumnLimit: 110
 AllowShortFunctionsOnASingleLine: All
 BreakTemplateDeclarations: Yes
 AlignConsecutiveAssignments: Consecutive
@@ -17,3 +17,17 @@ AlignConsecutiveDeclarations:
   AcrossEmptyLines: true
   AcrossComments: true
 AlignArrayOfStructures: Left
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterControlStatement: false
+  AfterFunction: true
+  AfterClass: true
+  AfterStruct: true
+  AfterNamespace: true
+  AfterEnum: true
+  BeforeElse: false
+  BeforeCatch: false
+  IndentBraces: false
+AlwaysBreakTemplateDeclarations: Yes
+BinPackParameters: false
+AlignAfterOpenBracket: AlwaysBreak
