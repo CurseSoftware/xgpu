@@ -1,4 +1,7 @@
 # X-GPU: A Rendering Hardware Interface
+[!NOTE]
+We are currently refactoring the architecture to more easliy support multiple backend APIs. See `refactor` branch for updates
+
 ## Purpose
 This is an experimental, cross-gpu API layer meant for GPU-agnostic rendering code supporting C++ 20.
 The main goal of this is to get enough support for use in the [Blade Game Engine](https://github.com/CurseSoftware/blade).
