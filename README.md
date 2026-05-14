@@ -1,6 +1,6 @@
 # X-GPU: A Rendering Hardware Interface
-[!NOTE]
-We are currently refactoring the architecture to more easliy support multiple backend APIs. See `refactor` branch for updates
+> [!NOTE]
+> We are currently refactoring the architecture to more easliy support multiple backend APIs. See `refactor` branch for updates
 
 ## Purpose
 This is an experimental, cross-gpu API layer meant for GPU-agnostic rendering code supporting C++ 20.
