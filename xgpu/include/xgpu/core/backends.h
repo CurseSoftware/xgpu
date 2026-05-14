@@ -1,7 +1,7 @@
 #pragma once
 #include "platform_detection.h"
 
-namespace xgpu::core
+namespace xgpu
 {
     /// @brief Enumeration of supported graphics APIs
     enum class GraphicsApi
@@ -23,4 +23,4 @@ namespace xgpu::core
     {
         return DefaultGraphicsApi;
     }
-} // namespace xgpu::core
+} // namespace xgpu

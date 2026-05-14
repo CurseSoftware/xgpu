@@ -18,4 +18,6 @@ TEST_CASE("instance", "[instance]")
     std::cout << "Default device:" << std::endl;
     std::cout << "\tName: " << default_device.name << std::endl;
     std::cout << "\tVRAM: " << default_device.video_ram_bytes << " bytes" << std::endl;
+
+    xgpu::Adapter adapter = instance.create_adapter(default_device);
 }

@@ -8,14 +8,14 @@
 
 namespace xgpu
 {
-    template <core::GraphicsApi GAPI, traits::detail::IAdapterContext<GAPI> Context>
+    template <GraphicsApi GAPI, traits::detail::IAdapterContext<GAPI> Context>
     class Adapter;
 } // namespace xgpu
 
 namespace xgpu::traits
 {
     /// @brief Requirements for a valid adapter manager type
-    template <class T, core::GraphicsApi GAPI>
+    template <class T, GraphicsApi GAPI>
     concept IAdapterManager
         = requires(T adapter_manager, std::optional<data::PhysicalDevice> physical_device) {
               {
@@ -25,6 +25,6 @@ namespace xgpu::traits
 
     /// @brief Handles the creation of Adapters
     /// @note Named interface class that should never be instantiated
-    template <core::GraphicsApi GAPI>
+    template <GraphicsApi GAPI>
     class AdapterManager;
 } // namespace xgpu::traits

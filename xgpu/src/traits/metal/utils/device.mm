@@ -5,7 +5,7 @@
 
 namespace xgpu::mtl
 {
-    std::vector<data::PhysicalDevice> get_available_devices() noexcept
+    std::vector<data::PhysicalDevice> get_available_physical_devices() noexcept
     {
         std::vector<data::PhysicalDevice> physical_devices;
         NSArray<id<MTLDevice>> *devices = MTLCopyAllDevices();
@@ -24,4 +24,23 @@ namespace xgpu::mtl
 
         return physical_devices;
     }
+
+    std::vector<type_traits<GraphicsApi::Metal>::device_t> all_devices() noexcept
+    {
+        std::vector<type_traits<GraphicsApi::Metal>::device_t> devices;
+        NSArray<id<MTLDevice>> *mtl_devices = MTLCopyAllDevices();
+
+        for (id<MTLDevice> device in mtl_devices) {
+            devices.push_back(&device);
+        }
+
+        return devices;
+    }
+
+   type_traits<GraphicsApi::Metal>::device_t              default_device() noexcept
+   {
+       id<MTLDevice> default_device = MTLCreateSystemDefaultDevice();
+
+       return &default_device;
+   }
 } // namespace xgpu::mtl

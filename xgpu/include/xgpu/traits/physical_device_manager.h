@@ -16,6 +16,6 @@ namespace xgpu::traits
     };
 
     /// @brief Named class that should never be instantiated
-    template <core::GraphicsApi GAPI>
+    template <GraphicsApi GAPI>
     class PhysicalDeviceManager;
 } // namespace xgpu::traits

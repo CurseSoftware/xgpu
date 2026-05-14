@@ -10,7 +10,7 @@
 
 /// @brief Metal implementation for the PhysicalDeviceManager trait
 template <>
-class xgpu::traits::PhysicalDeviceManager<xgpu::core::GraphicsApi::Metal>
+class xgpu::traits::PhysicalDeviceManager<xgpu::GraphicsApi::Metal>
 {
   public:
     /// @brief Enumerate the available physical devices
