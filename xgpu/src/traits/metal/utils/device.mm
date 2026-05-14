@@ -31,7 +31,7 @@ namespace xgpu::mtl
         NSArray<id<MTLDevice>> *mtl_devices = MTLCopyAllDevices();
 
         for (id<MTLDevice> device in mtl_devices) {
-            devices.push_back(&device);
+            devices.push_back(device);
         }
 
         return devices;
@@ -39,8 +39,6 @@ namespace xgpu::mtl
 
    type_traits<GraphicsApi::Metal>::device_t              default_device() noexcept
    {
-       id<MTLDevice> default_device = MTLCreateSystemDefaultDevice();
-
-       return &default_device;
+       return MTLCreateSystemDefaultDevice();
    }
 } // namespace xgpu::mtl

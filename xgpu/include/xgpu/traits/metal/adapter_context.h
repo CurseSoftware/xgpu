@@ -15,7 +15,20 @@ namespace xgpu::traits::detail
             : m_device(device), m_physical_device(physical_device)
         {
         }
-        // AdapterContext(type_traits<GraphicsApi::Metal>::device_t device) noexcept;
+
+        /// @brief Get the physical device for this adapter
+        [[nodiscard]] constexpr const data::PhysicalDevice &
+        physical_device() const noexcept
+        {
+            return m_physical_device;
+        }
+
+        /// @brief Get the underlying metal device
+        [[nodiscard]] constexpr type_traits<GraphicsApi::Metal>::device_t
+        device() const noexcept
+        {
+            return m_device;
+        }
 
       private:
         type_traits<GraphicsApi::Metal>::device_t m_device = nullptr;

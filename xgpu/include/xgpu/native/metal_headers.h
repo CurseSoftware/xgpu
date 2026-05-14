@@ -6,7 +6,7 @@
 #ifdef __OBJC__
 #include <Metal/Metal.h>
 
-#define OBJC_TYPE(T) T *
+#define OBJC_TYPE(T) T
 
 #else
 #define OBJC_TYPE(T) void *

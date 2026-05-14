@@ -16,9 +16,9 @@ namespace xgpu::traits
 
         if ( physical_device.has_value() ) {
             for ( type_traits<GraphicsApi::Metal>::device_t device : mtl::all_devices() ) {
-                if ( [[*device name] UTF8String] == physical_device->name ) {
+                if ( [[device name] UTF8String] == physical_device->name ) {
                     return Adapter<>{
-                        detail::AdapterContext<GraphicsApi::Metal>{ *physical_device, device }
+                        detail::AdapterContext<GraphicsApi::Metal>{ *physical_device, device },
                     };
                 }
             }

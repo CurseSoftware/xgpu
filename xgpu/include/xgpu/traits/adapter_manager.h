@@ -1,6 +1,7 @@
 #pragma once
 #include "adapter_context.h"
 #include "physical_device_manager.h"
+#include "queue_manager.h"
 #include "xgpu/core/core.h"
 #include "xgpu/data/data.h"
 
@@ -8,7 +9,7 @@
 
 namespace xgpu
 {
-    template <GraphicsApi GAPI, traits::detail::IAdapterContext<GAPI> Context>
+    template <GraphicsApi GAPI, traits::detail::IAdapterContext<GAPI> Context, traits::IQueueManager<GAPI>>
     class Adapter;
 } // namespace xgpu
 
@@ -20,7 +21,7 @@ namespace xgpu::traits
         = requires(T adapter_manager, std::optional<data::PhysicalDevice> physical_device) {
               {
                   adapter_manager.create_adapter(physical_device)
-              } -> std::same_as<class Adapter<GAPI, detail::AdapterContext<GAPI>>>;
+              } -> std::same_as<class Adapter<GAPI, detail::AdapterContext<GAPI>, QueueManager<GAPI>>>;
           } && concepts::ContainsMixin<T, PhysicalDeviceManager<GAPI>>;
 
     /// @brief Handles the creation of Adapters

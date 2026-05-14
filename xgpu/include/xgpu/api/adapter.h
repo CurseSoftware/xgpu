@@ -7,8 +7,9 @@ namespace xgpu
 {
     template <
         GraphicsApi                           GAPI           = DefaultGraphicsApi,
-        traits::detail::IAdapterContext<GAPI> AdapterContext = traits::detail::AdapterContext<GAPI>>
-    class Adapter : public AdapterContext
+        traits::detail::IAdapterContext<GAPI> AdapterContext = traits::detail::AdapterContext<GAPI>,
+        traits::IQueueManager<GAPI>           QueuePolicy    = traits::QueueManager<GAPI>>
+    class Adapter : public AdapterContext, public QueuePolicy
     {
     };
 } // namespace xgpu

@@ -3,6 +3,7 @@
 #include "xgpu/data/data.h"
 #include "xgpu/traits/adapter_manager.h"
 #include "xgpu/traits/metal/physical_device_manager.h"
+#include "xgpu/traits/metal/queue_manager.h"
 
 #include <optional>
 
@@ -13,7 +14,10 @@ namespace xgpu::traits
     {
       public:
         /// @brief Create an adapter from a specified PhysicalDevice
-        Adapter<GraphicsApi::Metal, detail::AdapterContext<GraphicsApi::Metal>>
+        Adapter<
+            GraphicsApi::Metal,
+            detail::AdapterContext<GraphicsApi::Metal>,
+            QueueManager<GraphicsApi::Metal>>
         create_adapter(std::optional<data::PhysicalDevice> physical_device = std::nullopt) noexcept;
 
       private:
