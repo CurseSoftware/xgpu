@@ -1,9 +1,9 @@
 #pragma once
-#include "../../native/metal_headers.h"
+#include "xgpu/components/detail/adapter_context.h"
 #include "xgpu/core/core.h"
-#include "xgpu/traits/adapter_context.h"
+#include "xgpu/native/native.h"
 
-namespace xgpu::traits::detail
+namespace xgpu::components::detail
 {
     template <>
     class AdapterContext<GraphicsApi::Metal>
@@ -34,4 +34,4 @@ namespace xgpu::traits::detail
         type_traits<GraphicsApi::Metal>::device_t m_device = nullptr;
         data::PhysicalDevice                      m_physical_device;
     };
-} // namespace xgpu::traits::detail
+} // namespace xgpu::components::detail

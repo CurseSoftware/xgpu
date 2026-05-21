@@ -2,15 +2,15 @@
 
 #ifdef XGPU_COMPILE_METAL
 
+#include "xgpu/components/physical_device_manager.h"
 #include "xgpu/core/core.h"
-#include "xgpu/traits/physical_device_manager.h"
 
 #include <span>
 #include <vector>
 
 /// @brief Metal implementation for the PhysicalDeviceManager trait
 template <>
-class xgpu::traits::PhysicalDeviceManager<xgpu::GraphicsApi::Metal>
+class xgpu::components::PhysicalDeviceManager<xgpu::GraphicsApi::Metal>
 {
   public:
     /// @brief Enumerate the available physical devices

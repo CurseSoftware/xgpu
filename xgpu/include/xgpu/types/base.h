@@ -8,6 +8,7 @@ namespace xgpu
     concept ValidTypeTraits = requires {
         typename T::instance_t;
         typename T::device_t;
+        typename T::command_queue_t;
     };
 
     template <GraphicsApi GAPI>

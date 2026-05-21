@@ -4,7 +4,7 @@
 #include "xgpu/types/types.h"
 #include <concepts>
 
-namespace xgpu::traits::detail
+namespace xgpu::components::detail
 {
     /// @brief The interface for a valid AdapterContext
     template <typename T, GraphicsApi GAPI = DefaultGraphicsApi>
@@ -16,4 +16,4 @@ namespace xgpu::traits::detail
     /// @brief Internal context of the adapter used by consumer policies
     template <GraphicsApi GAPI>
     class AdapterContext;
-} // namespace xgpu::traits::detail
+} // namespace xgpu::components::detail

@@ -1,6 +1,6 @@
 #include "device.h"
 #include "xgpu/data/data.h"
-#include "xgpu/traits/metal/metal.h"
+#include "xgpu/components/metal/metal.h"
 #include <vector>
 
 namespace xgpu::mtl

@@ -12,6 +12,10 @@ namespace xgpu::utils
       public:
         using Enum = E;
 
+        /// @brief Default construction of EnumWrapper
+        [[nodiscard]] constexpr explicit EnumWrapper() noexcept = default;
+
+        /// @brief Initialize EnumWrapper from value
         [[nodiscard]] constexpr explicit EnumWrapper(E e) noexcept : m_value{ e } {}
 
         /// @brief Get the raw enum value

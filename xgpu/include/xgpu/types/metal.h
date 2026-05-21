@@ -7,8 +7,9 @@ namespace xgpu
     template <>
     struct type_traits<GraphicsApi::Metal>
     {
-        using instance_t = void;
-        using device_t   = OBJC_TYPE(id<MTLDevice>);
+        using instance_t      = void;
+        using device_t        = OBJC_TYPE(id<MTLDevice>);
+        using command_queue_t = OBJC_TYPE(id<MTLCommandQueue>);
     };
 
     static_assert(

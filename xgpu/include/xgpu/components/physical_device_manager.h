@@ -6,7 +6,7 @@
 #include <span>
 #include <string>
 
-namespace xgpu::traits
+namespace xgpu::components
 {
     template <typename T>
     concept IPhysicalDevice = requires(T t) {
@@ -18,4 +18,4 @@ namespace xgpu::traits
     /// @brief Named class that should never be instantiated
     template <GraphicsApi GAPI>
     class PhysicalDeviceManager;
-} // namespace xgpu::traits
+} // namespace xgpu::components

@@ -1,23 +1,20 @@
 #pragma once
+#include "xgpu/components/adapter_manager.h"
+#include "xgpu/components/metal/physical_device_manager.h"
+// #include "xgpu/components/metal/queue_manager.h"
 #include "xgpu/core/core.h"
 #include "xgpu/data/data.h"
-#include "xgpu/traits/adapter_manager.h"
-#include "xgpu/traits/metal/physical_device_manager.h"
-#include "xgpu/traits/metal/queue_manager.h"
 
 #include <optional>
 
-namespace xgpu::traits
+namespace xgpu::components
 {
     template <>
     class AdapterManager<GraphicsApi::Metal> : public PhysicalDeviceManager<GraphicsApi::Metal>
     {
       public:
         /// @brief Create an adapter from a specified PhysicalDevice
-        Adapter<
-            GraphicsApi::Metal,
-            detail::AdapterContext<GraphicsApi::Metal>,
-            QueueManager<GraphicsApi::Metal>>
+        Adapter<GraphicsApi::Metal>
         create_adapter(std::optional<data::PhysicalDevice> physical_device = std::nullopt) noexcept;
 
       private:

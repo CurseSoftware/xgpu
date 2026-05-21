@@ -1,12 +1,12 @@
 #include "utils/device.h"
 #include "utils/utils.h"
 #include "xgpu/api/api.h"
-#include "xgpu/traits/metal/metal.h"
-#include "xgpu/traits/traits.h"
+#include "xgpu/components/metal/metal.h"
+#include "xgpu/components/components.h"
 
 #include <iostream>
 
-namespace xgpu::traits
+namespace xgpu::components
 {
     Adapter<>
     AdapterManager<GraphicsApi::Metal>::create_adapter(
@@ -28,4 +28,4 @@ namespace xgpu::traits
             detail::AdapterContext<GraphicsApi::Metal>{ default_physical_device(), mtl::default_device() }
         };
     }
-} // namespace xgpu::traits
+} // namespace xgpu::components

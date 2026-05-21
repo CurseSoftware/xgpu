@@ -1,7 +1,7 @@
 #pragma once
+#include "xgpu/components/metal/metal.h"
 #include "xgpu/data/data.h"
 #include "xgpu/native/native.h"
-#include "xgpu/traits/metal/metal.h"
 #include <vector>
 
 namespace xgpu::mtl

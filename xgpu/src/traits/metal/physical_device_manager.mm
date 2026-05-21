@@ -1,9 +1,9 @@
-#include "xgpu/traits/traits.h"
+#include "xgpu/components/components.h"
 #include "xgpu/native/native.h"
 #include "utils/device.h"
 #include <string>
 
-namespace xgpu::traits
+namespace xgpu::components
 {
     std::span<data::PhysicalDevice>
     PhysicalDeviceManager<GraphicsApi::Metal>::enumerate_devices() noexcept
@@ -34,4 +34,4 @@ namespace xgpu::traits
     {
         return mtl::get_available_physical_devices();
     }
-} // namespace xgpu::traits
+} // namespace xgpu::components
