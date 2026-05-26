@@ -6,10 +6,6 @@
 namespace xgpu
 {
     template <GraphicsApi GAPI = DefaultGraphicsApi>
-    // components::detail::IAdapterContext<GAPI> AdapterContext =
-    // components::detail::AdapterContext<GAPI>, components::IQueueManager<GAPI>           QueueManager =
-    // components::QueueManager<GAPI>>
-    // class Adapter : public components::detail::ContextBase<AdapterContext>, public QueueManager
     class Adapter : public components::detail::ContextBase<components::detail::AdapterContext<GAPI>>,
                     public components::QueueManager<GAPI>
     {

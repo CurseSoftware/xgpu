@@ -7,7 +7,8 @@ namespace xgpu
     template <>
     struct type_traits<GraphicsApi::Metal>
     {
-        using instance_t      = void;
+        using none_t          = types::Empty;
+        using instance_t      = none_t;
         using device_t        = OBJC_TYPE(id<MTLDevice>);
         using command_queue_t = OBJC_TYPE(id<MTLCommandQueue>);
     };

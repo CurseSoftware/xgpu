@@ -13,7 +13,22 @@ namespace xgpu::components
     /// @brief Unspecialized version of a component.
     /// @note This should remain undefined, the only definitions should be specializations
     template <typename Context>
-    struct Component;
+    struct Component : Context
+    {
+        using context_t = Context;
+
+        Context &
+        context() noexcept
+        {
+            return *static_cast<Context *>(this);
+        }
+
+        const Context &
+        context() const noexcept
+        {
+            return *static_cast<Context *>(this);
+        }
+    };
 
     /// @brief Type trait for whether a type is a component
     template <typename T>
@@ -41,5 +56,5 @@ namespace xgpu::components
         } || requires {
             { const_component.context() } -> std::same_as<typename C::context_t &>;
         };
-    } && is_component_v<C>;
+    } && is_component_v<C> && std::derived_from<C, typename C::context_t>;
 } // namespace xgpu::components

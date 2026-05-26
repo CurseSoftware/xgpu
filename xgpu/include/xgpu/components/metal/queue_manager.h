@@ -1,6 +1,7 @@
 #pragma once
+#include "../queue_manager.h"
 #include "adapter_context.h"
-#include "xgpu/components/queue_manager.h"
+#include "xgpu/components/adapter.h"
 #include "xgpu/core/backends.h"
 #include "xgpu/core/core.h"
 #include "xgpu/data/data.h"

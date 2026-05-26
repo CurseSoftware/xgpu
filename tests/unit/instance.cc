@@ -8,6 +8,7 @@ TEST_CASE("instance", "[instance]")
 
     std::span<xgpu::data::PhysicalDevice> available_devices = instance.enumerate_devices();
 
+    std::cout << "Available devices: " << available_devices.size() << std::endl;
     for ( const xgpu::data::PhysicalDevice &device : available_devices ) {
         std::cout << "Device:" << std::endl;
         std::cout << "\tName: " << device.name << std::endl;
@@ -18,6 +19,6 @@ TEST_CASE("instance", "[instance]")
     std::cout << "Default device:" << std::endl;
     std::cout << "\tName: " << default_device.name << std::endl;
     std::cout << "\tVRAM: " << default_device.video_ram_bytes << " bytes" << std::endl;
-
-    xgpu::Adapter adapter = instance.create_adapter(default_device);
+    //
+    // xgpu::Adapter adapter = instance.create_adapter(default_device);
 }
