@@ -14,6 +14,7 @@ namespace xgpu
         using instance_t      = VkInstance;
         using device_t        = VkDevice;
         using command_queue_t = VkQueue;
+        using debug_manager_t = VkDebugUtilsMessengerEXT;
     };
 
     static_assert(

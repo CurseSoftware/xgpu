@@ -1,6 +1,7 @@
 #pragma once
 #include "xgpu/core/core.h"
 
+#include <span>
 #include <string_view>
 
 namespace xgpu

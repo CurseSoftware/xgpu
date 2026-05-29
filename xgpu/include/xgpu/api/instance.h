@@ -38,8 +38,9 @@ namespace xgpu
         [[nodiscard]] explicit Instance() noexcept = default;
 
         /// @brief The internal instance for each backend
-        typename type_traits<GAPI>::instance_t m_instance;
-        std::vector<data::PhysicalDevice>      m_physical_devices;
+        typename type_traits<GAPI>::instance_t                     m_instance;
+        std::optional<typename type_traits<GAPI>::debug_manager_t> m_debug_manager;
+        std::vector<data::PhysicalDevice>                          m_physical_devices;
     };
 
     /// @brief Create an instance

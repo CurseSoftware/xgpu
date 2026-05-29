@@ -20,6 +20,7 @@ namespace xgpu
         typename T::instance_t;
         typename T::device_t;
         typename T::command_queue_t;
+        typename T::debug_manager_t;
     };
 
     template <GraphicsApi GAPI>

@@ -6,12 +6,14 @@
 
 TEST_CASE("vulkan instance", "[vulkan]")
 {
-    xgpu::expected<xgpu::vulkan_instance, xgpu::Error> e_instance
+    xgpu::expected<xgpu::vulkan_instance, xgpu::Error> instance
         = xgpu::create_instance<xgpu::GraphicsApi::Vulkan>({ .name = "test" });
 
-    if ( !e_instance ) {
-        std::cerr << e_instance.error().to_string() << std::endl;
+    if ( !instance ) {
+        std::cerr << instance.error().to_string() << std::endl;
     }
+
+    instance->destroy();
 }
 
 #endif // XGPU_COMPILE_VULKAN

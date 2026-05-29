@@ -11,6 +11,7 @@ namespace xgpu
         using instance_t      = none_t;
         using device_t        = OBJC_TYPE(id<MTLDevice>);
         using command_queue_t = OBJC_TYPE(id<MTLCommandQueue>);
+        using debug_manager_t = none_t;
     };
 
     static_assert(
