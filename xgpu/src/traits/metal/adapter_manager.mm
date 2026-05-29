@@ -18,14 +18,16 @@ namespace xgpu::components
             for ( type_traits<GraphicsApi::Metal>::device_t device : mtl::all_devices() ) {
                 if ( [[device name] UTF8String] == physical_device->name ) {
                     return Adapter<>{
-                        detail::AdapterContext<GraphicsApi::Metal>{ *physical_device, device },
+                        device,
+                        physical_device.value()
                     };
                 }
             }
         }
 
         return Adapter<>{
-            detail::AdapterContext<GraphicsApi::Metal>{ default_physical_device(), mtl::default_device() }
+            mtl::default_device(),
+            default_physical_device()
         };
     }
 } // namespace xgpu::components

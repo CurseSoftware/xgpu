@@ -1,5 +1,8 @@
 #include "device.h"
+#include "xgpu/core/core.h"
 #include "xgpu/types/types.h"
+
+#ifdef XGPU_COMPILE_METAL
 
 namespace xgpu::metal
 {
@@ -27,4 +30,18 @@ namespace xgpu::metal
     {
         return MTLCreateSystemDefaultDevice();
     }
+
+    std::vector<type_traits<GraphicsApi::Metal>::device_t> all_devices() noexcept
+    {
+        std::vector<type_traits<GraphicsApi::Metal>::device_t> devices;
+        NSArray<id<MTLDevice>> *metal_devices = MTLCopyAllDevices();
+
+        for (id<MTLDevice> device in metal_devices) {
+            devices.push_back(device);
+        }
+
+        return devices;
+    }
 } // namespace xgpu::metal
+
+#endif // XGPU_COMPILE_METAL

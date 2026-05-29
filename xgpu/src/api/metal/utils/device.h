@@ -10,8 +10,10 @@
 
 namespace xgpu::metal
 {
-    std::vector<data::PhysicalDevice>         get_available_physical_devices() noexcept;
+    std::vector<data::PhysicalDevice>                      get_available_physical_devices() noexcept;
 
-    type_traits<GraphicsApi::Metal>::device_t default_device() noexcept;
+    type_traits<GraphicsApi::Metal>::device_t              default_device() noexcept;
+
+    std::vector<type_traits<GraphicsApi::Metal>::device_t> all_devices() noexcept;
 } // namespace xgpu::metal
 #endif // XGPU_COMPILE_METAL

@@ -14,5 +14,5 @@ namespace xgpu
     };
 
     static_assert(
-        ValidTypeTraits<type_traits<GraphicsApi::Metal>>, "type_traits for metal API not satisfied");
+        ValidNativeTraits<type_traits<GraphicsApi::Metal>>, "type_traits for metal API not satisfied");
 } // namespace xgpu::types

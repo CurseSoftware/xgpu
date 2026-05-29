@@ -1,5 +1,5 @@
 include(FetchContent)
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.24)
 
 project(XGPU VERSION 1.0.0 LANGUAGES CXX)
 
@@ -27,4 +27,4 @@ endif ()
 if (NOT XGPU_SUBPROJECT)
     add_subdirectory(tests)
     # add examples here
-endif()
+endif ()

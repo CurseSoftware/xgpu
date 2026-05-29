@@ -1,5 +1,5 @@
 #pragma once
-#include "xgpu/core/core.h"
+#include "concepts.h"
 
 #include <string>
 

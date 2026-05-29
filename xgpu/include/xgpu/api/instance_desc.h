@@ -9,5 +9,8 @@ namespace xgpu
     struct InstanceDesc
     {
         std::string_view name;
+
+        /// @brief Set to `true` when validation layers are desired
+        bool             validation_enabled = true;
     };
 }

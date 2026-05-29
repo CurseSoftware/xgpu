@@ -135,6 +135,8 @@ namespace xgpu
     enum class ErrorCode
     {
         InstanceError,
+        DeviceNotFound,
+        ExtensionNotFound,
     };
 
     template <>
@@ -144,6 +146,10 @@ namespace xgpu
         switch ( m_value ) {
         case ErrorCode::InstanceError:
             return "InstanceError";
+        case ErrorCode::DeviceNotFound:
+            return "DeviceNotFound";
+        case ErrorCode::ExtensionNotFound:
+            return "ExtensionNotFound";
         default:
             break;
         }

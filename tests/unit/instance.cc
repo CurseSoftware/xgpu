@@ -4,21 +4,24 @@
 
 TEST_CASE("instance", "[instance]")
 {
-    xgpu::Instance                        instance{ xgpu::InstanceDesc{ .name = "test" } };
+    xgpu::Instance instance = xgpu::create_instance(xgpu::InstanceDesc{ .name = "test" }).value();
+    const std::span<xgpu::data::PhysicalDevice> available_devices = instance.enumerate_devices();
+    REQUIRE_FALSE(available_devices.empty());
+}
 
-    std::span<xgpu::data::PhysicalDevice> available_devices = instance.enumerate_devices();
+TEST_CASE("default adapter", "[instance]")
+{
+    xgpu::Instance instance = xgpu::create_instance(xgpu::InstanceDesc{ .name = "test" }).value();
+    xgpu::Adapter  adapter  = instance.create_adapter().value();
 
-    std::cout << "Available devices: " << available_devices.size() << std::endl;
-    for ( const xgpu::data::PhysicalDevice &device : available_devices ) {
-        std::cout << "Device:" << std::endl;
-        std::cout << "\tName: " << device.name << std::endl;
-        std::cout << "\tVRAM: " << device.video_ram_bytes << " bytes" << std::endl;
-    }
+    REQUIRE(adapter.physical_device() == instance.default_physical_device());
+}
 
-    xgpu::data::PhysicalDevice default_device = instance.default_physical_device();
-    std::cout << "Default device:" << std::endl;
-    std::cout << "\tName: " << default_device.name << std::endl;
-    std::cout << "\tVRAM: " << default_device.video_ram_bytes << " bytes" << std::endl;
-    //
-    // xgpu::Adapter adapter = instance.create_adapter(default_device);
+TEST_CASE("adapter from specified physical device", "[instance]")
+{
+    xgpu::Instance             instance = xgpu::create_instance(xgpu::InstanceDesc{ .name = "test" }).value();
+    xgpu::data::PhysicalDevice physical_device = instance.enumerate_devices().front();
+    xgpu::Adapter              adapter         = instance.create_adapter(physical_device).value();
+
+    REQUIRE(adapter.physical_device() == physical_device);
 }

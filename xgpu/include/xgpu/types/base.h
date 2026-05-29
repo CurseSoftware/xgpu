@@ -15,7 +15,7 @@ namespace xgpu
     } // namespace types
 
     template <typename T>
-    concept ValidTypeTraits = requires {
+    concept ValidNativeTraits = requires {
         typename T::none_t;
         typename T::instance_t;
         typename T::device_t;
