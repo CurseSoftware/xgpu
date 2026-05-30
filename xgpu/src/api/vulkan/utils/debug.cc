@@ -27,21 +27,18 @@ namespace xgpu::vk
 
         switch ( severity ) {
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-            std::cerr << std::format("INFO: {}{}\n", type_prefix, callback_data->pMessage);
+            std::cout << std::format("INFO: {}{}\n", type_prefix, callback_data->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
-            // log::trace("{}{}", type_prefix, callback_data->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            std::cerr << std::format("WARNING: {}{}\n", type_prefix, callback_data->pMessage);
+            std::cout << std::format("WARNING: {}{}\n", type_prefix, callback_data->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            std::cerr << std::format("ERROR: {}{}\n", type_prefix, callback_data->pMessage);
-            // log::error("{}{}", type_prefix, callback_data->pMessage);
+            std::cout << std::format("ERROR: {}{}\n", type_prefix, callback_data->pMessage);
             break;
         default:
-            std::cerr << std::format("VALIDATION: {}{}\n", type_prefix, callback_data->pMessage);
-            // log::debug("{}{}", type_prefix, callback_data->pMessage);
+            std::cout << std::format("VALIDATION: {}{}\n", type_prefix, callback_data->pMessage);
         }
 
         return VK_FALSE;

@@ -34,15 +34,14 @@ namespace xgpu::vk
     void
     ExtensionHandler<ExtensionKind::Device>::fetch_all(const VkPhysicalDevice physical_device) noexcept
     {
-        constexpr const char            *dummy_extension_name{ nullptr };
+        constexpr const char            *layer_name{ nullptr };
         constexpr VkExtensionProperties *dummy_extension_properties{ nullptr };
         std::uint32_t                    extension_count{ 0 };
 
         (void)vkEnumerateDeviceExtensionProperties(
-            physical_device, dummy_extension_name, std::addressof(extension_count),
-            dummy_extension_properties);
+            physical_device, layer_name, std::addressof(extension_count), dummy_extension_properties);
         m_extensions.resize(extension_count);
         (void)vkEnumerateDeviceExtensionProperties(
-            physical_device, dummy_extension_name, std::addressof(extension_count), m_extensions.data());
+            physical_device, layer_name, std::addressof(extension_count), m_extensions.data());
     }
 } // namespace xgpu::vk

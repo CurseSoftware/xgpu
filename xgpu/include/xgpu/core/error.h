@@ -137,6 +137,7 @@ namespace xgpu
         InstanceError,
         DeviceNotFound,
         ExtensionNotFound,
+        AdapterCreationFailed,
     };
 
     template <>
@@ -150,6 +151,8 @@ namespace xgpu
             return "DeviceNotFound";
         case ErrorCode::ExtensionNotFound:
             return "ExtensionNotFound";
+        case ErrorCode::AdapterCreationFailed:
+            return "AdapterCreationFailed";
         default:
             break;
         }

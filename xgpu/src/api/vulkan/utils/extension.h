@@ -1,6 +1,8 @@
 #pragma once
 #include "xgpu/native/native.h"
 
+#include <__ostream/basic_ostream.h>
+#include <iostream>
 #include <ranges>
 #include <span>
 #include <vector>
@@ -32,8 +34,8 @@ namespace xgpu::vk
             fetch_all();
         }
 
-        [[nodiscard]] explicit ExtensionHandler(const VkPhysicalDevice physical_device) noexcept
-            requires(Kind == ExtensionKind::Instance)
+        [[nodiscard]] explicit ExtensionHandler(VkPhysicalDevice physical_device) noexcept
+            requires(Kind == ExtensionKind::Device)
         {
             fetch_all(physical_device);
         }

@@ -30,7 +30,7 @@ namespace xgpu
       private:
         friend class Instance<GAPI>;
         [[nodiscard]] explicit Adapter(
-            type_traits<GraphicsApi::Metal>::device_t device, data::PhysicalDevice physical_device) noexcept
+            type_traits<GAPI>::device_t device, data::PhysicalDevice physical_device) noexcept
             : m_device{ device }, m_physical_device{ std::move(physical_device) }
         {
         }
