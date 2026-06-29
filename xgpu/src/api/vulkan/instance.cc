@@ -1,7 +1,10 @@
 #include "utils/device.h"
 #include "utils/utils.h"
 #include "xgpu/api/api.h"
+#include "xgpu/core/core.h"
 #include "xgpu/native/native.h"
+
+#ifdef XGPU_COMPILE_VULKAN
 
 #include <iostream>
 #include <optional>
@@ -22,29 +25,23 @@ namespace xgpu
             std::vector<VkPhysicalDevice> devices(count);
             vkEnumeratePhysicalDevices(m_instance, std::addressof(count), devices.data());
 
-            auto transformed
-                = devices | std::views::transform([](const VkPhysicalDevice &physical_device) {
-                      VkPhysicalDeviceProperties       properties{};
-                      VkPhysicalDeviceMemoryProperties memory_properties{};
-                      vkGetPhysicalDeviceProperties(physical_device, &properties);
-                      vkGetPhysicalDeviceMemoryProperties(physical_device, &memory_properties);
+            auto transformed = devices | std::views::transform([](const VkPhysicalDevice &physical_device) {
+                                   const vk::PhysicalDeviceProperties device_properties
+                                       = vk::get_aggregate_device_properties(physical_device);
 
-                      // TODO: we need to reconcile how we cound video memory for physical devices
-                      VkDeviceSize total_vram = 0;
-                      for ( std::uint32_t i = 0; i < memory_properties.memoryHeapCount; i++ ) {
-                          if ( memory_properties.memoryHeaps[i].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT ) {
-                              total_vram += memory_properties.memoryHeaps[i].size;
-                          }
-                      }
-
-                      return data::PhysicalDevice{
-                          .name            = properties.deviceName,
-                          .type            = properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU
-                                                 ? data::PhysicalDeviceType::DiscreteGPU
-                                                 : data::PhysicalDeviceType::IntegratedGPU,
-                          .video_ram_bytes = static_cast<std::uint32_t>(total_vram)
-                      };
-                  });
+                                   return data::PhysicalDevice{
+                                       .name            = device_properties.properties.deviceName,
+                                       .type            = device_properties.properties.deviceType
+                                                       == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU
+                                                              ? data::PhysicalDeviceType::DiscreteGPU
+                                                              : data::PhysicalDeviceType::IntegratedGPU,
+                                       .video_ram_bytes = 0,
+                                       .capabilities = data::PhysicalDevice::Capabilities {
+                                           .compute = vk::get_queue_family_index<VK_QUEUE_COMPUTE_BIT>(device_properties).has_value(),
+                                           .graphics = vk::get_queue_family_index<VK_QUEUE_GRAPHICS_BIT>(device_properties).has_value(),
+                                       }
+                                   };
+                               });
 
             m_physical_devices = std::vector(transformed.begin(), transformed.end());
         }
@@ -245,13 +242,11 @@ namespace xgpu
     vulkan_instance::destroy() noexcept
     {
         if ( m_debug_manager ) {
-            std::cout << "Destroying debug... ";
             vk::destroy_debug_messenger(m_instance, *m_debug_manager);
-            std::cout << "done.\n";
         }
 
-        std::cout << "Destroying instance... ";
         vkDestroyInstance(m_instance, nullptr);
-        std::cout << "done.\n";
     }
 } // namespace xgpu
+
+#endif // XGPU_COMPILE_VULKAN

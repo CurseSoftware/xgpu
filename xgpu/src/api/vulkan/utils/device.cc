@@ -13,14 +13,14 @@ namespace xgpu::vk
         return Result(vkCreateDevice(physical_device, &create_info, nullptr, &device));
     }
 
-    std::vector<VkQueueFamilyProperties2>
+    std::vector<VkQueueFamilyProperties>
     get_device_queue_family_properties(VkPhysicalDevice physical_device) noexcept
     {
-        std::vector<VkQueueFamilyProperties2> queue_family_properties;
-        std::uint32_t                         count = 0;
-        vkGetPhysicalDeviceQueueFamilyProperties2(physical_device, std::addressof(count), nullptr);
+        std::vector<VkQueueFamilyProperties> queue_family_properties;
+        std::uint32_t                        count = 0;
+        vkGetPhysicalDeviceQueueFamilyProperties(physical_device, std::addressof(count), nullptr);
         queue_family_properties.resize(count);
-        vkGetPhysicalDeviceQueueFamilyProperties2(
+        vkGetPhysicalDeviceQueueFamilyProperties(
             physical_device, std::addressof(count), queue_family_properties.data());
 
         return queue_family_properties;
@@ -34,11 +34,11 @@ namespace xgpu::vk
         return properties;
     }
 
-    VkPhysicalDeviceMemoryProperties2
+    VkPhysicalDeviceMemoryProperties
     get_physical_device_memory_properties(VkPhysicalDevice physical_device) noexcept
     {
-        VkPhysicalDeviceMemoryProperties2 properties;
-        vkGetPhysicalDeviceMemoryProperties2(physical_device, std::addressof(properties));
+        VkPhysicalDeviceMemoryProperties properties;
+        vkGetPhysicalDeviceMemoryProperties(physical_device, std::addressof(properties));
         return properties;
     }
 
