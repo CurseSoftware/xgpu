@@ -6,6 +6,7 @@
 #include "xgpu/types/types.h"
 
 #include <span>
+#include <vector>
 
 namespace xgpu
 {

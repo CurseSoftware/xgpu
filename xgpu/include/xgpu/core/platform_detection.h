@@ -10,4 +10,6 @@
 #define XGPU_PLATFORM_MACOS
 #endif
 
+#elif defined(WIN32) || defined(__WIN32) || defined(__WIN32__)
+#define XGPU_PLATFORM_WIN32
 #endif

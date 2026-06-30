@@ -71,9 +71,9 @@ namespace xgpu
 
         if ( desc.validation_enabled ) {
             requested_extensions.emplace_back(
-                vk::RequestedExtension{ .name = VK_EXT_DEBUG_UTILS_EXTENSION_NAME, .required = true });
+                vk::RequestedExtension{ .required = true, .name = VK_EXT_DEBUG_UTILS_EXTENSION_NAME });
             requested_validation_layers.emplace_back(
-                vk::RequestedValidationLayer{ .name = "VK_LAYER_KHRONOS_validation", .required = true });
+                vk::RequestedValidationLayer{ .required = true, .name = "VK_LAYER_KHRONOS_validation" });
 
             debug_create_info = VkDebugUtilsMessengerCreateInfoEXT{
                 .sType           = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT,
@@ -112,10 +112,10 @@ namespace xgpu
         const VkInstanceCreateInfo create_info = {
             .sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
             .pNext                   = debug_create_info ? std::addressof(*debug_create_info) : nullptr,
+            .flags                   = flags,
             .pApplicationInfo        = std::addressof(app_info),
             .enabledExtensionCount   = static_cast<std::uint32_t>(extension_names->size()),
             .ppEnabledExtensionNames = extension_names->data(),
-            .flags                   = flags,
         };
 
         const VkResult result
@@ -200,12 +200,12 @@ namespace xgpu
         {
             vk::ExtensionHandler<vk::ExtensionKind::Device> device_extensions{ found_device->device };
             std::vector<vk::RequestedExtension>             requested_extensions{
-                vk::RequestedExtension{ .name = VK_KHR_SWAPCHAIN_EXTENSION_NAME, .required = true },
+                vk::RequestedExtension{ .required = true, .name = VK_KHR_SWAPCHAIN_EXTENSION_NAME },
             };
 
             if constexpr ( is_molten_vk() ) {
                 requested_extensions.emplace_back(
-                    vk::RequestedExtension{ .name = "VK_KHR_portability_subset", .required = true });
+                    vk::RequestedExtension{ .required = true, .name = "VK_KHR_portability_subset" });
             }
 
             expected<std::vector<const char *>, Error> extension_names
@@ -220,9 +220,9 @@ namespace xgpu
                       .sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
                       .queueCreateInfoCount    = static_cast<std::uint32_t>(queue_create_infos.size()),
                       .pQueueCreateInfos       = queue_create_infos.data(),
-                      .pEnabledFeatures        = std::addressof(device_features),
                       .enabledExtensionCount   = static_cast<std::uint32_t>(extension_names->size()),
                       .ppEnabledExtensionNames = extension_names->data(),
+                      .pEnabledFeatures        = std::addressof(device_features),
             };
 
             const vk::Result result = vk::create_device(found_device->device, create_info, device);

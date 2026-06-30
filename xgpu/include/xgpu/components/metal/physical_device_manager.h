@@ -24,5 +24,7 @@ class xgpu::components::PhysicalDeviceManager<xgpu::GraphicsApi::Metal>
 
     std::vector<data::PhysicalDevice> m_physical_devices;
 };
-
+#else
+template <>
+class xgpu::components::PhysicalDeviceManager<xgpu::GraphicsApi::Metal> {};
 #endif // XGPU_COMPILE_METAL

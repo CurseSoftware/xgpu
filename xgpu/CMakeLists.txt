@@ -1,9 +1,15 @@
 cmake_minimum_required(VERSION 3.24)
 
+if (APPLE)
+    set(METAL_SOURCES
+            "src/api/metal/instance.mm"
+            "src/api/metal/adapter.mm"
+            "src/api/metal/utils/device.mm"
+    )
+endif ()
+
 add_library(xgpu
-        "src/api/metal/instance.mm"
-        "src/api/metal/adapter.mm"
-        "src/api/metal/utils/device.mm"
+        ${METAL_SOURCES}
         "src/api/vulkan/instance.cc"
         "src/api/vulkan/adapter.cc"
         "src/api/vulkan/utils/vulkan_error.cc"
@@ -41,6 +47,11 @@ if (APPLE)
             "-framework Metal"
     )
     target_compile_definitions(xgpu PUBLIC XGPU_COMPILE_METAL)
+endif ()
+
+if (WINDOWS)
+    message("Windows platform detected")
+    # TODO: link and compile dx12
 endif ()
 
 # Vulkan

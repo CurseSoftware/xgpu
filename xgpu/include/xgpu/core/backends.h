@@ -15,6 +15,8 @@ namespace xgpu
     constexpr static GraphicsApi DefaultGraphicsApi =
 #if defined(XGPU_PLATFORM_MACOS)
         GraphicsApi::Metal
+#elif defined(XGPU_PLATFORM_WIN32)
+            GraphicsApi::Vulkan
 #endif
         ;
 

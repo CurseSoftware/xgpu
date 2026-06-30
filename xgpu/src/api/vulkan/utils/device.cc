@@ -1,6 +1,7 @@
 #include "device.h"
 
 #include <ranges>
+#include <algorithm>
 
 namespace xgpu::vk
 {
