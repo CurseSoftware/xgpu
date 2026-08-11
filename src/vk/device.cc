@@ -227,7 +227,8 @@ namespace xgpu::vk
     }
     auto Device::create_default(const DefaultDeviceContext& ctx) noexcept -> expected<Device, Error>
     {
-        auto& vk_handle = *dynamic_cast<vk::Instance*>(ctx.instance.handle());
+        auto& vk_handle = *ctx.instance.get_as<vk::Instance>();
+        // auto& vk_handle = *dynamic_cast<vk::Instance*>(ctx.instance.handle());
         auto available_devices = getPhysicalDevices(vk_handle.native_handle());
 
         // This is largely based on https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Physical_devices_and_queue_families
